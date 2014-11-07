@@ -1,0 +1,244 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+    Version="10.0"
+    VendorName="SlickEdit"
+    TemplateName="Python - Empty Project"
+    WorkingDir=".">
+    <Files>
+        <Folder
+            Name="Source Files"
+            Filters="*.py">
+            <F N="saharadashboard/__init__.py"/>
+            <F N="saharadashboard/api/__init__.py"/>
+            <F N="saharadashboard/cluster/__init__.py"/>
+            <F N="saharadashboard/cluster/workflows/__init__.py"/>
+            <F N="saharadashboard/cluster_templates/__init__.py"/>
+            <F N="saharadashboard/cluster_templates/workflows/__init__.py"/>
+            <F N="saharadashboard/data_sources/__init__.py"/>
+            <F N="saharadashboard/data_sources/workflows/__init__.py"/>
+            <F N="saharadashboard/groups/__init__.py"/>
+            <F N="saharadashboard/groups/images/__init__.py"/>
+            <F N="saharadashboard/groups/pools/__init__.py"/>
+            <F N="saharadashboard/groups/pools/images/__init__.py"/>
+            <F N="saharadashboard/groups/pools/workflows/__init__.py"/>
+            <F N="saharadashboard/groups/users/__init__.py"/>
+            <F N="saharadashboard/groups/workflows/__init__.py"/>
+            <F N="saharadashboard/image_registry/__init__.py"/>
+            <F N="saharadashboard/images/__init__.py"/>
+            <F N="saharadashboard/images/workflows/__init__.py"/>
+            <F N="saharadashboard/job_binaries/__init__.py"/>
+            <F N="saharadashboard/job_executions/__init__.py"/>
+            <F N="saharadashboard/jobs/__init__.py"/>
+            <F N="saharadashboard/jobs/workflows/__init__.py"/>
+            <F N="saharadashboard/nodegroup_templates/__init__.py"/>
+            <F N="saharadashboard/nodegroup_templates/workflows/__init__.py"/>
+            <F N="saharadashboard/openstack/__init__.py"/>
+            <F N="saharadashboard/openstack/common/__init__.py"/>
+            <F N="saharadashboard/plugins/__init__.py"/>
+            <F N="saharadashboard/pools/__init__.py"/>
+            <F N="saharadashboard/pools/images/__init__.py"/>
+            <F N="saharadashboard/pools/workflows/__init__.py"/>
+            <F N="saharadashboard/tests/__init__.py"/>
+            <F N="saharadashboard/tests/cluster_template_tests/__init__.py"/>
+            <F N="saharadashboard/tests/cluster_tests/__init__.py"/>
+            <F N="saharadashboard/tests/configs/__init__.py"/>
+            <F N="saharadashboard/tests/image_registry_tests/__init__.py"/>
+            <F N="saharadashboard/tests/node_group_template_tests/__init__.py"/>
+            <F N="saharadashboard/users/__init__.py"/>
+            <F N="saharadashboard/utils/__init__.py"/>
+            <F N="saharadashboard/utils/hacking/__init__.py"/>
+            <F N="saharadashboard/utils/anti_affinity.py"/>
+            <F N="saharadashboard/tests/base.py"/>
+            <F N="saharadashboard/utils/hacking/checks.py"/>
+            <F N="saharadashboard/api/client.py"/>
+            <F N="saharadashboard/utils/compatibility.py"/>
+            <F N="saharadashboard/tests/configs/config.py"/>
+            <F N="saharadashboard/cluster_templates/workflows/copy.py"/>
+            <F N="saharadashboard/nodegroup_templates/workflows/copy.py"/>
+            <F N="saharadashboard/cluster/workflows/create.py"/>
+            <F N="saharadashboard/cluster_templates/workflows/create.py"/>
+            <F N="saharadashboard/data_sources/workflows/create.py"/>
+            <F N="saharadashboard/groups/pools/workflows/create.py"/>
+            <F N="saharadashboard/groups/workflows/create.py"/>
+            <F N="saharadashboard/images/workflows/create.py"/>
+            <F N="saharadashboard/jobs/workflows/create.py"/>
+            <F N="saharadashboard/nodegroup_templates/workflows/create.py"/>
+            <F N="saharadashboard/pools/workflows/create.py"/>
+            <F N="saharadashboard/dashboard.py"/>
+            <F N="saharadashboard/cluster_templates/forms.py"/>
+            <F N="saharadashboard/groups/forms.py"/>
+            <F N="saharadashboard/groups/users/forms.py"/>
+            <F N="saharadashboard/image_registry/forms.py"/>
+            <F N="saharadashboard/job_binaries/forms.py"/>
+            <F N="saharadashboard/pools/forms.py"/>
+            <F N="saharadashboard/users/forms.py"/>
+            <F N="saharadashboard/api/helpers.py"/>
+            <F N="saharadashboard/openstack/common/importutils.py"/>
+            <F N="saharadashboard/utils/importutils.py"/>
+            <F N="saharadashboard/jobs/workflows/launch.py"/>
+            <F N="saharadashboard/tests/cluster_template_tests/negative_tests.py"/>
+            <F N="saharadashboard/tests/node_group_template_tests/negative_tests.py"/>
+            <F N="saharadashboard/utils/neutron_support.py"/>
+            <F N="saharadashboard/cluster/panel.py"/>
+            <F N="saharadashboard/cluster_templates/panel.py"/>
+            <F N="saharadashboard/data_sources/panel.py"/>
+            <F N="saharadashboard/groups/panel.py"/>
+            <F N="saharadashboard/groups/pools/panel.py"/>
+            <F N="saharadashboard/groups/users/panel.py"/>
+            <F N="saharadashboard/image_registry/panel.py"/>
+            <F N="saharadashboard/images/panel.py"/>
+            <F N="saharadashboard/job_binaries/panel.py"/>
+            <F N="saharadashboard/job_executions/panel.py"/>
+            <F N="saharadashboard/jobs/panel.py"/>
+            <F N="saharadashboard/nodegroup_templates/panel.py"/>
+            <F N="saharadashboard/plugins/panel.py"/>
+            <F N="saharadashboard/pools/panel.py"/>
+            <F N="saharadashboard/users/panel.py"/>
+            <F N="saharadashboard/cluster/workflows/scale.py"/>
+            <F N="saharadashboard/groups/pools/workflows/scale.py"/>
+            <F N="saharadashboard/groups/workflows/scale.py"/>
+            <F N="saharadashboard/images/workflows/scale.py"/>
+            <F N="saharadashboard/pools/workflows/scale.py"/>
+            <F N="setup.py"/>
+            <F N="saharadashboard/cluster/tables.py"/>
+            <F N="saharadashboard/cluster_templates/tables.py"/>
+            <F N="saharadashboard/data_sources/tables.py"/>
+            <F N="saharadashboard/groups/tables.py"/>
+            <F N="saharadashboard/groups/images/tables.py"/>
+            <F N="saharadashboard/groups/pools/tables.py"/>
+            <F N="saharadashboard/groups/pools/images/tables.py"/>
+            <F N="saharadashboard/groups/users/tables.py"/>
+            <F N="saharadashboard/image_registry/tables.py"/>
+            <F N="saharadashboard/images/tables.py"/>
+            <F N="saharadashboard/job_binaries/tables.py"/>
+            <F N="saharadashboard/job_executions/tables.py"/>
+            <F N="saharadashboard/jobs/tables.py"/>
+            <F N="saharadashboard/nodegroup_templates/tables.py"/>
+            <F N="saharadashboard/plugins/tables.py"/>
+            <F N="saharadashboard/pools/tables.py"/>
+            <F N="saharadashboard/pools/images/tables.py"/>
+            <F N="saharadashboard/users/tables.py"/>
+            <F N="saharadashboard/cluster/tabs.py"/>
+            <F N="saharadashboard/cluster_templates/tabs.py"/>
+            <F N="saharadashboard/data_sources/tabs.py"/>
+            <F N="saharadashboard/groups/tabs.py"/>
+            <F N="saharadashboard/groups/pools/tabs.py"/>
+            <F N="saharadashboard/images/tabs.py"/>
+            <F N="saharadashboard/job_binaries/tabs.py"/>
+            <F N="saharadashboard/job_executions/tabs.py"/>
+            <F N="saharadashboard/jobs/tabs.py"/>
+            <F N="saharadashboard/nodegroup_templates/tabs.py"/>
+            <F N="saharadashboard/plugins/tabs.py"/>
+            <F N="saharadashboard/pools/tabs.py"/>
+            <F N="saharadashboard/tests/cluster_tests/test_clusters.py"/>
+            <F N="saharadashboard/tests/cluster_template_tests/test_create_cluster_template.py"/>
+            <F N="saharadashboard/tests/node_group_template_tests/test_create_node_group_template.py"/>
+            <F N="saharadashboard/tests/image_registry_tests/test_for_image_registry.py"/>
+            <F N="saharadashboard/users/tests.py"/>
+            <F N="saharadashboard/cluster/urls.py"/>
+            <F N="saharadashboard/cluster_templates/urls.py"/>
+            <F N="saharadashboard/data_sources/urls.py"/>
+            <F N="saharadashboard/groups/urls.py"/>
+            <F N="saharadashboard/groups/images/urls.py"/>
+            <F N="saharadashboard/groups/pools/urls.py"/>
+            <F N="saharadashboard/groups/pools/images/urls.py"/>
+            <F N="saharadashboard/groups/users/urls.py"/>
+            <F N="saharadashboard/image_registry/urls.py"/>
+            <F N="saharadashboard/images/urls.py"/>
+            <F N="saharadashboard/job_binaries/urls.py"/>
+            <F N="saharadashboard/job_executions/urls.py"/>
+            <F N="saharadashboard/jobs/urls.py"/>
+            <F N="saharadashboard/nodegroup_templates/urls.py"/>
+            <F N="saharadashboard/plugins/urls.py"/>
+            <F N="saharadashboard/pools/urls.py"/>
+            <F N="saharadashboard/pools/images/urls.py"/>
+            <F N="saharadashboard/users/urls.py"/>
+            <F N="saharadashboard/version.py"/>
+            <F N="saharadashboard/cluster/views.py"/>
+            <F N="saharadashboard/cluster_templates/views.py"/>
+            <F N="saharadashboard/data_sources/views.py"/>
+            <F N="saharadashboard/groups/views.py"/>
+            <F N="saharadashboard/groups/images/views.py"/>
+            <F N="saharadashboard/groups/pools/views.py"/>
+            <F N="saharadashboard/groups/pools/images/views.py"/>
+            <F N="saharadashboard/groups/users/views.py"/>
+            <F N="saharadashboard/image_registry/views.py"/>
+            <F N="saharadashboard/images/views.py"/>
+            <F N="saharadashboard/job_binaries/views.py"/>
+            <F N="saharadashboard/job_executions/views.py"/>
+            <F N="saharadashboard/jobs/views.py"/>
+            <F N="saharadashboard/nodegroup_templates/views.py"/>
+            <F N="saharadashboard/plugins/views.py"/>
+            <F N="saharadashboard/pools/views.py"/>
+            <F N="saharadashboard/pools/images/views.py"/>
+            <F N="saharadashboard/users/views.py"/>
+            <F N="saharadashboard/utils/workflow_helpers.py"/>
+            <F N="saharadashboard/groups/images/workflows.py"/>
+            <F N="saharadashboard/groups/pools/images/workflows.py"/>
+            <F N="saharadashboard/pools/images/workflows.py"/>
+        </Folder>
+        <Folder
+            Name="Other Files"
+            Filters=""/>
+    </Files>
+    <Config
+        Name="Debug"
+        DebugCallbackName="pydbgp"
+        Type="python"
+        OutputFile=""
+        AppType="python"
+        CompilerConfigName="">
+        <Menu>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                Dialog="_python_options_form Run"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveNone"
+                RunFromDir="%rw"
+                Deletable="0">
+                <Exec CmdLine='python %(SLICKEDIT_PYTHON_EXECUTE_ARGS) "%f"'/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                Dialog="_python_options_form Debug"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveNone"
+                RunFromDir="%rw"
+                Deletable="0">
+                <Exec
+                    CmdLine="python_debug"
+                    Type="Slick-C"/>
+            </Target>
+            <Target
+                Name="Python Options"
+                MenuCaption="Python &amp;Options"
+                ShowOnMenu="HideIfNoCmdLine"
+                Deletable="0">
+                <Exec
+                    CmdLine="pythonoptions"
+                    Type="Slick-C"/>
+            </Target>
+        </Menu>
+        <List Name="Python Options">
+            <Item
+                Name="DefaultFile"
+                Value=""/>
+        </List>
+        <List Name="pydbgp Options">
+            <Item
+                Name="ServerHost"
+                Value="127.0.0.1"/>
+            <Item
+                Name="ServerPort"
+                Value="0"/>
+            <Item
+                Name="ListenInBackground"
+                Value="1"/>
+            <Item
+                Name="show_hidden"
+                Value="0"/>
+        </List>
+    </Config>
+</Project>

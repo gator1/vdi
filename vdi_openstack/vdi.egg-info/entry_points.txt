@@ -1,0 +1,18 @@
+[console_scripts]
+_vdi-subprocess = vdi.cli.sahara_subprocess:main
+vdi-api = vdi.cli.vdi_api:main
+vdi-db-manage = vdi.db.migration.cli:main
+
+[vdi.cluster.plugins]
+hdp = vdi.plugins.hdp.ambariplugin:AmbariPlugin
+idh = vdi.plugins.intel.plugin:IDHProvider
+vanilla = vdi.plugins.vanilla.plugin:VanillaProvider
+
+[vdi.infrastructure.engine]
+direct = vdi.service.direct_engine:DirectEngine
+heat = vdi.service.heat_engine:HeatEngine
+
+[vdi.remote]
+agent = vdi.utils.agent_remote:AgentRemoteDriver
+ssh = vdi.utils.ssh_remote:SshRemoteDriver
+

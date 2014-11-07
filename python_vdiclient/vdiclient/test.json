@@ -1,0 +1,7 @@
+{
+    "name":"test",
+    "imageRef":"b3f6d518-cb7f-4106-81f2-819658367dcf",
+    "flavorRef":"1",
+    "max_count":1,
+    "min_count":1
+}
