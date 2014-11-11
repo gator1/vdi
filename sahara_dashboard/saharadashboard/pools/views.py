@@ -155,7 +155,7 @@ class UpdatePoolView(forms.ModalFormView):
             vdi = vdiclient(self.request)
             return vdi.pools.get(self.kwargs['pool_id'])
         except Exception:
-            msg = _('Unable to update group.')
+            msg = _('Unable to update pool.')
             url = reverse("horizon:vdi:pools:index")
             exceptions.handle(self.request, msg, redirect=url)
 
