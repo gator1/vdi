@@ -683,6 +683,8 @@ class LaunchInstance(workflows.Workflow):
 
         image_id = ''
 
+        user_id = context['user_id']
+
         # Determine volume mapping options
         source_type = context.get('source_type', None)
         if source_type in ['image_id', 'instance_snapshot_id']:

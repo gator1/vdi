@@ -87,22 +87,25 @@ class PoolDetailsView(tables.MultiTableView):
     failure_url = reverse_lazy('horizon:vdi:pools')
 
     def get_instances_data(self):
+        user_id = self.request.user.id
         try:
-            pool = self._get_data()
-            instances = api.nova.server_list(self.request)
-            instances = instances[0]
+            # pool = self._get_data()
+            servers = api.nova.server_list(self.request)
+            instances = servers[0]
             instance_list = []
             for instance in instances:
-                if hasattr(instance, "name"):
-                    if pool.name in instance.name:
-                        instance_list.append(instance)
+                # if hasattr(instance, "name"):
+                #     if pool.name in instance.name:
+                #         instance_list.append(instance)
+                if user_id in instance.user_id:
+                    instance_list.append(instance)
         except Exception:
             instance_list = []
             msg = _('Instance list can not be retrieved.')
             exceptions.handle(self.request, msg)
         # return sorted(user_list, key=lambda x: x.name)
         # import pdb; pdb.set_trace()
-        return instance_list
+        return sorted(instance_list, key=lambda x: x.name)
 
     @memoized.memoized_method
     def _get_data(self):

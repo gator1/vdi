@@ -249,8 +249,6 @@ class UpdateUserForm(BaseUserForm):
             for group_id in group_ids:
                 vdi.groups.create_membership(user, group_id)
 
-            import pdb; pdb.set_trace()
-
         except Exception:
             response = exceptions.handle(request, ignore=True)
             messages.error(request, _('Unable to update the group_membership.'))

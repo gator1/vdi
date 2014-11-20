@@ -57,25 +57,28 @@ class IndexView(tables.DataTableView):
             # users = api.keystone.user_list(self.request,
             #                                domain=domain_context,
             #                                project=user.tenant_id)
-            all_users = api.keystone.user_list(self.request,
-                                               domain=domain_context)
-            # import pdb; pdb.set_trace()
-            for u in all_users:
-                # Works for keystone v3 with multi-tenants
-                # if getattr(u, 'default_project_id', None) == user.tenant_id:
-                #     users.append(u)
-                # Works for single-tenant
-                if getattr(u, 'tenantId', None) == user.tenant_id:
-                    users.append(u)
-                # import pdb; pdb.set_trace()
-            # remove admin from users
-            for item in users:
-                if item.name == "admin":
-                    users.remove(item)
+            if user.is_superuser:
+                all_users = api.keystone.user_list(self.request,
+                                                   domain=domain_context)
+                for u in all_users:
+                    # Works for keystone v3 with multi-tenants
+                    # if getattr(u, 'default_project_id', None) == user.tenant_id:
+                    #     users.append(u)
+                    # Works for single-tenant
+                    if getattr(u, 'tenantId', None) == user.tenant_id:
+                        users.append(u)
+                    # import pdb; pdb.set_trace()
+                # remove admin from users
+                for item in users:
+                    if item.name == "admin":
+                        users.remove(item)
+            else:
+                user.name = user.username
+                users = [user]
         except Exception:
-            exceptions.handle(self.request,
-                              _('Unable to retrieve user list.'))
+            exceptions.handle(self.request, _('Unable to retrieve user list.'))
 
+        # import pdb; pdb.set_trace()
 
         return sorted(users, key=lambda x: x.name)
 

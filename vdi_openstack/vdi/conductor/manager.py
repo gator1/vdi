@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Mirantis Inc.
+# Copyright (c) 2014 Huawei Technologies.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -509,50 +509,6 @@ class ConductorManager(db_base.Base):
         """Destroy the cluster_template or raise if it does not exist."""
         self.db.cluster_template_destroy(context, cluster_template)
 
-    ## Node Group Template ops
-
-    def node_group_template_get(self, context, node_group_template):
-        """Return the Node Group Template or None if it does not exist."""
-        return self.db.node_group_template_get(context, node_group_template)
-
-    def node_group_template_get_all(self, context):
-        """Get all Node Group Templates."""
-        return self.db.node_group_template_get_all(context)
-
-    def node_group_template_create(self, context, values):
-        """Create a Node Group Template from the values dictionary."""
-        values = copy.deepcopy(values)
-        values = _apply_defaults(values, NODE_GROUP_DEFAULTS)
-        values['tenant_id'] = context.tenant_id
-
-        return self.db.node_group_template_create(context, values)
-
-    def node_group_template_destroy(self, context, node_group_template):
-        """Destroy the Node Group Template or raise if it does not exist."""
-        self.db.node_group_template_destroy(context, node_group_template)
-
-    ## Data Source ops
-
-    def data_source_get(self, context, data_source):
-        """Return the Data Source or None if it does not exist."""
-        return self.db.data_source_get(context, data_source)
-
-    def data_source_get_all(self, context):
-        """Get all Data Sources."""
-        return self.db.data_source_get_all(context)
-
-    def data_source_create(self, context, values):
-        """Create a Data Source from the values dictionary."""
-        values = copy.deepcopy(values)
-        values = _apply_defaults(values, DATA_SOURCE_DEFAULTS)
-        values['tenant_id'] = context.tenant_id
-
-        return self.db.data_source_create(context, values)
-
-    def data_source_destroy(self, context, data_source):
-        """Destroy the Data Source or raise if it does not exist."""
-        return self.db.data_source_destroy(context, data_source)
-
     ##JobExecution ops
 
     def job_execution_get(self, context, job_execution):
@@ -703,31 +659,6 @@ class ConductorManager(db_base.Base):
         return self.db.VM_update(context, vm, values)
 
 
-    ## Site ops
-
-    def Site_get(self, context, Site):
-        """Return the Site or None if it does not exist."""
-        return self.db.Site_get(context, Site)
-
-    def Site_get_all(self, context, **kwargs):
-        """Get all Sites filtered by **kwargs  e.g.
-            """
-        return self.db.Site_get_all(context, **kwargs)
-
-    def Site_create(self, context, values):
-        """Create a Site from the values dictionary."""
-
-        #loading defaults
-        
-
-        return self.db.Site_create(context, values)
-
-    def Site_update(self, context, Site, values):
-        """Set the given properties on Site and update it."""
-        values = copy.deepcopy(values)
-        return self.db.Site_update(context, Site, values)
-
-
         ## User ops
 
     def User_get(self, context, User):
@@ -751,4 +682,3 @@ class ConductorManager(db_base.Base):
         """Set the given properties on cluster and update it."""
         values = copy.deepcopy(values)
         return self.db.Site_update(context, User, values)
-

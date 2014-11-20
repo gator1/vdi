@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Mirantis Inc.
+# Copyright (c) 2014 Huawei Technologies.
 # Copyright (c) 2013 Hortonworks, Inc.
 # Copyright (c) 2013 Eric Larson
 #

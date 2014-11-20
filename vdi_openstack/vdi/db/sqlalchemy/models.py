@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Mirantis Inc.
+# Copyright (c) 2014 Huawei Technologies.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -196,6 +196,58 @@ class GroupMembership(mb.Base):
     """Contains all info about group membership."""
 
     __tablename__ = 'group_membership'
+    # attributes = ['user_id', 'group_id']
+
+    __table_args__ = (
+        sa.UniqueConstraint('user_id', 'group_id'),
+    )
+
+    id = _id_column()
+    user_id = sa.Column(sa.String(64), nullable=False)
+    group_id = sa.Column(sa.String(36), nullable=False)
+    vdi_group = sa.Column(st.JsonListType())
+    # group_id = sa.Column(sa.String(36),
+    #                      sa.ForeignKey('groups.id'),
+    #                      nullable=False)
+    # group = relationship('Group', cascade="all,delete",
+    #                      backref='group_membership', lazy='joined')
+
+    def to_dict(self):
+        d = super(GroupMembership, self).to_dict()
+        # d['node_groups'] = [ng.to_dict() for ng in self.node_groups]
+        return d
+
+
+class InstanceMembership(mb.Base):
+    """Contains all info about group membership."""
+
+    __tablename__ = 'instance_membership'
+    # attributes = ['user_id', 'group_id']
+
+    __table_args__ = (
+        sa.UniqueConstraint('user_id', 'instance_id'),
+    )
+
+    id = _id_column()
+    user_id = sa.Column(sa.String(36), nullable=False)
+    instance_id = sa.Column(sa.String(36), nullable=False)
+    # vdi_group = sa.Column(st.JsonListType())
+    # group_id = sa.Column(sa.String(36),
+    #                      sa.ForeignKey('groups.id'),
+    #                      nullable=False)
+    # group = relationship('Group', cascade="all,delete",
+    #                      backref='group_membership', lazy='joined')
+
+    def to_dict(self):
+        d = super(InstanceMembership, self).to_dict()
+        # d['node_groups'] = [ng.to_dict() for ng in self.node_groups]
+        return d
+
+
+class PoolMembership(mb.Base):
+    """Contains all info about group membership."""
+
+    __tablename__ = 'pool_membership'
     # attributes = ['user_id', 'group_id']
 
     __table_args__ = (
