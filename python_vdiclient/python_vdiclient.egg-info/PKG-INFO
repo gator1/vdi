@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: python-vdiclient
-Version: bdac0e9
+Version: ddf27e8
 Summary: Client library for VDI API
 Home-page: https://github.com/openstack/python-vdiclient
 Author: OpenStack

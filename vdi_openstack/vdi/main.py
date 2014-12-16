@@ -49,7 +49,7 @@ opts = [
                default='http',
                help='Protocol used to access OpenStack Identity service.'),
     cfg.StrOpt('os_auth_host',
-               default='192.168.253.190',
+               default='127.0.0.1',
                help='IP or hostname of machine on which OpenStack Identity '
                     'service is located.'),
     cfg.StrOpt('os_auth_port',
@@ -72,7 +72,7 @@ opts = [
     #                 'infrastructure for Hadoop cluster.'),
     cfg.StrOpt('remote',
                default='ssh',
-               help='A method for Sahara to execute commands '
+               help='A method for VDI to execute commands '
                     'on VMs.')
 ]
 
@@ -97,7 +97,7 @@ def make_app():
         })
 
     @app.route('/api/help', methods=['GET'])
-    def help_():
+    def _help():
         """
         Print available routes and functions.
         """
@@ -154,6 +154,7 @@ def make_app():
 
     app.wsgi_app = auth_valid.filter_factory(app.config)(app.wsgi_app)
 
+    auth_version = "v3.0" if CONF.use_identity_api_v3 else "v2.0"
     app.wsgi_app = auth_token.filter_factory(
         app.config,
         auth_host=CONF.os_auth_host,
@@ -161,7 +162,8 @@ def make_app():
         auth_protocol=CONF.os_auth_protocol,
         admin_user=CONF.os_admin_username,
         admin_password=CONF.os_admin_password,
-        admin_tenant_name=CONF.os_admin_tenant_name
+        admin_tenant_name=CONF.os_admin_tenant_name,
+        auth_version=auth_version
     )(app.wsgi_app)
 
     return app

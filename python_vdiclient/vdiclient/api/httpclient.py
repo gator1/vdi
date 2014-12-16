@@ -26,21 +26,6 @@ class HTTPClient(object):
                             headers={'x-auth-token': self.token})
 
     def post(self, url, body):
-        #####
-        # print self.token
-        # print "self.base_url = %s" % self.base_url
-        # print "self.base_url + url = %s", self.base_url + url
-        # print body
-        # raw_input("httpclient_post")
-        #####
-
-        # ret = requests.post(self.base_url + url, body,
-        #                     headers={'x-auth-token': self.token,
-        #                              'content-type': 'application/json'})
-        # print ret.json()
-        # print ret.status_code
-        # return ret
-
         return requests.post(self.base_url + url, body,
                              headers={'x-auth-token': self.token,
                                       'content-type': 'application/json'})

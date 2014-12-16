@@ -29,6 +29,7 @@ class AuthValidator:
         self.app = app
         self.conf = conf
 
+
     def __call__(self, env, start_response):
         """Ensures that tenants in url and token are equal.
 
@@ -39,6 +40,7 @@ class AuthValidator:
         Reject request if tenant_id from headers not equals to tenant_id from
         url.
         """
+
         token_tenant = env['HTTP_X_TENANT_ID']
         if not token_tenant:
             LOG.warn("Can't get tenant_id from env")

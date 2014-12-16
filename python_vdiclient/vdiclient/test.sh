@@ -1,1 +1,1 @@
-tox -e venv -- vdi vm-create --json test.json
+cd tox -e venv -- vdi vm-create --json test.json

@@ -45,12 +45,10 @@ def setup_service_api(engine):
 ## Group ops
 
 def get_groups():
-    # LOG.debug("get_groups called.")
     return conductor.group_get_all(context.ctx())
 
 
 def get_group(id):
-    # LOG.debug("get_groups(id) called.")
     return conductor.group_get(context.ctx(), id)
 
 
@@ -60,7 +58,6 @@ def update_group(id, data):
 
     try:
         group = conductor.group_update(ctx, group, data)
-        #group = conductor.group_update(ctx, group, {"status": "Validating", "name": "Test1111"})
         LOG.info(g.format_group_status(group))
     except Exception:
         with excutils.save_and_reraise_exception():
@@ -77,7 +74,6 @@ def create_group(values):
     # validating group
     try:
         group = conductor.group_update(ctx, group, {"status": "Active"})
-        # group = conductor.group_update(ctx, group, {"status": "Validating"})
         LOG.info(g.format_group_status(group))
     except Exception as e:
         with excutils.save_and_reraise_exception():

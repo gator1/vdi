@@ -168,11 +168,6 @@ def group_get(context, group_id):
 
 def group_get_all(context, **kwargs):
     query = model_query(m.Group, context)
-
-    # kwargs = {"id": "test", }
-    # print "query kwargs = {}".format(kwargs)
-    # raw_input("===sqlalchemy - group_get_all===")
-
     return query.filter_by(**kwargs).all()
 
 

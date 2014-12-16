@@ -78,8 +78,6 @@ class Rest(flask.Blueprint):
                     flask.request.headers['X-Roles'].split(','))
                 context.set_ctx(ctx)
 
-                # LOG.debug("context = %s", ctx.to_dict())
-
                 if flask.request.method in ['POST', 'PUT']:
                     kwargs['data'] = request_data()
 
