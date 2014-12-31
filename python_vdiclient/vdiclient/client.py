@@ -36,7 +36,6 @@ def get_client_class(version):
                "%(versions)s") % {'version': version,
                                   'versions': supported_versions}
         raise UnsupportedVersion(msg)
-
     return importutils.import_class(client_path)
 
 

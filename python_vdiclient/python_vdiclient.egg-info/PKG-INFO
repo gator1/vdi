@@ -1,10 +1,10 @@
 Metadata-Version: 1.1
 Name: python-vdiclient
-Version: ddf27e8
+Version: 0.0.0.post13
 Summary: Client library for VDI API
-Home-page: https://github.com/openstack/python-vdiclient
+Home-page: https://github.com/chingsun/vdi
 Author: OpenStack
-Author-email: openstack-dev@lists.openstack.org
+Author-email: chingsun@huawei.com
 License: Apache License, Version 2.0
 Description: Python bindings to the OpenStack Sahara API
         ===========================================

@@ -137,10 +137,7 @@ def create_membership(user_id, group_id, data):
 
 @rest.get('/users/<user_id>/groups')
 def user_groups_list(user_id):
-
-    # import pdb; pdb.set_trace()
-
-    return u.render(groups=[g.to_dict() for g in api.get_user_groups(user_id)])
+   return u.render(groups=[g.to_dict() for g in api.get_user_groups(user_id)])
     # return u.render(groups=[g.to_dict() for g in api.get_group_memberships()])
 
 
