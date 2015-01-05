@@ -16,6 +16,8 @@
 
 # THIS FILE IS MANAGED BY THE GLOBAL REQUIREMENTS REPO - DO NOT EDIT
 import setuptools
+from distutils.core import setup
+from setuptools import find_packages
 
 setuptools.setup(
     setup_requires=['pbr'],

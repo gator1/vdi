@@ -1,24 +1,24 @@
-Sahara Client
+Vdi Client
 =============
 
 Overview
 --------
 
-Sahara Client provides a list of Python interfaces to communicate with the Sahara REST API.
-Sahara Client enables users to perform most of the existing operations like retrieving template lists,
+Vdi Client provides a list of Python interfaces to communicate with the Vdi REST API.
+Vdi Client enables users to perform most of the existing operations like retrieving template lists,
 creating Clusters, submitting EDP Jobs, etc.
 
 
 Instantiating a Client
 ----------------------
 
-To start using the Sahara Client users have to create an instance of the `Client` class.
-The client constructor has a list of parameters to authenticate and locate Sahara endpoint.
+To start using the Vdi Client users have to create an instance of the `Client` class.
+The client constructor has a list of parameters to authenticate and locate Vdi endpoint.
 
  * auth_url - Keystone URL that will be used for authentication.
- * sahara_url - Sahara REST API URL to communicate with.
- * service_type - Sahara service name in Keystone catalog. (Default: data_processing)
- * endpoint_type - Desired Sahara endpoint type. (Default: publicURL)
+ * vdi_url - Vdi REST API URL to communicate with.
+ * service_type - Vdi service name in Keystone catalog. (Default: data_processing)
+ * endpoint_type - Desired Vdi endpoint type. (Default: publicURL)
  * username - Username for Keystone authentication.
  * api_key - Password for Keystone authentication.
  * project_name - Keystone Tenant name.
@@ -27,7 +27,7 @@ The client constructor has a list of parameters to authenticate and locate Sahar
 
 **Important!**
  It is not a mandatory rule to provide all of the parameters above. The minimum number should be enough
- to determine Sahara endpoint, check user authentication and tenant to operate in.
+ to determine Vdi endpoint, check user authentication and tenant to operate in.
 
 Authentication check
 ~~~~~~~~~~~~~~~~~~~~
@@ -36,9 +36,9 @@ If a user already has a Keystone authentication token, it may be used in `input_
 
 .. sourcecode:: python
 
-    from saharaclient.api.client import Client as saharaclient
+    from vdiclient.api.client import Client as vdiclient
 
-    sahara = saharaclient(sahara_url="http://sahara:8386/v1.1",
+    vdi = vdiclient(vdi_url="http://vdi:8386/v1.1",
                           project_id="11111111-2222-3333-4444-555555555555",
                           input_auth_token="66666666-7777-8888-9999-000000000000")
 ..
@@ -53,29 +53,29 @@ priority than other parameters. Otherwise user has to provide:
 
 .. sourcecode:: python
 
-    from saharaclient.api.client import Client as saharaclient
+    from vdiclient.api.client import Client as vdiclient
 
-    sahara = saharaclient(auth_url="http://keystone:5000/v2.0",
-                          sahara_url="http://sahara:8386/v1.1",
+    vdi = vdiclient(auth_url="http://keystone:5000/v2.0",
+                          vdi_url="http://vdi:8386/v1.1",
                           username="user",
                           api_key="PaSsWoRd",
                           project_name="demo-project")
 ..
 
 
-Sahara endpoint discovery
+Vdi endpoint discovery
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If user has a direct URL pointing to Sahara REST API, it may be specified as `sahara_url`.
-If this parameter is missing, Sahara client will use Keystone Service Catalog to find the endpoint.
+If user has a direct URL pointing to Vdi REST API, it may be specified as `vdi_url`.
+If this parameter is missing, Vdi client will use Keystone Service Catalog to find the endpoint.
 There are two parameters: `service_type` and `endpoint_type` to configure endpoint search. Both parameters have
 default values.
 
 .. sourcecode:: python
 
-    from saharaclient.api.client import Client as saharaclient
+    from vdiclient.api.client import Client as vdiclient
 
-    sahara = saharaclient(auth_url="http://keystone:5000/v2.0",
+    vdi = vdiclient(auth_url="http://keystone:5000/v2.0",
                           username="user",
                           api_key="PaSsWoRd",
                           project_name="demo-project",
@@ -87,13 +87,13 @@ default values.
 Tenant specification
 ~~~~~~~~~~~~~~~~~~~~
 
-All Sahara operations should be performed in one of OpenStack tenants.
+All Vdi operations should be performed in one of OpenStack tenants.
 There are two parameters: `project_name` and `project_id` which allow to specify a tenant.
 `project_id` parameter has a higher priority.
 
 Object managers
 ---------------
-Sahara Client has a list of fields to operate with:
+Vdi Client has a list of fields to operate with:
 
  * plugins
  * clusters
@@ -127,7 +127,7 @@ Image Registry ops
 ~~~~~~~~~~~~~~~~~~
 
  * update_image(image_id, user_name, descr) - Create or update an Image in Image Registry.
- * unregister_image(image_id) - Remove an Image from Sahara Image Registry.
+ * unregister_image(image_id) - Remove an Image from Vdi Image Registry.
  * update_tags(image_id, new_tags) - Updates Image tags. `new_tags` list will replace currently assigned tags.
 
 Node Group Template ops

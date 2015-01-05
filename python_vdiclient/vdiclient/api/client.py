@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Mirantis Inc.
+# Copyright (c) 2014 Huawei Technologies
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,39 +33,31 @@ from vdiclient.api import pools
 
 
 class Client(object):
-    def __init__(self, username=None, api_key=None, domain_name=None,
-                 project_id=None,project_name=None, auth_url=None,
-                 vdi_url=None, endpoint_type='publicURL', service_type='vdi',
+    def __init__(self, username=None, api_key=None, project_id=None,
+                 project_name=None, auth_url=None, vdi_url=None,
+                 endpoint_type='publicURL', service_type='vdi',
                  input_auth_token=None):
 
         if not input_auth_token:
-            keystone = self.get_keystone_client(domain_name=domain_name,
-                                                username=username,
+            keystone = self.get_keystone_client(username=username,
                                                 api_key=api_key,
                                                 auth_url=auth_url,
                                                 project_id=project_id,
                                                 project_name=project_name)
             input_auth_token = keystone.auth_token
 
-        # import pdb; pdb.set_trace()
-
         if not input_auth_token:
             raise RuntimeError("Not Authorized")
 
         vdi_catalog_url = vdi_url
         if not vdi_url:
-
-            # import pdb; pdb.set_trace()
-
-            keystone = self.get_keystone_client(user_domain_name=domain_name,
-                                                username=username,
+            keystone = self.get_keystone_client(username=username,
                                                 api_key=api_key,
                                                 auth_url=auth_url,
                                                 token=input_auth_token,
                                                 project_id=project_id,
                                                 project_name=project_name)
             catalog = keystone.service_catalog.get_endpoints(service_type)
-
             if service_type in catalog:
                 if keystone.version == "v3":
                     vdi_endpoints = catalog[service_type]

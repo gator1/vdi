@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Mirantis Inc.
+# Copyright (c) 2014 Huawei Technologies Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ def get_client_class(version):
                "%(versions)s") % {'version': version,
                                   'versions': supported_versions}
         raise UnsupportedVersion(msg)
+
     return importutils.import_class(client_path)
 
 

@@ -1,4 +1,5 @@
-# Copyright (c) 2014 Huawei Technologies.
+#!/usr/bin/env python
+# Copyright (c) 2013 Hewlett-Packard Development Company, L.P.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pbr import version
+# THIS FILE IS MANAGED BY THE GLOBAL REQUIREMENTS REPO - DO NOT EDIT
+import setuptools
+from distutils.core import setup
+from setuptools import find_packages
 
-version_info = version.VersionInfo('python-vdiclient')
+setuptools.setup(name='python-vdiclient',
+      version='1.0',
+      description='openstack vdi client',
+      url='',
+      author='Ching Sun',
+      author_email='ching.sun@huawei.com',
+      license='Apache-2',
+      packages=find_packages(),
+      zip_safe=False)
