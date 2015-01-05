@@ -55,11 +55,11 @@ except ImportError:
 
 from vdiclient.api import client
 from vdiclient.api import shell as shell_api
-from vdiclient.nova import auth_plugin as nova_auth_plugin
-from vdiclient.nova import extension as nova_extension
-from vdiclient.openstack.common.apiclient import exceptions as exc
-from vdiclient.openstack.common import cliutils
-from vdiclient.openstack.common import strutils
+# from vdiclient.nova import auth_plugin as nova_auth_plugin
+# from vdiclient.nova import extension as nova_extension
+from vdiclient.common.apiclient import exceptions as exc
+from vdiclient.common import cliutils
+from vdiclient.common import strutils
 from vdiclient import version
 
 DEFAULT_API_VERSION = 'api'
@@ -394,7 +394,7 @@ class OpenStackVDIShell(object):
                             help=argparse.SUPPRESS)
 
         # The auth-system-plugins might require some extra options
-        nova_auth_plugin.load_auth_system_opts(parser)
+        # nova_auth_plugin.load_auth_system_opts(parser)
 
         return parser
 
@@ -518,7 +518,7 @@ class OpenStackVDIShell(object):
         self.setup_debugging(options.debug)
 
         # Discover available auth plugins
-        nova_auth_plugin.discover_auth_systems()
+        # nova_auth_plugin.discover_auth_systems()
 
         # build available subcommands based on version
         self.extensions = \

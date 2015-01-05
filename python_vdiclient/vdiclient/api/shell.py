@@ -17,8 +17,8 @@ import argparse
 import datetime
 import inspect
 import json
-from vdiclient.nova import utils
-from vdiclient.openstack.common.apiclient import exceptions
+from vdiclient.api import utils
+from vdiclient.common.apiclient import exceptions
 import sys
 
 
