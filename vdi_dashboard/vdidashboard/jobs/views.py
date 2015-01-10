@@ -21,12 +21,12 @@ from horizon import tables
 from horizon import tabs
 from horizon import workflows
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 
-import vdidashboard.jobs.tables as _tables
-import vdidashboard.jobs.tabs as _tabs
-import vdidashboard.jobs.workflows.create as create_flow
-import vdidashboard.jobs.workflows.launch as launch_flow
+import openstack_dashboard.dashboards.vdi.jobs.tables as _tables
+import openstack_dashboard.dashboards.vdi.jobs.tabs as _tabs
+import openstack_dashboard.dashboards.vdi.jobs.workflows.create as create_flow
+import openstack_dashboard.dashboards.vdi.jobs.workflows.launch as launch_flow
 
 LOG = logging.getLogger(__name__)
 

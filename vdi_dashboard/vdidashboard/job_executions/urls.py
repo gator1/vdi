@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-import vdidashboard.job_executions.views as views
+import openstack_dashboard.dashboards.vdi.job_executions.views as views
 from sahvdidashboardbs import views as job_views
 from saharadashboard.utils import importutils
 

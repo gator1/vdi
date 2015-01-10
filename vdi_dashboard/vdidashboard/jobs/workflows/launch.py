@@ -21,10 +21,10 @@ from django.utils.translation import ugettext as _
 from horizon import forms
 from horizon import workflows
 
-from vdidashboard.api.client import client as saharaclient
-import vdidashboard.cluster_templates.workflows.create as t_flows
-import vdidashboard.clusters.workflows.create as c_flow
-import vdidashboard.utils.workflow_helpers as whelpers
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
+import openstack_dashboard.dashboards.vdi.cluster_templates.workflows.create as t_flows
+import openstack_dashboard.dashboards.vdi.clusters.workflows.create as c_flow
+import openstack_dashboard.dashboards.vdi.utils.workflow_helpers as whelpers
 
 
 LOG = logging.getLogger(__name__)

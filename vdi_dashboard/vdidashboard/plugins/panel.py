@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-from vdidashboard import dashboard
+from openstack_dashboard.dashboards.vdi import dashboard
 
 
 class PluginsPanel(horizon.Panel):

@@ -25,7 +25,7 @@ from horizon import messages
 from horizon.utils import validators
 
 from openstack_dashboard import api
-from vdidashboard.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 
 
 LOG = logging.getLogger(__name__)

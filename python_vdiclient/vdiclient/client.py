@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vdiclient.openstack.common import importutils
+from vdiclient.common import importutils
 
 
 class UnsupportedVersion(Exception):

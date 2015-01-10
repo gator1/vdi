@@ -34,8 +34,8 @@ from openstack_dashboard import api
 #     import forms as project_forms
 # from openstack_dashboard.dashboards.admin.users \
 #     import tables as project_tables
-from vdidashboard.users import forms as project_forms
-from vdidashboard.users import tables as project_tables
+from openstack_dashboard.dashboards.vdi.users import forms as project_forms
+from openstack_dashboard.dashboards.vdi.users import tables as project_tables
 
 
 class IndexView(tables.DataTableView):

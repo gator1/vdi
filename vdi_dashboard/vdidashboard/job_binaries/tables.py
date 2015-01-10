@@ -20,7 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from horizon import tables
 
 from saharaclient.api import base as api_base
-from vdidashboard.api import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api import client as saharaclient
 
 
 LOG = logging.getLogger(__name__)

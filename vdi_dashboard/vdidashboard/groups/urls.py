@@ -14,8 +14,8 @@
 # limitations under the License.
 
 
-import vdidashboard.groups.views as views
-from vdidashboard.utils import importutils
+import openstack_dashboard.dashboards.vdi.groups.views as views
+from openstack_dashboard.dashboards.vdi.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',
                               'django.conf.urls')

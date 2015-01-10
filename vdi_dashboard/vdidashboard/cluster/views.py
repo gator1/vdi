@@ -19,12 +19,12 @@ from horizon import tables
 from horizon import tabs
 from horizon import workflows
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 
-from vdidashboard.clusters.tables import ClustersTable
-import vdidashboard.clusters.tabs as _tabs
-import vdidashboard.clusters.workflows.create as create_flow
-import vdidashboard.clusters.workflows.scale as scale_flow
+from openstack_dashboard.dashboards.vdi.clusters.tables import ClustersTable
+import openstack_dashboard.dashboards.vdi.clusters.tabs as _tabs
+import openstack_dashboard.dashboards.vdi.clusters.workflows.create as create_flow
+import openstack_dashboard.dashboards.vdi.clusters.workflows.scale as scale_flow
 
 LOG = logging.getLogger(__name__)
 

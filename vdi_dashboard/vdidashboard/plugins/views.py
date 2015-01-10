@@ -18,7 +18,7 @@ from horizon import tables
 from horizon import tabs
 import logging
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 from sahvdidashboardugins.tables import PluginsTable
 from saharadashboard.plugins.tabs import PluginDetailsTabs
 

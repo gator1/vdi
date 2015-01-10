@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vdidashboard.utils import workflow_helpers as work_helpers
+from openstack_dashboard.dashboards.vdi.utils import workflow_helpers as work_helpers
 
 
 class Helpers(object):

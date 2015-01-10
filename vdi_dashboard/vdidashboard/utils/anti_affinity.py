@@ -19,8 +19,8 @@ from django.utils.translation import ugettext as _
 
 from horizon import forms
 
-from vdidashboard.api.client import client as vdiclient
-import vdidashboard.utils.workflow_helpers as whelpers
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+import openstack_dashboard.dashboards.vdi.utils.workflow_helpers as whelpers
 
 
 LOG = logging.getLogger(__name__)

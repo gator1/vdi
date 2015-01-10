@@ -27,7 +27,7 @@ from horizon import forms
 from horizon import tables
 from horizon import tabs
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 
 import sahvdidashboardb_binaries.forms as job_binary_forms
 from saharavdidashboardinaries.tables import JobBinariesTable

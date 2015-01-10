@@ -29,7 +29,7 @@ from horizon import forms
 from horizon import messages
 
 from saharaclient.api import base as api_base
-from vdidashboard.api import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api import client as saharaclient
 
 import uuid
 

@@ -88,7 +88,7 @@ VanillaGroup = [
     cfg.DictOpt('processes',
                 default={"NN": 0, "DN": 1, "SNN": 2,
                          "OZ": 3, "TT": 4, "JT": 5, "hiveserver": 6},
-                help='numbers of processes for vanilla in vdidashboard'),
+                help='numbers of processes for vanilla in openstack_dashboard.dashboards.vdi'),
     cfg.StrOpt('base_image',
                default='ubuntu_sahara_latest',
                help="image name for start vanilla cluster")

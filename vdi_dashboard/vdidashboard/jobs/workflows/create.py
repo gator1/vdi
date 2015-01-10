@@ -21,7 +21,7 @@ from django.utils.translation import ugettext as _
 from horizon import forms
 from horizon import workflows
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 
 
 LOG = logging.getLogger(__name__)

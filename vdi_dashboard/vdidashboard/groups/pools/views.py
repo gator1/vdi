@@ -28,7 +28,7 @@ LOG = logging.getLogger(__name__)
 
 from openstack_dashboard import api
 
-from vdidashboard.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from sahvdidashboardols import tables as pool_tables
 import saharavdidashboards.tabs as _tabs
 import saharadasvdidashboardorkflows.create as create_flow

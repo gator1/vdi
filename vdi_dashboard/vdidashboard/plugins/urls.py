@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-from vdidashboard.plugins.views import PluginDetailsView
+from openstack_dashboard.dashboards.vdi.plugins.views import PluginDetailsView
 from sahvdidashboardugins.views import PluginsView
 from saharadashboard.utils import importutils
 

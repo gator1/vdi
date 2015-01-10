@@ -20,11 +20,11 @@ from django.utils.translation import ugettext as _
 from horizon import exceptions
 
 from saharaclient.api import base as api_base
-from vdidashboard.api import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api import client as saharaclient
 
-import vdidashboard.cluster_templates.workflows.create as clt_create_flow
-import vdidashboard.clusters.workflows.create as cl_create_flow
-import vdidashboard.utils.workflow_helpers as whelpers
+import openstack_dashboard.dashboards.vdi.cluster_templates.workflows.create as clt_create_flow
+import openstack_dashboard.dashboards.vdi.clusters.workflows.create as cl_create_flow
+import openstack_dashboard.dashboards.vdi.utils.workflow_helpers as whelpers
 
 
 LOG = logging.getLogger(__name__)

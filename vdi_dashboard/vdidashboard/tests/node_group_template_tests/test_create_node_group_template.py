@@ -16,7 +16,7 @@
 from testtools import testcase
 import unittest2
 
-from vdidashboard.tests import base
+from openstack_dashboard.dashboards.vdi.tests import base
 import saharadashboard.tests.configs.config as cfg
 
 

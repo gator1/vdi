@@ -20,7 +20,7 @@ import traceback
 import unittest2
 
 
-from vdidashboard.tests import base
+from openstack_dashboard.dashboards.vdi.tests import base
 import sahvdidashboardsts.configs.config as cfg
 
 

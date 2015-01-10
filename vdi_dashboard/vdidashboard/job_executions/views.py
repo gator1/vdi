@@ -18,7 +18,7 @@ import logging
 from horizon import tables
 from horizon import tabs
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 
 from sahvdidashboardb_executions.tables import JobExecutionsTable
 import saharadashboard.job_executions.tabs as _tabs

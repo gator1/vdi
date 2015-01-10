@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-import vdidashboard.pools.views as views
+import openstack_dashboard.dashboards.vdi.pools.views as views
 from saharadashboard.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',

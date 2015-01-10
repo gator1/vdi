@@ -17,9 +17,9 @@ from horizon import exceptions
 from horizon import forms
 from horizon import workflows
 
-from vdidashboard.utils import importutils
-from vdidashboard.utils import neutron_support
-import vdidashboard.utils.workflow_helpers as whelpers
+from openstack_dashboard.dashboards.vdi.utils import importutils
+from openstack_dashboard.dashboards.vdi.utils import neutron_support
+import openstack_dashboard.dashboards.vdi.utils.workflow_helpers as whelpers
 
 neutron = importutils.import_any('openstack_dashboard.api.quantum',
                                  'openstack_dashboard.api.neutron',
@@ -32,9 +32,9 @@ nova = importutils.import_any('openstack_dashboard.api.nova',
 from django.utils.translation import ugettext as _
 
 from saharaclient.api import base as api_base
-from vdidashboard.api import client as saharaclient
-from vdidashboard.api.client import SAHARA_USE_NEUTRON
-import vdidashboard.cluster_templates.workflows.create as t_flows
+from openstack_dashboard.dashboards.vdi.api import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import SAHARA_USE_NEUTRON
+import openstack_dashboard.dashboards.vdi.cluster_templates.workflows.create as t_flows
 
 import logging
 

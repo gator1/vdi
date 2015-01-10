@@ -30,13 +30,13 @@ LOG = logging.getLogger(__name__)
 
 from openstack_dashboard import api
 
-from vdidashboard.api.client import client as vdiclient
-from vdidashboard.groups import tables as group_tables
-# import vdidashboard.groups.tabs as _tabs
-import vdidashboard.groups.forms as project_forms
-# import vdidashboard.groups.images.tables as image_tables
-import vdidashboard.groups.pools.tables as pool_tables
-import vdidashboard.groups.users.tables as user_tables
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.groups import tables as group_tables
+# import openstack_dashboard.dashboards.vdi.groups.tabs as _tabs
+import openstack_dashboard.dashboards.vdi.groups.forms as project_forms
+# import openstack_dashboard.dashboards.vdi.groups.images.tables as image_tables
+import openstack_dashboard.dashboards.vdi.groups.pools.tables as pool_tables
+import openstack_dashboard.dashboards.vdi.groups.users.tables as user_tables
 
 
 class GroupsView(tables.DataTableView):

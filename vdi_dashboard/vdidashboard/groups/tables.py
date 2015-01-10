@@ -18,7 +18,7 @@ import logging
 from django.utils.translation import ugettext_lazy as _
 from horizon import tables
 
-from vdidashboard.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from openstack_dashboard import api
 
 LOG = logging.getLogger(__name__)

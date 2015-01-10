@@ -20,7 +20,7 @@ from django.core.urlresolvers import reverse_lazy
 from horizon import forms
 from horizon import tables
 
-from vdidashboard.api.client import client as saharaclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 from sahvdidashboardage_registry.forms import EditTagsForm
 from saharavdidashboard_registry.forms import RegisterImageForm
 from saharadashboard.image_registry.tables import ImageRegistryTable

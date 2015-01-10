@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-from vdidashboard.image_registry.views import EditTagsView
+from openstack_dashboard.dashboards.vdi.image_registry.views import EditTagsView
 from sahvdidashboardage_registry.views import ImageRegistryView
 from saharavdidashboard_registry.views import RegisterImageView
 from saharadashboard.utils import importutils

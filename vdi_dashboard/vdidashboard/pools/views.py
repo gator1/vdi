@@ -30,11 +30,11 @@ LOG = logging.getLogger(__name__)
 
 from openstack_dashboard import api
 
-from vdidashboard.api.client import client as vdiclient
-from vdidashboard.pools import tables as pool_tables
-# import vdidashboard.pools.tabs as _tabs
-import vdidashboard.pools.forms as project_forms
-import vdidashboard.pools.instances.tables as instance_table
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.pools import tables as pool_tables
+# import openstack_dashboard.dashboards.vdi.pools.tabs as _tabs
+import openstack_dashboard.dashboards.vdi.pools.forms as project_forms
+import openstack_dashboard.dashboards.vdi.pools.instances.tables as instance_table
 
 
 class PoolsIndexView(tables.DataTableView):

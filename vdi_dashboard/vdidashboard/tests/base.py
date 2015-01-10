@@ -24,7 +24,7 @@ import selenium.webdriver.common.by as by
 from swiftclient import client as swift_client
 import unittest2
 
-import vdidashboard.tests.configs.config as cfg
+import openstack_dashboard.dashboards.vdi.tests.configs.config as cfg
 
 
 logger = logging.getLogger('swiftclient')

@@ -19,7 +19,7 @@ from horizon import exceptions
 
 from vdiclient.api import base as api_base
 from vdiclient import client as api_client
-from vdidashboard.utils import importutils
+from openstack_dashboard.dashboards.vdi.utils import importutils
 
 
 # horizon.api is for backward compatibility with folsom
