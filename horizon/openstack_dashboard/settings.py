@@ -158,7 +158,7 @@ INSTALLED_APPS = [
     'horizon',
     'openstack_auth',
     # 'saharadashboard',
-    'vdidashboard',
+    #'vdidashboard',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

@@ -129,10 +129,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #     ('http://cluster2.example.com:5000/v2.0', 'cluster2'),
 # ]
 
-OPENSTACK_HOST = "127.0.0.1"
-#OPENSTACK_HOST = "192.168.253.190"
+#OPENSTACK_HOST = "127.0.0.1"
+OPENSTACK_HOST = "192.168.253.162"
 #SAHARA_URL = "127.0.0.1:9000/v1.0"
-VDI_URL = "127.0.0.1:9090/v1.0"
+VDI_URL = "192.168.253.162:9090/v1.0"
 OPENSTACK_KEYSTONE_URL = "http://%s:5000/v2.0" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 

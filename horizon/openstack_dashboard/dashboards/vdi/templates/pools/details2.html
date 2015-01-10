@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n sizeformat %}
+{% block title %}{% trans "Group Details" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("VDI - Pool Details") %}
+{% endblock page_header %}
+
+{% block main %}
+  {% include "pools/_pool_overview.html"%}
+  <hr>
+  <div id="group">
+    {{ instances_table.render }}
+  </div>
+{% endblock %}
