@@ -15,8 +15,8 @@
 
 from testtools import testcase
 
-from openstack_dashboard.dashboards.vdi.tests import base
-import saharadashboard.tests.configs.config as cfg
+from vdidashboard.tests import base
+import vdidashboard.tests.configs.config as cfg
 
 
 class UIImageRegistry(base.UITestCase):
@@ -26,7 +26,7 @@ class UIImageRegistry(base.UITestCase):
         self.edit_tags_by_image_name(cfg.common.image_name_for_edit,
                                      tags_to_add=[
                                          {cfg.hdp.plugin_overview_name:
-                                          cfg.hdp.hadoop_version},
+                                          cfg.hdp.vdi_version},
                                          {'custom_tag': 'blabla'}])
         self.edit_tags_by_image_name(cfg.common.image_name_for_edit,
                                      tags_to_add=[{'custom_tag': 'qweqwe'}],
@@ -37,6 +37,6 @@ class UIImageRegistry(base.UITestCase):
         self.image_registry(cfg.common.image_name_for_register,
                             user_name='cloud_user',
                             tags_to_add=[{cfg.vanilla.plugin_overview_name:
-                                          cfg.vanilla.hadoop_version},
+                                          cfg.vanilla.vdi_version},
                                          {'custom_tag': 'blabla'}])
         self.unregister_images([cfg.common.image_name_for_register])

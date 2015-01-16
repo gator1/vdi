@@ -27,9 +27,9 @@ from django.conf.urls import url  # noqa
 # from openstack_dashboard.dashboards.project.images.snapshots \
 #     import urls as snapshot_urls
 # from openstack_dashboard.dashboards.project.images import views
-from openstack_dashboard.dashboards.vdi.images.images import urls as image_urls
-from sahvdidashboardages.snapshots import urls as snapshot_urls
-from saharadashboard.images import views
+from vdidashboard.images.images import urls as image_urls
+from vdidashboardages.snapshots import urls as snapshot_urls
+from vdidashboard.images import views
 
 
 urlpatterns = patterns('',

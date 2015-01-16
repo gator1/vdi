@@ -36,8 +36,8 @@ from openstack_dashboard import api
 #     import forms as project_forms
 # from openstack_dashboard.dashboards.project.images.images \
 #     import tabs as project_tabs
-from openstack_dashboard.dashboards.vdi.images.images import forms as project_forms
-from saharadashboard.images.images import tabs as project_tabs
+from vdidashboard.images.images import forms as project_forms
+from vdidashboard.images.images import tabs as project_tabs
 
 
 class CreateView(forms.ModalFormView):

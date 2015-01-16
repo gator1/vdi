@@ -20,9 +20,9 @@ from horizon import exceptions
 from horizon import forms
 from horizon import messages
 
-from saharaclient.api import base as api_base
-from openstack_dashboard.dashboards.vdi.api import client as saharaclient
-from saharadashboard.utils import importutils
+from vdiclient.api import base as api_base
+from vdidashboard.api import client as vdiclient
+from vdidashboard.utils import importutils
 
 # horizon.api is for backward compatibility with folsom
 glance = importutils.import_any('openstack_dashboard.api.glance',
@@ -41,15 +41,15 @@ class ImageForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
-            sahara = saharaclient.client(request)
+            vdi = vdiclient.client(request)
 
             image_id = data['image_id']
             user_name = data['user_name']
             desc = data['description']
-            sahara.images.update_image(image_id, user_name, desc)
+            vdi.images.update_image(image_id, user_name, desc)
 
             image_tags = json.loads(data["tags_list"])
-            sahara.images.update_tags(image_id, image_tags)
+            vdi.images.update_tags(image_id, image_tags)
 
             messages.success(request, self.message)
 
@@ -114,8 +114,8 @@ class RegisterImageForm(ImageForm):
 
         final_images = []
 
-        sahara = saharaclient.client(request)
-        image_ids = [img.id for img in sahara.images.list()]
+        vdi = vdiclient.client(request)
+        image_ids = [img.id for img in vdi.images.list()]
 
         for image in images:
             if image.id not in image_ids:

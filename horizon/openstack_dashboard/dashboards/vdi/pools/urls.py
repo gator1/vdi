@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-import openstack_dashboard.dashboards.vdi.pools.views as views
+import openstack_dashboard.dashboards.vdi.pools.views as views 
 from openstack_dashboard.dashboards.vdi.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',

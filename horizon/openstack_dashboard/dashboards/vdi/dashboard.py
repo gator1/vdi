@@ -18,7 +18,7 @@ import logging
 from django.utils.translation import ugettext as _
 import horizon
 
-from openstack_dashboard.dashboards.vdi.utils import compatibility
+from utils import compatibility
 
 LOG = logging.getLogger(__name__)
 

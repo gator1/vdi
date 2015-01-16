@@ -20,8 +20,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
 
-from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
-from saharadashboard.utils import compatibility
+from vdidashboard.api.client import client as vdiclient
+from vdidashboard.utils import compatibility
 
 LOG = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ LOG = logging.getLogger(__name__)
 class EditTagsAction(tables.LinkAction):
     name = "edit_tags"
     verbose_name = _("Edit Tags")
-    url = "horizon:sahara:image_registry:edit_tags"
+    url = "horizon:vdi:image_registry:edit_tags"
     classes = ("ajax-modal", "btn-create")
 
 
@@ -42,7 +42,7 @@ def tags_to_string(image):
 class RegisterImage(tables.LinkAction):
     name = "register"
     verbose_name = _("Register Image")
-    url = "horizon:sahara:image_registry:register"
+    url = "horizon:vdi:image_registry:register"
     classes = ("btn-launch", "ajax-modal")
 
 
@@ -55,8 +55,8 @@ class UnregisterImages(tables.BatchAction):
     classes = ('btn-danger', 'btn-terminate')
 
     def action(self, request, obj_id):
-        sahara = saharaclient(request)
-        sahara.images.unregister_image(obj_id)
+        vdi = vdiclient(request)
+        vdi.images.unregister_image(obj_id)
 
 
 class ImageRegistryTable(tables.DataTable):

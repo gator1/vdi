@@ -28,12 +28,11 @@ from horizon import exceptions
 
 LOG = logging.getLogger(__name__)
 
-from openstack_dashboard import api
-
+#from openstack_dashboard.dashboards.vdi import api
 from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+
 from openstack_dashboard.dashboards.vdi.pools import tables as pool_tables
-# import openstack_dashboard.dashboards.vdi.pools.tabs as _tabs
-import openstack_dashboard.dashboards.vdi.pools.forms as project_forms
+from openstack_dashboard.dashboards.vdi.pools import forms as project_forms
 import openstack_dashboard.dashboards.vdi.pools.instances.tables as instance_table
 
 

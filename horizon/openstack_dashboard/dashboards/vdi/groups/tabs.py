@@ -20,9 +20,9 @@ from django.utils.translation import ugettext_lazy as _
 from horizon import tables
 from horizon import tabs
 
-from openstack_dashboard.dashboards.vdi.utils import compatibility
-from openstack_dashboard.dashboards.vdi.utils import importutils
-from openstack_dashboard.dashboards.vdi.utils import workflow_helpers as helpers
+from vdidashboard.utils import compatibility
+from vdidashboard.utils import importutils
+from vdidashboard.utils import workflow_helpers as helpers
 
 neutron = importutils.import_any('openstack_dashboard.api.quantum',
                                  'horizon.api.quantum',
@@ -33,7 +33,7 @@ glance = importutils.import_any('openstack_dashboard.api.glance',
                                 'horizon.api.glance')
 
 
-from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+from vdidashboard.api.client import client as vdiclient
 
 LOG = logging.getLogger(__name__)
 

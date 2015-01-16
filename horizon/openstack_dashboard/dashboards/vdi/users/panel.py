@@ -16,7 +16,6 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-# from openstack_dashboard.dashboards.admin import dashboard
 from openstack_dashboard.dashboards.vdi import dashboard
 
 
@@ -25,5 +24,4 @@ class UsersPanel(horizon.Panel):
     slug = 'users'
 
 
-# dashboard.SaharaDashboard.register(UsersPanel)
 dashboard.VDIDashboard.register(UsersPanel)

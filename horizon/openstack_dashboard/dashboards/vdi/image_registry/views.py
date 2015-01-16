@@ -20,10 +20,10 @@ from django.core.urlresolvers import reverse_lazy
 from horizon import forms
 from horizon import tables
 
-from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
-from sahvdidashboardage_registry.forms import EditTagsForm
-from saharavdidashboard_registry.forms import RegisterImageForm
-from saharadashboard.image_registry.tables import ImageRegistryTable
+from vdidashboard.api.client import client as vdiclient
+from vdidashboardage_registry.forms import EditTagsForm
+from vdidashboard_registry.forms import RegisterImageForm
+from dashboard.image_registry.tables import ImageRegistryTable
 
 
 LOG = logging.getLogger(__name__)
@@ -34,21 +34,21 @@ class ImageRegistryView(tables.DataTableView):
     template_name = 'image_registry/image_registry.html'
 
     def get_data(self):
-        sahara = saharaclient(self.request)
+        vdi = vdiclient(self.request)
 
-        return sahara.images.list()
+        return vdi.images.list()
 
 
 def update_context_with_plugin_tags(request, context):
-        sahara = saharaclient(request)
-        plugins = sahara.plugins.list()
+        vdi = vdiclient(request)
+        plugins = vdi.plugins.list()
 
         plugins_object = dict()
         for plugin in plugins:
             plugins_object[plugin.name] = dict()
             for version in plugin.versions:
                 plugins_object[plugin.name][version] = []
-                details = sahara.plugins.get_version_details(plugin.name,
+                details = vdi.plugins.get_version_details(plugin.name,
                                                              version)
 
                 for tag in details.required_image_tags:
@@ -61,7 +61,7 @@ def update_context_with_plugin_tags(request, context):
 class EditTagsView(forms.ModalFormView):
     form_class = EditTagsForm
     template_name = 'image_registry/edit_tags.html'
-    success_url = reverse_lazy('horizon:sahara:image_registry:index')
+    success_url = reverse_lazy('horizon:vdi:image_registry:index')
 
     def get_context_data(self, **kwargs):
         context = super(EditTagsView, self).get_context_data(**kwargs)
@@ -70,8 +70,8 @@ class EditTagsView(forms.ModalFormView):
         return context
 
     def get_object(self):
-        sahara = saharaclient(self.request)
-        return sahara.images.get(self.kwargs["image_id"])
+        vdi = vdiclient(self.request)
+        return vdi.images.get(self.kwargs["image_id"])
 
     def get_initial(self):
         image = self.get_object()
@@ -85,7 +85,7 @@ class EditTagsView(forms.ModalFormView):
 class RegisterImageView(forms.ModalFormView):
     form_class = RegisterImageForm
     template_name = 'image_registry/register_image.html'
-    success_url = reverse_lazy('horizon:sahara:image_registry:index')
+    success_url = reverse_lazy('horizon:vdi:image_registry:index')
 
     def get_context_data(self, **kwargs):
         context = super(RegisterImageView, self).get_context_data(**kwargs)

@@ -1,26 +1,26 @@
-Sahara Dashboard Selenium Tests
+Vdi Dashboard Selenium Tests
 =====================================
 
 
 Main goal of Selenium Tests
 ----------
 
-Selenium tests for Sahara Dashboard are designed to check the correctness of the Sahara Dashboard Horizon plug-in.
+Selenium tests for Vdi Dashboard are designed to check the correctness of the Vdi Dashboard Horizon plug-in.
 
 
 How to run UI tests:
 ----------
 
-It's assumed that sahara and horizon are already installed and running.
+It's assumed that vdi and horizon are already installed and running.
 
-Information about installation and start of sahara and horizon can be found on the sahara site
- http://docs.openstack.org/developer/sahara/#user-guide
- in tabs Sahara Installation Guide and Sahara UI Installation Guide.
+Information about installation and start of vdi and horizon can be found on the vdi site
+ http://docs.openstack.org/developer/vdi/#user-guide
+ in tabs Vdi Installation Guide and Vdi UI Installation Guide.
 
-1. Go to sahara dashboard path.
+1. Go to vdi dashboard path.
 2. Create config file for selenium tests - `vdidashboard/tests/configs/config.py`.
-   You can take a look at the sample config file - `sahvdidashboardsts/configs/config.py.sample`.
-   All values used in `saharadashboard/tests/configs/parameters.py` file are
+   You can take a look at the sample config file - `vdidashboardsts/configs/config.py.sample`.
+   All values used in `vdidashboard/tests/configs/parameters.py` file are
    defaults, so, if they are applicable for your environment then you can skip
    config file creation.
 
@@ -44,11 +44,8 @@ Information about installation and start of sahara and horizon can be found on t
 Coverage:
 ----------
 
--Clusters
--Cluster templates
--Node group templates
+-VMs
+-VM templates
+-Pools
 -Image registry
--Data sources
--Job binaries
--Jobs
--Job executions
+-Department

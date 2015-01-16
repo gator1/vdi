@@ -15,7 +15,6 @@
 from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
-# from openstack_dashboard.dashboards.admin.users import views
 from openstack_dashboard.dashboards.vdi.users import views
 
 # urlpatterns = patterns('openstack_dashboard.dashboards.admin.users.views',

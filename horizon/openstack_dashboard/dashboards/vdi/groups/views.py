@@ -32,9 +32,9 @@ from openstack_dashboard import api
 
 from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from openstack_dashboard.dashboards.vdi.groups import tables as group_tables
-# import openstack_dashboard.dashboards.vdi.groups.tabs as _tabs
+# import vdidashboard.groups.tabs as _tabs
 import openstack_dashboard.dashboards.vdi.groups.forms as project_forms
-# import openstack_dashboard.dashboards.vdi.groups.images.tables as image_tables
+# import vdidashboard.groups.images.tables as image_tables
 import openstack_dashboard.dashboards.vdi.groups.pools.tables as pool_tables
 import openstack_dashboard.dashboards.vdi.groups.users.tables as user_tables
 

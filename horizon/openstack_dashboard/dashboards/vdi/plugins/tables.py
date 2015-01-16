@@ -32,10 +32,10 @@ def render_versions(plugin):
 class PluginsTable(tables.DataTable):
     title = tables.Column("title",
                           verbose_name=_("Name"),
-                          link=("horizon:sahara:plugins:details"))
+                          link=("horizon:vdi:plugins:details"))
 
     versions = tables.Column(render_versions,
-                             verbose_name=_("Supported Hadoop Versions"))
+                             verbose_name=_("Supported VDI Versions"))
 
     description = tables.Column("description",
                                 verbose_name=_("Plugin Description"))

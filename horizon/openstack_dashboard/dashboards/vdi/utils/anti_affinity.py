@@ -19,8 +19,8 @@ from django.utils.translation import ugettext as _
 
 from horizon import forms
 
-from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
-import openstack_dashboard.dashboards.vdi.utils.workflow_helpers as whelpers
+from vdidashboard.api.client import client as vdiclient
+import vdidashboard.utils.workflow_helpers as whelpers
 
 
 LOG = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ def anti_affinity_field():
 
 def populate_anti_affinity_choices(self, request, context):
     vdi = vdiclient(request)
-    plugin, version = whelpers.get_plugin_and_hadoop_version(request)
+    plugin, version = whelpers.get_plugin_and_vdi_version(request)
 
     version_details = vdi.plugins.get_version_details(plugin, version)
     process_choices = []

@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-from openstack_dashboard.dashboards.vdi import dashboard
+from vdidashboard import dashboard
 
 
 class PluginsPanel(horizon.Panel):
@@ -25,4 +25,4 @@ class PluginsPanel(horizon.Panel):
     slug = 'plugins'
 
 
-dashboard.SaharaDashboard.register(PluginsPanel)
+dashboard.VdiDashboard.register(PluginsPanel)

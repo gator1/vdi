@@ -16,8 +16,8 @@
 from testtools import testcase
 import unittest2
 
-from openstack_dashboard.dashboards.vdi.tests import base
-import saharadashboard.tests.configs.config as cfg
+from vdidashboard.tests import base
+import vdidashboard.tests.configs.config as cfg
 
 
 class UICreateNodeGroupTemplate(base.UITestCase):
@@ -31,7 +31,7 @@ class UICreateNodeGroupTemplate(base.UITestCase):
             storage={'type': "Cinder Volume", 'volume_per_node': '2',
                      'volume_size': '6'}, description='selenium-test',
             params=[{"HDFS Parameters:Show_param": True},
-                    {"hadoop.native.lib": False}, {"Filter": "heap"},
+                    {"vdi.native.lib": False}, {"Filter": "heap"},
                     {"Name Node Heap Size": 512},
                     {"Data Node Heap Size": 512},
                     {"Show_param": False}, {"Filter": ""},

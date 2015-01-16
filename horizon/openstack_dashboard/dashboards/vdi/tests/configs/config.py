@@ -21,7 +21,7 @@ common_group = cfg.OptGroup(name='common', title="common configs")
 CommonGroup = [
     cfg.StrOpt('base_url',
                default='http://127.0.0.1:8080',
-               help="sahara url"),
+               help="vdi url"),
     cfg.StrOpt('user',
                default='admin',
                help="keystone user"),
@@ -56,10 +56,10 @@ CommonGroup = [
                help="await each web element in seconds"),
     cfg.StrOpt('image_name_for_register',
                default='fedora_19',
-               help='Image name for register to Sahara'),
+               help='Image name for register to Vdi'),
     cfg.StrOpt('image_name_for_edit',
                default='latest-ci-image',
-               help='Image name for edit in image registry in Sahara'),
+               help='Image name for edit in image registry in Vdi'),
     cfg.IntOpt('job_launch_timeout',
                default=5,
                help='Timeout for job launch (in minutes); '
@@ -77,20 +77,20 @@ VanillaGroup = [
                 """),
     cfg.BoolOpt('skip_edp_test', default=True),
     cfg.StrOpt('plugin_name',
-               default='Vanilla Apache Hadoop',
-               help="plugin title, default: Vanilla Apache Hadoop"),
+               default='Vanilla Apache Vdi',
+               help="plugin title, default: Vanilla Apache Vdi"),
     cfg.StrOpt('plugin_overview_name',
                default='vanilla',
                help="plugin name in overview"),
-    cfg.StrOpt('hadoop_version',
+    cfg.StrOpt('vdi_version',
                default='1.2.1',
-               help="hadoop version for plugin"),
+               help="vdi version for plugin"),
     cfg.DictOpt('processes',
                 default={"NN": 0, "DN": 1, "SNN": 2,
                          "OZ": 3, "TT": 4, "JT": 5, "hiveserver": 6},
-                help='numbers of processes for vanilla in openstack_dashboard.dashboards.vdi'),
+                help='numbers of processes for vanilla in vdidashboard'),
     cfg.StrOpt('base_image',
-               default='ubuntu_sahara_latest',
+               default='ubuntu_vdi_latest',
                help="image name for start vanilla cluster")
 ]
 
@@ -109,9 +109,9 @@ HdpGroup = [
     cfg.StrOpt('plugin_overview_name',
                default='hdp',
                help="plugin name in overview"),
-    cfg.StrOpt('hadoop_version',
+    cfg.StrOpt('vdi_version',
                default='1.3.2',
-               help="hadoop version for plugin"),
+               help="vdi version for plugin"),
     cfg.DictOpt('processes',
                 default=
                 {"NN": 0, "DN": 1, "SNN": 2, "HDFS_CLIENT": 3,
@@ -135,11 +135,11 @@ def register_config(config, config_group, config_opts):
     config.register_group(config_group)
     config.register_opts(config_opts, config_group)
 
-path = os.path.join("%s/saharavdidashboard/configs/config.conf"
+path = os.path.join("%s/vdidashboard/configs/config.conf"
                     % os.getcwd())
 
 if os.path.exists(path):
-    cfg.CONF([], project='saharadashboard', default_config_files=[path])
+    cfg.CONF([], project='vdidashboard', default_config_files=[path])
 
 register_config(cfg.CONF, common_group, CommonGroup)
 register_config(cfg.CONF, vanilla_group, VanillaGroup)

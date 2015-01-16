@@ -1,7 +1,7 @@
 README for resources
 =====================================
 
-Resources in this directory using for check EDP for Sahara.
+Resources in this directory using for check EDP for Vdi
 For this purpose the cluster with oozie by process is created.
 With these resources created and launched jobs.
 Success of performance of jobs is checked.
