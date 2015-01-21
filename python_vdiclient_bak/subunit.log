@@ -1,0 +1,184 @@
+time: 2014-03-28 23:18:05.391393Z
+tags: worker-3
+test: tests.nova.test_shell.ShellTest.test_help_on_subcommand
+time: 2014-03-28 23:18:05.463145Z
+successful: tests.nova.test_shell.ShellTest.test_help_on_subcommand [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.396468Z
+tags: worker-3
+test: tests.nova.test_shell.ShellTest.test_bash_completion
+time: 2014-03-28 23:18:05.468315Z
+successful: tests.nova.test_shell.ShellTest.test_bash_completion [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.387753Z
+tags: worker-2
+test: tests.nova.test_shell.ShellTest.test_help_no_options
+time: 2014-03-28 23:18:05.484102Z
+successful: tests.nova.test_shell.ShellTest.test_help_no_options [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-2
+time: 2014-03-28 23:18:05.388385Z
+tags: worker-1
+test: tests.nova.test_shell.ShellTest.test_help
+time: 2014-03-28 23:18:05.489845Z
+successful: tests.nova.test_shell.ShellTest.test_help [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-1
+time: 2014-03-28 23:18:05.469964Z
+tags: worker-3
+test: tests.nova.test_shell.ShellTest.test_no_auth_url
+time: 2014-03-28 23:18:05.515321Z
+successful: tests.nova.test_shell.ShellTest.test_no_auth_url [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.464096Z
+tags: worker-3
+test: tests.nova.test_shell.ShellTest.test_help_unknown_command
+time: 2014-03-28 23:18:05.521654Z
+successful: tests.nova.test_shell.ShellTest.test_help_unknown_command [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.485749Z
+tags: worker-2
+test: tests.nova.test_shell.ShellTest.test_image_list
+time: 2014-03-28 23:18:05.532187Z
+successful: tests.nova.test_shell.ShellTest.test_image_list [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-2
+time: 2014-03-28 23:18:05.491323Z
+tags: worker-1
+test: tests.nova.test_shell.ShellTest.test_no_tenant_id
+time: 2014-03-28 23:18:05.536727Z
+successful: tests.nova.test_shell.ShellTest.test_no_tenant_id [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-1
+time: 2014-03-28 23:18:05.516218Z
+tags: worker-3
+test: tests.nova.test_shell.ShellTest.test_no_password
+time: 2014-03-28 23:18:05.562972Z
+successful: tests.nova.test_shell.ShellTest.test_no_password [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.522729Z
+tags: worker-3
+test: tests.nova.test_shell.ShellTest.test_password
+time: 2014-03-28 23:18:05.568026Z
+successful: tests.nova.test_shell.ShellTest.test_password [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.570316Z
+tags: worker-3
+test: tests.test_resource.ResourceTest.test_create_dont_modify_info_dict
+time: 2014-03-28 23:18:05.570765Z
+successful: tests.test_resource.ResourceTest.test_create_dont_modify_info_dict [ multipart
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.571075Z
+tags: worker-3
+test: tests.test_resource.ResourceTest.test_create_resource
+time: 2014-03-28 23:18:05.571344Z
+successful: tests.test_resource.ResourceTest.test_create_resource [ multipart
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.571497Z
+tags: worker-3
+test: tests.test_resource.ResourceTest.test_overwrite_default
+time: 2014-03-28 23:18:05.571950Z
+successful: tests.test_resource.ResourceTest.test_overwrite_default [ multipart
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.572116Z
+tags: worker-3
+test: tests.test_resource.ResourceTest.test_resource_str
+time: 2014-03-28 23:18:05.572633Z
+successful: tests.test_resource.ResourceTest.test_resource_str [ multipart
+]
+tags: -worker-3
+time: 2014-03-28 23:18:05.534300Z
+tags: worker-2
+test: tests.nova.test_shell.ShellTest.test_no_tenant_name
+time: 2014-03-28 23:18:05.585336Z
+successful: tests.nova.test_shell.ShellTest.test_no_tenant_name [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-2
+time: 2014-03-28 23:18:05.537575Z
+tags: worker-1
+test: tests.nova.test_shell.ShellTest.test_no_username
+time: 2014-03-28 23:18:05.593879Z
+successful: tests.nova.test_shell.ShellTest.test_no_username [ multipart
+Content-Type: text/plain;charset="utf8"
+stderr
+0
+Content-Type: text/plain;charset="utf8"
+stdout
+0
+]
+tags: -worker-1

@@ -215,7 +215,8 @@ class ConductorManager(db_base.Base):
 
         #loading defaults
         merged_values = copy.deepcopy(GROUP_DEFAULTS)
-        merged_values['tenant_id'] = context.tenant_id
+        # merged_values['domain_id'] = context.domain_id
+        merged_values['project_id'] = context.tenant_id
 
         private_key, public_key = crypto.generate_key_pair()
         merged_values['management_private_key'] = private_key

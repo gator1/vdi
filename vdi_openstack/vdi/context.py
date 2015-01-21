@@ -33,6 +33,7 @@ LOG = logging.getLogger(__name__)
 class Context(object):
     def __init__(self,
                  user_id=None,
+                 domain_id=None,
                  tenant_id=None,
                  token=None,
                  service_catalog=None,
@@ -45,6 +46,7 @@ class Context(object):
         if kwargs:
             LOG.warn('Arguments dropped when creating context: %s', kwargs)
         self.user_id = user_id
+        self.domain_id = domain_id
         self.tenant_id = tenant_id
         self.token = token
         self.service_catalog = service_catalog
@@ -58,6 +60,7 @@ class Context(object):
     def clone(self):
         return Context(
             self.user_id,
+            self.domain_id,
             self.tenant_id,
             self.token,
             self.service_catalog,
@@ -70,6 +73,7 @@ class Context(object):
     def to_dict(self):
         return {
             'user_id': self.user_id,
+            'domain_id': self.domain_id,
             'tenant_id': self.tenant_id,
             'token': self.token,
             'service_catalog': self.service_catalog,
