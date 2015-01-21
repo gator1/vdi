@@ -37,6 +37,11 @@ class IndexView(tables.DataTableView):
     def get_data(self):
         domains = []
         domain_context = self.request.session.get('domain_context', None)
+        # user = self.request.user
+        # if user.user_domain_name.lower() not in ['admin_domain', 'default']:
+        #     domain_context = user.user_domain_id
+        #     self.request.session['domain_context'] = user.user_domain_id
+        #     self.request.session['domain_context_name'] = user.user_domain_name
         try:
             if domain_context:
                 domain = api.keystone.domain_get(self.request,

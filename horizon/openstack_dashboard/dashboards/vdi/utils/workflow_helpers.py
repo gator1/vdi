@@ -142,15 +142,15 @@ def safe_call(func, *args, **kwargs):
         return None
 
 
-def get_plugin_and_vdi_version(request):
+def get_plugin_and_hadoop_version(request):
     plugin_name = request.REQUEST["plugin_name"]
-    vdi_version = request.REQUEST["vdi_version"]
-    return (plugin_name, vdi_version)
+    hadoop_version = request.REQUEST["hadoop_version"]
+    return (plugin_name, hadoop_version)
 
 
 class PluginAndVersionMixin(object):
-    def _generate_plugin_version_fields(self, vdi):
-        plugins = vdi.plugins.list()
+    def _generate_plugin_version_fields(self, sahara):
+        plugins = sahara.plugins.list()
         plugin_choices = [(plugin.name, plugin.title) for plugin in plugins]
 
         self.fields["plugin_name"] = forms.ChoiceField(
@@ -162,7 +162,7 @@ class PluginAndVersionMixin(object):
         for plugin in plugins:
             field_name = plugin.name + "_version"
             choice_field = forms.ChoiceField(
-                label=_("Vdi Version"),
+                label=_("Hadoop Version"),
                 required=True,
                 choices=[(version, version) for version in plugin.versions],
                 widget=forms.Select(

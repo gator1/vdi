@@ -15,7 +15,7 @@
 
 from django.utils.translation import ugettext as _
 from horizon import exceptions
-from vdidashboard.utils import importutils
+from openstack_dashboard.dashboards.vdi.utils import importutils
 
 neutron = importutils.import_any('openstack_dashboard.api.quantum',
                                  'openstack_dashboard.api.neutron',

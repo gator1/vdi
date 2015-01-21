@@ -14,9 +14,9 @@
 # limitations under the License.
 
 
-from vdidashboard.plugins.views import PluginDetailsView
-from vdidashboardugins.views import PluginsView
-from vdidashboard.utils import importutils
+from openstack_dashboard.dashboards.vdi.plugins.views import PluginDetailsView
+from sahvdidashboardugins.views import PluginsView
+from saharadashboard.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',
                               'django.conf.urls')

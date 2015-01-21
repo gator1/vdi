@@ -29,6 +29,7 @@ from horizon import exceptions
 from horizon import forms
 from horizon import messages
 from horizon.utils import validators
+import openstack_dashboard.api.keystone as keystone
 
 from openstack_dashboard import api
 from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
@@ -75,6 +76,14 @@ class BaseUserForm(forms.SelfHandlingForm):
         #     pool_choices.append((i, v))
         # self.fields['pool'].choices = pool_choices
 
+        # Populate domain choices
+        domain_choices = []
+        domains = keystone.domain_list(self.request)
+        temp_list = [(x.id, x.name) for x in domains]
+        for v in sorted(temp_list, key=lambda x: x[1]):
+            domain_choices.append(v)
+        self.fields['domain_id'].choices = domain_choices
+
     def clean(self):
         '''Check to make sure password fields match.'''
         data = super(forms.Form, self).clean()
@@ -89,9 +98,11 @@ class BaseUserForm(forms.SelfHandlingForm):
 
 class CreateGroupForm(BaseUserForm):
     # Hide the domain_id and domain_name by default
-    domain_id = forms.CharField(label=_("Domain ID"),
-                                required=False,
-                                widget=forms.HiddenInput())
+    # domain_id = forms.CharField(label=_("Domain ID"),
+    #                             required=False,
+    #                             widget=forms.HiddenInput())
+    domain_id = forms.ChoiceField(label=_("Domain"),
+                                  required=True)
     domain_name = forms.CharField(label=_("Domain Name"),
                                   required=False,
                                   widget=forms.HiddenInput())
@@ -110,17 +121,19 @@ class CreateGroupForm(BaseUserForm):
     # project = forms.DynamicChoiceField(label=_("Primary Project"),
     #                                    add_item_link=ADD_PROJECT_URL)
     # role_id = forms.ChoiceField(label=_("Role"))
-    name = forms.CharField(label=_("Group Name"))
+    name = forms.CharField(label=_("Department Name"))
     description = forms.CharField(label=_("Description"))
 
     def __init__(self, *args, **kwargs):
         super(CreateGroupForm, self).__init__(*args, **kwargs)
 
-        # For keystone V3, display the two fields in read-only
+        # For keystone V3 and domain_context, display the fields in read-only
         if api.keystone.VERSIONS.active >= 3:
-            readonlyInput = forms.TextInput(attrs={'readonly': 'readonly'})
-            self.fields["domain_id"].widget = readonlyInput
-            self.fields["domain_name"].widget = readonlyInput
+            domain_context = self.request.session.get('domain_context', None)
+            if domain_context:
+                readonlyInput = forms.TextInput(attrs={'readonly': 'readonly'})
+                self.fields["domain_id"].widget = forms.HiddenInput()
+                self.fields["domain_name"].widget = readonlyInput
 
     # We have to protect the entire "data" dict because it contains the
     # password and confirm_password strings.
@@ -128,28 +141,16 @@ class CreateGroupForm(BaseUserForm):
     # def handle(self, request, data):
     @staticmethod
     def handle(request, data):
-        # domain = api.keystone.get_default_domain(self.request)
         try:
+            domain_id = data.pop('domain_id')
             name = data.pop('name')
             description = data.pop('description')
             LOG.info('Creating group with name "%s"' % name)
             vdi = vdiclient(request)
-            group = vdi.groups.create(name, description)
-            # new_user = api.keystone.user_create(request,
-            #                                     name=data['name'],
-            #                                     email=data['email'],
-            #                                     password=data['password'],
-            #                                     project=data['project'],
-            #                                     enabled=True,
-            #                                     domain=domain.id)
+            group = vdi.groups.create(domain_id, name, description)
             messages.success(request,
                              _('Group "%s" was successfully created.')
                              % name)
-
-            # if isinstance(response, http.HttpResponse):
-            #     return response
-            # else:
-            #     return True
             return group
         except Exception:
             exceptions.handle(request, _('Unable to create group.'))
@@ -164,7 +165,7 @@ class UpdateGroupForm(BaseUserForm):
                                   required=False,
                                   widget=forms.HiddenInput())
     id = forms.CharField(label=_("ID"), widget=forms.HiddenInput)
-    name = forms.CharField(label=_("Group Name"))
+    name = forms.CharField(label=_("Department Name"))
     description = forms.CharField(label=_("Description"))
     # email = forms.EmailField(
     #     label=_("Email"),

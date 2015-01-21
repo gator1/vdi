@@ -31,26 +31,26 @@ TEMPLATE_DEBUG = DEBUG
 # NOTE: The version should be formatted as it appears in the URL for the
 # service API. For example, The identity service APIs have inconsistent
 # use of the decimal point, so valid options would be "2.0" or "3".
-# OPENSTACK_API_VERSIONS = {
-#     "identity": 3,
-#     "volume": 2
-# }
 OPENSTACK_API_VERSIONS = {
-    "identity": 3
+    "identity": 3,
+    "volume": 2,
+    "compute": 3
 }
+# OPENSTACK_API_VERSIONS = {
+#     "identity": 3
+# }
 
 # Set this to True if running on multi-domain model. When this is enabled, it
 # will require user to enter the Domain name in addition to username for login.
-OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True 
+OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
 
 # Overrides the default domain used when running on single-domain model
 # with Keystone V3. All entities will be created in the default domain.
-# OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
+OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
 
 # Set Console type:
 # valid options would be "AUTO", "VNC", "SPICE" or "RDP"
 # CONSOLE_TYPE = "AUTO"
-CONSOLE_TYPE = "RDP"
 
 # Default OpenStack Dashboard configuration.
 HORIZON_CONFIG = {
@@ -129,11 +129,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #     ('http://cluster2.example.com:5000/v2.0', 'cluster2'),
 # ]
 
-#OPENSTACK_HOST = "127.0.0.1"
-OPENSTACK_HOST = "192.168.253.162"
+OPENSTACK_HOST = "127.0.0.1"
+#OPENSTACK_HOST = "192.168.253.190"
 #SAHARA_URL = "127.0.0.1:9000/v1.0"
-VDI_URL = "192.168.253.162:9090/v1.0"
-OPENSTACK_KEYSTONE_URL = "http://%s:5000/v2.0" % OPENSTACK_HOST
+VDI_URL = "127.0.0.1:9000/v1.0"
+# OPENSTACK_KEYSTONE_URL = "http://%s:5000/v2.0" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "_member_"
 
 # Disable SSL certificate checks (useful for self-signed certificates):

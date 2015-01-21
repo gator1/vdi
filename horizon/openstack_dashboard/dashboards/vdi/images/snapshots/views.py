@@ -33,7 +33,7 @@ from openstack_dashboard import api
 
 # from openstack_dashboard.dashboards.project.images.snapshots \
 #     import forms as project_forms
-from vdidashboard.images.snapshots import forms as project_forms
+from openstack_dashboard.dashboards.vdi.images.snapshots import forms as project_forms
 
 
 class CreateView(forms.ModalFormView):

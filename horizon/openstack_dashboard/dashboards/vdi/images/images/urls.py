@@ -22,11 +22,11 @@ from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
 # from openstack_dashboard.dashboards.project.images.images import views
-from vdidashboard.images.images import views
+from openstack_dashboard.dashboards.vdi.images.images import views
 
 
 # VIEWS_MOD = 'openstack_dashboard.dashboards.project.images.images.views'
-VIEWS_MOD = 'vdidashboard.images.images.views'
+VIEWS_MOD = 'saharadashboard.images.images.views'
 
 
 urlpatterns = patterns(VIEWS_MOD,

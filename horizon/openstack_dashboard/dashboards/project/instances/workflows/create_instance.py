@@ -79,6 +79,9 @@ class SetInstanceDetailsAction(workflows.Action):
     availability_zone = forms.ChoiceField(label=_("Availability Zone"),
                                           required=False)
 
+    user = forms.ChoiceField(label=_("User Name"),
+                             help_text="User who owns this instance.")
+
     name = forms.CharField(label=_("Instance Name"),
                            max_length=255)
 
@@ -284,6 +287,19 @@ class SetInstanceDetailsAction(workflows.Action):
 
         return cleaned_data
 
+    def populate_user_choices(self, request, context):
+        user = request.user
+        domain_context = self.request.session.get('domain_context', None)
+        if user.is_superuser:
+            if domain_context:
+                domain = domain_context
+            else:
+                domain = request.user.user_domain_id
+            users = api.keystone.user_list(self.request, domain=domain)
+            return [(x.name, x.name) for x in sorted(users, key=lambda x: x.name)]
+        else:
+            return [(request.user, request.user)]
+
     def populate_flavor_choices(self, request, context):
         flavors = instance_utils.flavor_list(request)
         if flavors:
@@ -416,7 +432,7 @@ class SetInstanceDetails(workflows.Step):
     action_class = SetInstanceDetailsAction
     depends_on = ("project_id", "user_id")
     contributes = ("source_type", "source_id",
-                   "availability_zone", "name", "count", "flavor",
+                   "availability_zone", "name", "count", "user", "flavor",
                    "device_name",  # Can be None for an image.
                    "delete_on_terminate")
 
@@ -428,6 +444,9 @@ class SetInstanceDetails(workflows.Step):
     def contribute(self, data, context):
         context = super(SetInstanceDetails, self).contribute(data, context)
         # Allow setting the source dynamically.
+        if "name" in context and "user" in context:
+            context["name"] = context["user"] + '_' + context["name"]
+
         if ("source_type" in context and "source_id" in context
                 and context["source_type"] not in context):
             context[context["source_type"]] = context["source_id"]
@@ -738,7 +757,7 @@ class LaunchInstance(workflows.Workflow):
                 nics = [{"port-id": port.id}]
 
         try:
-            api.nova.server_create(request,
+            test = api.nova.server_create(request,
                                    context['name'],
                                    image_id,
                                    context['flavor'],

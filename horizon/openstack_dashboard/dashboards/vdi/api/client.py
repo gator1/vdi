@@ -44,9 +44,9 @@ def get_horizon_parameter(name, default_value):
 
 
 # These parameters should be defined in Horizon's local_settings.py
-# Example VDI_URL - http://localhost:9000/v1.0
+# Example SAHARA_URL - http://localhost:9000/v1.0
 VDI_URL = get_horizon_parameter('VDI_URL', None)
-# "type" of Vdi service registered in keystone
+# "type" of Sahara service registered in keystone
 VDI_SERVICE = get_horizon_parameter('VDI_SERVICE', 'data_processing')
 # hint to generate additional Neutron network field
 VDI_USE_NEUTRON = get_horizon_parameter('VDI_USE_NEUTRON', False)
@@ -61,7 +61,8 @@ def get_vdi_url(request):
     if VDI_URL is not None:
         url = VDI_URL.rstrip('/')
         if url.split('/')[-1] in ['v1.0', 'v1.1']:
-            url = VDI_URL + '/' + request.user.tenant_id
+            # url = VDI_URL + '/' + request.user.tenant_id
+            url = VDI_URL + '/' + request.user.user_domain_id
         return url
 
     return base.url_for(request, VDI_SERVICE)
@@ -71,9 +72,6 @@ def client(request):
     endpoint_type = get_horizon_parameter('OPENSTACK_ENDPOINT_TYPE',
                                           'internalURL')
     auth_url = keystone._get_endpoint_url(request, endpoint_type)
-
-    # print "http://" + get_vdi_url(request)
-    # raw_input("client-api-client.py")
 
     return api_client.Client('1.0', vdi_url="http://" + get_vdi_url(request),
                              service_type=VDI_SERVICE,

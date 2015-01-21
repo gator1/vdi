@@ -21,8 +21,10 @@ from openstack_dashboard.dashboards.vdi import dashboard
 
 
 class GroupsPanel(horizon.Panel):
-    name = _("Groups")
+    # name = _("Groups")
+    name = _("Departments")
     slug = 'groups'
 
 
+# dashboard.SaharaDashboard.register(GroupsPanel)
 dashboard.VDIDashboard.register(GroupsPanel)

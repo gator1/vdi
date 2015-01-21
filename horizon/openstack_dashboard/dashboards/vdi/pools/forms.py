@@ -23,6 +23,7 @@ from horizon import exceptions
 from horizon import forms
 from horizon import messages
 from horizon.utils import validators
+import openstack_dashboard.api.keystone as keystone
 
 from openstack_dashboard import api
 from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
@@ -57,30 +58,50 @@ class BaseUserForm(forms.SelfHandlingForm):
         #     project_choices.insert(0, ('', _("Select a project")))
         # self.fields['project'].choices = project_choices
 
+        # self.fields['domain_id'] = "test"
+
+        domain_context = self.request.session.get('domain_context', None)
+
+        # # Populate domain choices
+        # domain_choices = []
+        # domains = keystone.domain_list(self.request)
+        # temp_list = [(x.id, x.name) for x in domains]
+        # for v in sorted(temp_list, key=lambda x: x[1]):
+        #     domain_choices.append(v)
+        # self.fields['domain_id'].choices = domain_choices
+
         # Populate image choices
         image_choices = []
-
         filters = {'is_public': None}
         images = api.glance.image_list_detailed(request, filters=filters)
-        # LOG.info("images_bak = %s ", images_bak[0])
-        temp_list = []
-        for image in images[0]:
-            temp_list.append((image.id, image.name))
-        for v in sorted(temp_list, key=lambda x: x[1]):
+        temp_list = [(x.id, x.name) for x in images[0]]
+        for v in sorted(temp_list, key=lambda y: y[1]):
             image_choices.append(v)
         self.fields['image_ref'].choices = image_choices
 
-        # Populate VDI group choices
-        group_choices = []
+        # # Populate VDI group choices
+        # group_choices = []
+        # vdi = vdiclient(self.request)
+        # groups = vdi.groups.list()
+        # if domain_context:
+        #     temp_list = [(x.id, x.name) for x in groups if x.domain_id == domain_context]
+        # else:
+        #     temp_list = [(x.id, x.name) for x in groups]
+        # for v in sorted(temp_list, key=lambda y: y[1]):
+        #     group_choices.append(v)
+        # self.fields['vdi_group'].choices = group_choices
 
-        vdi = vdiclient(self.request)
-        groups = vdi.groups.list()
-        temp_list = []
-        for group in groups:
-            temp_list.append((group.id, group.name))
-        for v in sorted(temp_list, key=lambda x: x[1]):
-            group_choices.append(v)
-        self.fields['vdi_group'].choices = group_choices
+        # Populate project choices
+        project_choices = []
+        if domain_context:
+            domain = domain_context
+        else:
+            domain = self.request.user.user_domain_id
+        projects, has_more = api.keystone.tenant_list(self.request, domain=domain)
+        temp_list = [(x.id, x.name) for x in projects]
+        for v in sorted(temp_list, key=lambda y: y[1]):
+            project_choices.append(v)
+        self.fields['vdi_group'].choices = project_choices
 
     def clean(self):
         # Check to make sure password fields match.
@@ -99,13 +120,16 @@ class CreatePoolForm(BaseUserForm):
     domain_id = forms.CharField(label=_("Domain ID"),
                                 required=False,
                                 widget=forms.HiddenInput())
+    # domain_id = forms.ChoiceField(label=_("Domain"),
+    #                               required=False)
     domain_name = forms.CharField(label=_("Domain Name"),
-                                  required=False,
-                                  widget=forms.HiddenInput())
+                                  required=True)
+                                  # widget=forms.HiddenInput())
     name = forms.CharField(max_length=255, label=_("Pool Name"))
     description = forms.CharField(label=_("Description"))
     image_ref = forms.ChoiceField(label=_("Image"))
-    vdi_group = forms.MultipleChoiceField(label=_("Group"), required=False)
+    vdi_group = forms.MultipleChoiceField(label=_("Project"),
+                                          required=True)
 
     def __init__(self, *args, **kwargs):
         super(CreatePoolForm, self).__init__(*args, **kwargs)
@@ -113,11 +137,13 @@ class CreatePoolForm(BaseUserForm):
         if api.keystone.keystone_can_edit_user() is False:
             for field in ('name', 'email', 'password', 'confirm_password'):
                 self.fields.pop(field)
-                # For keystone V3, display the two fields in read-only
+        # For keystone V3, display the two fields in read-only
         if api.keystone.VERSIONS.active >= 3:
-            readonlyInput = forms.TextInput(attrs={'readonly': 'readonly'})
-            self.fields["domain_id"].widget = readonlyInput
-            self.fields["domain_name"].widget = readonlyInput
+            domain_context = self.request.session.get('domain_context', None)
+            if domain_context:
+                readonlyInput = forms.TextInput(attrs={'readonly': 'readonly'})
+                self.fields["domain_id"].widget = forms.HiddenInput()
+                self.fields["domain_name"].widget = readonlyInput
 
     # We have to protect the entire "data" dict because it contains the
     # password and confirm_password strings.
@@ -126,11 +152,12 @@ class CreatePoolForm(BaseUserForm):
     @staticmethod
     def handle(request, data):
         try:
+            domain_id = data.pop('domain_id')
             name = data.pop('name')
             description = data.pop('description')
             LOG.info('Creating pool with name "%s"' % name)
             vdi = vdiclient(request)
-            pool = vdi.pools.create(name, description)
+            pool = vdi.pools.create(domain_id, name, description)
             messages.success(request,
                              _('User "%s" was successfully created.' % name))
             if data:
@@ -156,7 +183,7 @@ class UpdatePoolForm(BaseUserForm):
     name = forms.CharField(label=_("Pool Name"))
     description = forms.CharField(label=_("Description"))
     image_ref = forms.ChoiceField(label=_("Image"), required=True)
-    vdi_group = forms.MultipleChoiceField(label=_("Group"), required=False)
+    vdi_group = forms.MultipleChoiceField(label=_("Project"), required=False)
 
     def __init__(self, request, *args, **kwargs):
         super(UpdatePoolForm, self).__init__(request, *args, **kwargs)

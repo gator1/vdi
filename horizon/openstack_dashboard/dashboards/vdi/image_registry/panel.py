@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import horizon
 
-from vdidashboard import dashboard
+from openstack_dashboard.dashboards.vdi import dashboard
 
 
 class ImageRegistryPanel(horizon.Panel):
@@ -25,4 +25,4 @@ class ImageRegistryPanel(horizon.Panel):
     slug = 'image_registry'
 
 
-dashboard.VdiDashboard.register(ImageRegistryPanel)
+dashboard.VDIDashboard.register(ImageRegistryPanel)

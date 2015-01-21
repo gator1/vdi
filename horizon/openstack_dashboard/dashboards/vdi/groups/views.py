@@ -32,9 +32,9 @@ from openstack_dashboard import api
 
 from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from openstack_dashboard.dashboards.vdi.groups import tables as group_tables
-# import vdidashboard.groups.tabs as _tabs
+# import openstack_dashboard.dashboards.vdi.groups.tabs as _tabs
 import openstack_dashboard.dashboards.vdi.groups.forms as project_forms
-# import vdidashboard.groups.images.tables as image_tables
+# import openstack_dashboard.dashboards.vdi.groups.images.tables as image_tables
 import openstack_dashboard.dashboards.vdi.groups.pools.tables as pool_tables
 import openstack_dashboard.dashboards.vdi.groups.users.tables as user_tables
 
@@ -44,32 +44,31 @@ class GroupsView(tables.DataTableView):
     template_name = 'groups/groups.html'
 
     def get_data(self):
+        domain_context = self.request.session.get('domain_context', None)
+        user = self.request.user
+
+        # import pdb; pdb.set_trace()
+
+        # if user.user_domain_name.lower() not in ['admin_domain', 'default']:
+        #     domain_context = user.user_domain_id
+        #     self.request.session['domain_context'] = user.user_domain_id
+        #     self.request.session['domain_context_name'] = user.user_domain_name
         try:
             vdi = vdiclient(self.request)
-            groups = vdi.groups.list()
-
-            # import pdb; pdb.set_trace()
-
+            if user.is_superuser:
+                if domain_context:
+                    groups = vdi.groups.list_domain_groups(domain_context)
+                else:
+                    groups = vdi.groups.list()
+            else:
+                vdi_groups = api.keystone.user_get(self.request, user.id)
+                if hasattr(vdi_groups, 'vdi_group'):
+                    groups = [vdi.groups.get(x) for x in vdi_groups.vdi_group]
+                else:
+                    groups = []
         except Exception:
             groups = []
             exceptions.handle(self.request, _('Unable to retrieve groups.'))
-        # if groups:
-        #     for group in groups:
-        #         # LOG.info("image-ref = %s", group.image_ref)
-        #         try:
-        #             image = api.glance.image_get(self.request, group.image_ref)
-        #         except Exception:
-        #             image = []
-        #             msg = _('Unable to retrieve image for the group.')
-        #             exceptions.handle(self.request, msg)
-        #         if image:
-        #             group.image_name = image.name
-        #         else:
-        #             group.image_name = '-'
-                # group.image_name = 'Test'
-                # group.image_name = api.glance.image_get(self.request, group.image_ref)
-                # # print 'group=', group.image_name
-                # raw_input('group pause')
         return sorted(groups, key=lambda x: x.name)
 
 
@@ -97,16 +96,16 @@ class GroupDetailsView(tables.MultiTableView):
     template_name = 'groups/details2.html'
     # failure_url = reverse_lazy('horizon:vdi:groups')
 
-    def get_images_data(self):
-        try:
-            group_id = self.kwargs['group_id']
-            vdi = vdiclient(self.request)
-            images = vdi.groups.get_images(group_id)
-        except Exception:
-            images = []
-            msg = _('Image list can not be retrieved.')
-            exceptions.handle(self.request, msg)
-        return images
+    # def get_images_data(self):
+    #     try:
+    #         group_id = self.kwargs['group_id']
+    #         vdi = vdiclient(self.request)
+    #         images = vdi.groups.get_images(group_id)
+    #     except Exception:
+    #         images = []
+    #         msg = _('Image list can not be retrieved.')
+    #         exceptions.handle(self.request, msg)
+    #     return images
 
     def get_pools_data(self):
         try:
@@ -177,6 +176,13 @@ class CreateGroupView(forms.ModalFormView):
     # def dispatch(self, *args, **kwargs):
     #     return super(CreateGroupView, self).dispatch(*args, **kwargs)
 
+    def get_initial(self):
+        domain_context = self.request.session.get('domain_context', None)
+        if domain_context:
+            domain = api.keystone.domain_get(self.request, domain_context)
+            return {'domain_id': domain_context,
+                    'domain_name': domain.name}
+
 
 class UpdateGroupView(forms.ModalFormView):
     form_class = project_forms.UpdateGroupForm
@@ -189,7 +195,7 @@ class UpdateGroupView(forms.ModalFormView):
             vdi = vdiclient(self.request)
             return vdi.groups.get(self.kwargs['group_id'])
         except Exception:
-            msg = _('Unable to update group.')
+            msg = _('Unable to update department.')
             url = reverse("horizon:vdi:groups:index")
             exceptions.handle(self.request, msg, redirect=url)
 
@@ -200,6 +206,8 @@ class UpdateGroupView(forms.ModalFormView):
 
     def get_initial(self):
         group = self.get_object()
-        return {'id': group.id,
+        return {'domain_id': group.domain_id,
+                'domain_name': keystone.domain_get(self.request, group.domain_id).name if group.domain_id else '',
+                # 'id': group.id,
                 'description': group.description,
                 'name': group.name}

@@ -18,7 +18,7 @@ import logging
 from django.utils.translation import ugettext as _
 import horizon
 
-from utils import compatibility
+from openstack_dashboard.dashboards.vdi.utils import compatibility
 
 LOG = logging.getLogger(__name__)
 
@@ -26,14 +26,13 @@ LOG = logging.getLogger(__name__)
 class VDIDashboard(horizon.Dashboard):
     name = _("VDI")
     slug = "vdi"
-    panels = ('groups',
-              'pools',
+    # panels = ('groups',
+    panels = ('pools',
               'users')
-    default_panel = 'groups'
+    default_panel = 'pools'
     nav = True
     supports_tenants = True
-
-# import pdb; pdb.set_trace()
+    # permissions = ('openstack.roles.vdi',)
 
 
 horizon.register(VDIDashboard)

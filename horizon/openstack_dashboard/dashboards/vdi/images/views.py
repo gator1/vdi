@@ -32,7 +32,7 @@ from openstack_dashboard import api
 
 # from openstack_dashboard.dashboards.project.images.images \
 #     import tables as images_tables
-from vdidashboard.images.images import tables as images_tables
+from openstack_dashboard.dashboards.vdi.images.images import tables as images_tables
 
 
 class IndexView(tables.DataTableView):

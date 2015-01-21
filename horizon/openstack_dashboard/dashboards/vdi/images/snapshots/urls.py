@@ -22,7 +22,7 @@ from django.conf.urls import patterns  # noqa
 from django.conf.urls import url  # noqa
 
 # from openstack_dashboard.dashboards.project.images.snapshots import views
-from vdidashboard.images.snapshots import views
+from openstack_dashboard.dashboards.vdi.images.snapshots import views
 
 
 urlpatterns = patterns('',

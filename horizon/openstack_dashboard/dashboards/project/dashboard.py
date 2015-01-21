@@ -69,6 +69,7 @@ class Project(horizon.Dashboard):
         OrchestrationPanels,
         DatabasePanels,)
     default_panel = 'overview'
+    # default_panel = 'instances'
     supports_tenants = True
 
 

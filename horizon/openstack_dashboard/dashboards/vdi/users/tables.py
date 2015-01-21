@@ -137,9 +137,9 @@ class UsersTable(tables.DataTable):
                           filters=(lambda v: defaultfilters
                                    .default_if_none(v, ""),
                                    defaultfilters.urlize))
-    vdi_group = tables.Column('vdi_group', verbose_name=_('VDI Group'),
-                              filters=(lambda v: defaultfilters.default_if_none(v, ""),
-                                       defaultfilters.urlize))
+    # vdi_group = tables.Column('vdi_group', verbose_name=_('VDI Department'),
+    #                           filters=(lambda v: defaultfilters.default_if_none(v, ""),
+    #                                    defaultfilters.urlize))
     # vdi_pool = tables.Column('vdi_pool', verbose_name=_('VDI Pool'),
     #                          filters=(lambda v: defaultfilters.default_if_none(v, ""),
     #                                   defaultfilters.urlize))

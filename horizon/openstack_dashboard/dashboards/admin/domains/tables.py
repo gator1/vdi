@@ -153,6 +153,8 @@ class UnsetDomainContext(tables.Action):
 
     def allowed(self, request, datum):
         ctx = request.session.get("domain_context", None)
+        if request.user.user_domain_name not in ['admin_domain', 'Default']:
+            ctx = None
         return ctx is not None
 
     def single(self, table, request, obj_id):

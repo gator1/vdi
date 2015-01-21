@@ -374,16 +374,18 @@ def novaclient(request):
     cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
     LOG.debug('novaclient connection created using token "%s" and url "%s"' %
               (request.user.token.id, base.url_for(request, 'compute')))
-    c = nova_client.Client(request.user.username,
+
+    cc = nova_client.Client(request.user.username,
                            request.user.token.id,
                            project_id=request.user.tenant_id,
+                           domain=request.user.user_domain_name,
                            auth_url=base.url_for(request, 'compute'),
                            insecure=insecure,
                            cacert=cacert,
                            http_log_debug=settings.DEBUG)
-    c.client.auth_token = request.user.token.id
-    c.client.management_url = base.url_for(request, 'compute')
-    return c
+    cc.client.auth_token = request.user.token.id
+    cc.client.management_url = base.url_for(request, 'compute')
+    return cc
 
 
 def server_vnc_console(request, instance_id, console_type='novnc'):

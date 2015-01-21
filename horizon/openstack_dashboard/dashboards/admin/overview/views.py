@@ -57,6 +57,13 @@ class GlobalOverview(usage.UsageView):
         return context
 
     def get_data(self):
+        # set domain_context at the first loaded page for admins
+        user = self.request.user
+        if user.user_domain_name.lower() not in ['admin_domain', 'default']:
+            domain_context = user.user_domain_id
+            self.request.session['domain_context'] = user.user_domain_id
+            self.request.session['domain_context_name'] = user.user_domain_name
+
         data = super(GlobalOverview, self).get_data()
         # Pre-fill project names
         try:

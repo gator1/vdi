@@ -28,10 +28,11 @@ LOG = logging.getLogger(__name__)
 
 from openstack_dashboard import api
 
-from vdidashboard.api.client import client as vdiclient
-from sahvdidashboardols import tables as pool_tables
-import vdidashboards.tabs as _tabs
-import vdidashboardorkflows.create as create_flow
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.pools.tables import tables as pool_tables
+import openstack_dashboard.dashboards.vdi.pools.tabs as _tabs
+import openstack_dashboard.dashboards.vdi.pools.workflows.create as create_flow
+# import saharadashboard.groups.images.tables as image_tables
 
 
 class PoolsIndexView(tables.DataTableView):
@@ -77,6 +78,41 @@ class PoolDetailsView(tabs.TabView):
         pass
 
 
+# class GroupDetailsView(tables.MultiTableView):
+#     table_classes = (image_tables.ImagesTable, )
+#     # tab_group_class = _tabs.GroupDetailsTabs
+#     template_name = 'groups/details2.html'
+#     failure_url = reverse_lazy('horizon:vdi:groups')
+#
+#     def get_images_data(self):
+#         try:
+#             group_id = self.kwargs['group_id']
+#             vdi = vdiclient(self.request)
+#             images_bak = vdi.groups.get_image(group_id)
+#         except Exception:
+#             images_bak = []
+#             msg = _('Image list can not be retrieved.')
+#             exceptions.handle(self.request, msg)
+#         return images_bak
+#
+#     @memoized.memoized_method
+#     def _get_data(self):
+#         try:
+#             group_id = self.kwargs['group_id']
+#             vdi = vdiclient(self.request)
+#             group = vdi.groups.get(group_id)
+#         except Exception:
+#             redirect = self.failure_url
+#             exceptions.handle(self.request,
+#                               _('Unable to retrieve details for '
+#                                 'group "%s".') % group_id,
+#                               redirect=redirect)
+#         return group
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(GroupDetailsView, self).get_context_data(**kwargs)
+#         context["group"] = self._get_data()
+#         return context
 
 
 class CreateGroupView(workflows.WorkflowView):
@@ -85,3 +121,35 @@ class CreateGroupView(workflows.WorkflowView):
     classes = "ajax-modal"
     template_name = "groups/create.html"
 
+
+# class ConfigureClusterView(workflows.WorkflowView):
+#     workflow_class = create_flow.ConfigureCluster
+#     success_url = "horizon:sahara:clusters"
+#     template_name = "clusters/configure.html"
+#
+#
+# class ScaleClusterView(workflows.WorkflowView):
+#     workflow_class = scale_flow.ScaleCluster
+#     success_url = "horizon:sahara:clusters"
+#     classes = ("ajax-modal")
+#     template_name = "clusters/scale.html"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(ScaleClusterView, self)\
+#             .get_context_data(**kwargs)
+#
+#         context["cluster_id"] = kwargs["cluster_id"]
+#         return context
+#
+#     def get_object(self, *args, **kwargs):
+#         if not hasattr(self, "_object"):
+#             template_id = self.kwargs['cluster_id']
+#             sahara = vdiclient(self.request)
+#             template = sahara.cluster_templates.get(template_id)
+#             self._object = template
+#         return self._object
+#
+#     def get_initial(self):
+#         initial = super(ScaleClusterView, self).get_initial()
+#         initial.update({'cluster_id': self.kwargs['cluster_id']})
+#         return initial

@@ -5,7 +5,7 @@
 {% block form_id %}update_image_form{% endblock %}
 {% block form_action %}{% url 'horizon:vdi:groups:update' group.id %}{% endblock %}
 
-{% block modal-header %}{% trans "Update Group" %}{% endblock %}
+{% block modal-header %}{% trans "Update Department" %}{% endblock %}
 
 {% block modal-body %}
 <div class="left">
@@ -20,6 +20,6 @@
 {% endblock %}
 
 {% block modal-footer %}
-  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Update Group" %}" />
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Update Department" %}" />
   <a href="{% url 'horizon:vdi:groups:index' %}" class="btn secondary cancel close">{% trans "Cancel" %}</a>
 {% endblock %}

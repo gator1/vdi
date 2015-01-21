@@ -17,7 +17,7 @@ from django.conf.urls import url  # noqa
 
 from openstack_dashboard.dashboards.vdi.users import views
 
-# urlpatterns = patterns('openstack_dashboard.dashboards.admin.users.views',
+
 urlpatterns = patterns('',
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^(?P<user_id>[^/]+)/update/$',

@@ -144,13 +144,9 @@ def keystoneclient(request, admin=False):
     """
     user = request.user
 
-    # print "keystoneclient user=", user
-    # print "type of user=", type(user)
-    # raw_input("keystoneclient")
-
     if admin:
-        if not user.is_superuser:
-            raise exceptions.NotAuthorized
+        # if not user.is_superuser:
+        #     raise exceptions.NotAuthorized
         endpoint_type = 'adminURL'
     else:
         endpoint_type = getattr(settings,

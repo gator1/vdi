@@ -221,6 +221,8 @@ class LaunchLink(tables.LinkAction):
     classes = ("btn-launch", "ajax-modal")
     policy_rules = (("compute", "compute:create"),)
 
+
+
     def allowed(self, request, datum):
         try:
             limits = api.nova.tenant_absolute_limits(request, reserved=True)

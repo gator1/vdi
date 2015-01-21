@@ -17,9 +17,9 @@ from horizon import exceptions
 from horizon import forms
 from horizon import workflows
 
-from vdidashboard.utils import importutils
-from vdidashboard.utils import neutron_support
-import vdidashboard.utils.workflow_helpers as whelpers
+from openstack_dashboard.dashboards.vdi.utils import importutils
+from openstack_dashboard.dashboards.vdi.utils import neutron_support
+import openstack_dashboard.dashboards.vdi.utils.workflow_helpers as whelpers
 
 neutron = importutils.import_any('openstack_dashboard.api.quantum',
                                  'openstack_dashboard.api.neutron',
@@ -31,10 +31,10 @@ nova = importutils.import_any('openstack_dashboard.api.nova',
 
 from django.utils.translation import ugettext as _
 
-from vdidashboard.api import client as vdiclient
+from openstack_dashboard.dashboards.vdi.api import client as vdiclient
 from vdiclient.api import base as api_base
-from vdidashboard.api.client import VDI_USE_NEUTRON
-import vdidashboard.cluster_templates.workflows.create as t_flows
+from openstack_dashboard.dashboards.vdi.api.client import VDI_USE_NEUTRON
+import openstack_dashboard.dashboards.vdi.cluster_templates.workflows.create as t_flows
 
 import logging
 
@@ -77,8 +77,8 @@ class GeneralConfigAction(workflows.Action):
     def __init__(self, request, *args, **kwargs):
         super(GeneralConfigAction, self).__init__(request, *args, **kwargs)
 
-        plugin, vdi_version = whelpers.\
-            get_plugin_and_vdi_version(request)
+        plugin, hadoop_version = whelpers.\
+            get_plugin_and_hadoop_version(request)
 
         if VDI_USE_NEUTRON:
             self.fields["neutron_management_network"] = forms.ChoiceField(
@@ -92,20 +92,20 @@ class GeneralConfigAction(workflows.Action):
             widget=forms.HiddenInput(),
             initial=plugin
         )
-        self.fields["vdi_version"] = forms.CharField(
+        self.fields["hadoop_version"] = forms.CharField(
             widget=forms.HiddenInput(),
-            initial=vdi_version
+            initial=hadoop_version
         )
 
     def populate_image_choices(self, request, context):
         vdi = vdiclient.client(request)
         all_images = vdi.images.list()
 
-        plugin, vdi_version = whelpers.\
-            get_plugin_and_vdi_version(request)
+        plugin, hadoop_version = whelpers.\
+            get_plugin_and_hadoop_version(request)
 
         details = vdi.plugins.get_version_details(plugin,
-                                                     vdi_version)
+                                                     hadoop_version)
 
         return [(image.id, image.name) for image in all_images
                 if set(details.required_image_tags).issubset(set(image.tags))]
@@ -116,16 +116,37 @@ class GeneralConfigAction(workflows.Action):
         keypair_list.insert(0, ("", "No keypair"))
         return keypair_list
 
-    
+    def populate_cluster_template_choices(self, request, context):
+        vdi = vdiclient.client(request)
+        templates = vdi.cluster_templates.list()
+
+        plugin, hadoop_version = whelpers.\
+            get_plugin_and_hadoop_version(request)
+
+        choices = [(template.id, template.name)
+                   for template in templates
+                   if (template.hadoop_version == hadoop_version and
+                       template.plugin_name == plugin)]
+
+        # cluster_template_id comes from cluster templates table, when
+        # Create Cluster from template is clicked there
+        selected_template_id = request.REQUEST.get("cluster_template_id", None)
+
+        for template in templates:
+            if template.id == selected_template_id:
+                self.fields['cluster_template'].initial = template.id
+
+        return choices
+
     populate_neutron_management_network_choices = \
         neutron_support.populate_neutron_management_network_choices
 
     def get_help_text(self):
         extra = dict()
-        plugin, vdi_version = whelpers.\
-            get_plugin_and_vdi_version(self.request)
+        plugin, hadoop_version = whelpers.\
+            get_plugin_and_hadoop_version(self.request)
         extra["plugin_name"] = plugin
-        extra["vdi_version"] = vdi_version
+        extra["hadoop_version"] = hadoop_version
         return super(GeneralConfigAction, self).get_help_text(extra)
 
     def clean(self):
@@ -152,3 +173,39 @@ class GeneralConfig(workflows.Step):
         return context
 
 
+class ConfigureCluster(whelpers.StatusFormatMixin, workflows.Workflow):
+    slug = "configure_cluster"
+    name = _("Launch Cluster")
+    finalize_button_name = _("Create")
+    success_message = _("Created Cluster %s")
+    name_property = "general_cluster_name"
+    success_url = "horizon:sahara:clusters:index"
+    default_steps = (GeneralConfig, )
+
+    def handle(self, request, context):
+        try:
+            vdi = vdiclient.client(request)
+            #TODO(nkonovalov) Implement AJAX Node Groups
+            node_groups = None
+
+            plugin, hadoop_version = whelpers.\
+                get_plugin_and_hadoop_version(request)
+
+            cluster_template_id = context["general_cluster_template"] or None
+            user_keypair = context["general_keypair"] or None
+
+            vdi.clusters.create(
+                context["general_cluster_name"],
+                plugin, hadoop_version,
+                cluster_template_id=cluster_template_id,
+                default_image_id=context["general_image"],
+                description=context["general_description"],
+                node_groups=node_groups,
+                user_keypair_id=user_keypair,
+                net_id=context.get("general_neutron_management_network", None))
+            return True
+        except api_base.APIException as e:
+            self.error_description = str(e)
+            return False
+        except Exception:
+            exceptions.handle(request)

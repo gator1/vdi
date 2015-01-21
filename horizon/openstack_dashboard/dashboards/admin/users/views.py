@@ -46,18 +46,9 @@ class IndexView(tables.DataTableView):
     def get_data(self):
         users = []
         domain_context = self.request.session.get('domain_context', None)
-
         try:
-            user = self.request.user
-
-            # import pdb; pdb.set_trace()
-
-            if user.is_vdiuser and user.is_domainuser:
-                users = api.keystone.user_list(self.request,
-                                               domain=user.user_domain_id)
-            else:
-                users = api.keystone.user_list(self.request,
-                                               domain=domain_context)
+            users = api.keystone.user_list(self.request,
+                                           domain=domain_context)
         except Exception:
             exceptions.handle(self.request,
                               _('Unable to retrieve user list.'))

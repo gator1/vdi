@@ -14,8 +14,8 @@
 # limitations under the License.
 
 
-import vdidashboard.pools.views as views
-from vdidashboard.utils import importutils
+import openstack_dashboard.dashboards.vdi.pools.views as views
+from saharadashboard.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',
                               'django.conf.urls')
@@ -31,7 +31,12 @@ urlpatterns = patterns('',
                        url(r'^create-pool$',
                            views.CreateGroupView.as_view(),
                            name='create-pool'),
+                       # url(r'^configure-cluster$',
+                       #     views.ConfigureClusterView.as_view(),
+                       #     name='configure-cluster'),
                        url(r'^(?P<pool_id>[^/]+)/%s$' % 'detail',
                            views.GroupDetailsView.as_view(),
                            name='detail'))
-                       
+                       # url(r'^(?P<cluster_id>[^/]+)/scale$',
+                       #     views.ScaleClusterView.as_view(),
+                       #     name='scale'))

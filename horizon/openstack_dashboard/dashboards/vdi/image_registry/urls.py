@@ -14,10 +14,10 @@
 # limitations under the License.
 
 
-from vdidashboard.image_registry.views import EditTagsView
-from vdidashboardage_registry.views import ImageRegistryView
-from vdidashboard_registry.views import RegisterImageView
-from dashboard.utils import importutils
+from openstack_dashboard.dashboards.vdi.image_registry.views import EditTagsView
+from openstack_dashboard.dashboards.vdi.image_registry.views import ImageRegistryView
+from openstack_dashboard.dashboards.vdi.image_registry.views import RegisterImageView
+from openstack_dashboard.dashboards.vdi.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',
                               'django.conf.urls')

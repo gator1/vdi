@@ -26,19 +26,20 @@ LOG = logging.getLogger(__name__)
 
 class CreateGroup(tables.LinkAction):
     name = "create"
-    verbose_name = _("Create Group")
+    verbose_name = _("Create Department")
     url = "horizon:vdi:groups:create-group"
     classes = ("btn-launch", "ajax-modal")
+    policy_rules = (("identity", "identity:update_user"),)
 
 
 class EditGroup(tables.LinkAction):
     name = "edit"
     verbose_name = _("Edit")
-    # url = "horizon:admin:users:update"
     url = "horizon:vdi:groups:update"
     classes = ("ajax-modal", "btn-edit")
-    policy_rules = (("identity", "identity:update_user"),
-                    ("identity", "identity:list_projects"),)
+    # policy_rules = (("identity", "identity:update_user"),
+    #                 ("identity", "identity:list_projects"),)
+    # policy_rules = (("identity", "identity:update_user"),)
 
     def get_policy_target(self, request, user):
         return {"user_id": user.id}
@@ -51,8 +52,8 @@ class DeleteGroup(tables.BatchAction):
     name = "delete"
     action_present = _("Delete")
     action_past = _("Deleted")
-    data_type_singular = _("Group")
-    data_type_plural = _("Groups")
+    data_type_singular = _("Department")
+    data_type_plural = _("Departments")
     classes = ('btn-danger', 'btn-terminate')
 
     def action(self, request, obj_id):
@@ -73,16 +74,7 @@ class UpdateRow(tables.Row):
 
 
 def get_instances_count(group):
-    return sum([len(ng["name"])
-                for ng in group.name])
-
-
-# class ConfigureGroup(tables.LinkAction):
-#     name = "configure"
-#     verbose_name = _("Configure Group")
-#     url = "horizon:vdi:groups:configure-images_bak"
-#     classes = ("ajax-modal", "btn-create", "configure-images_bak-btn")
-#     attrs = {"style": "display: none"}
+    return sum([len(ng["name"]) for ng in group.name])
 
 
 class GroupsTable(tables.DataTable):
@@ -108,11 +100,10 @@ class GroupsTable(tables.DataTable):
 
     class Meta:
         name = "groups"
-        verbose_name = _("Groups")
+        verbose_name = _("Departments")
         row_class = UpdateRow
         status_columns = ["status"]
         table_actions = (CreateGroup,
-                         # ConfigureGroup,
                          DeleteGroup)
         row_actions = (EditGroup,
                        DeleteGroup,)

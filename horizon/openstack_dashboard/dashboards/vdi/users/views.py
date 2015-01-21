@@ -30,10 +30,6 @@ LOG = logging.getLogger(__name__)
 
 from openstack_dashboard import api
 
-# from openstack_dashboard.dashboards.admin.users \
-#     import forms as project_forms
-# from openstack_dashboard.dashboards.admin.users \
-#     import tables as project_tables
 from openstack_dashboard.dashboards.vdi.users import forms as project_forms
 from openstack_dashboard.dashboards.vdi.users import tables as project_tables
 
@@ -44,15 +40,19 @@ class IndexView(tables.DataTableView):
 
     def get_data(self):
         users = []
-        # domain_context = self.request.session.get('domain_context', None)
+        domain_context = self.request.session.get('domain_context', None)
         try:
             user = self.request.user
 
             # For multi-tenancy support,
             # If user is admin user, list all users in the domain
-            if user.is_superuser:
-                users = api.keystone.user_list(self.request,
-                                               domain=user.user_domain_id)
+            if domain_context:
+                users = api.keystone.user_list(self.request, domain=domain_context)
+            elif user.is_superuser:
+                # admin in 'admin_domain' and 'default' should see all users
+                if user.user_domain_name.lower() in ['admin_domain', 'default']:
+                    user.user_domain_id = None
+                users = api.keystone.user_list(self.request, domain=user.user_domain_id)
                 # for u in all_users:
                 #     # Works for keystone v3 with multi-tenants
                 #     # if getattr(u, 'default_project_id', None) == user.tenant_id:
@@ -66,8 +66,7 @@ class IndexView(tables.DataTableView):
                 #     if item.name == "admin":
                 #         users.remove(item)
             else:
-                user.name = user.username
-                users = [user]
+                users.append(api.keystone.user_get(self.request, user.id))
         except Exception:
             exceptions.handle(self.request, _('Unable to retrieve user list.'))
 
@@ -89,8 +88,7 @@ class UpdateView(forms.ModalFormView):
     @memoized.memoized_method
     def get_object(self):
         try:
-            return api.keystone.user_get(self.request, self.kwargs['user_id'],
-                admin=True)
+            return api.keystone.user_get(self.request, self.kwargs['user_id'], admin=True)
         except Exception:
             redirect = reverse("horizon:vdi:users:index")
             exceptions.handle(self.request,
@@ -109,19 +107,17 @@ class UpdateView(forms.ModalFormView):
         # Retrieve the domain name where the project belong
         if api.keystone.VERSIONS.active >= 3:
             try:
-                domain = api.keystone.domain_get(self.request,
-                                                    domain_id)
+                domain = api.keystone.domain_get(self.request, domain_id)
                 domain_name = domain.name
             except Exception:
-                exceptions.handle(self.request,
-                    _('Unable to retrieve project domain.'))
+                exceptions.handle(self.request, _('Unable to retrieve project domain.'))
         return {'domain_id': domain_id,
                 'domain_name': domain_name,
                 'id': user.id,
                 'name': user.name,
-                'project': user.project_id,
-                'email': getattr(user, 'email', None),
-                'vdi_group': getattr(user, 'vdi_group', None)}
+                'project': self.request.user.project_id,
+                'email': getattr(user, 'email', None),}
+                # 'vdi_group': getattr(user, 'vdi_group', None)}
 
 
 class CreateView(forms.ModalFormView):

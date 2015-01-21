@@ -31,6 +31,15 @@ class CreateGroup(tables.LinkAction):
     classes = ("btn-launch", "ajax-modal")
 
 
+# class ScaleCluster(tables.LinkAction):
+#     name = "scale"
+#     verbose_name = _("Scale Cluster")
+#     url = "horizon:sahara:clusters:scale"
+#     classes = ("ajax-modal", "btn-edit")
+#
+#     def allowed(self, request, cluster=None):
+#         return cluster.status == "Active"
+
 
 class EditGroup(tables.LinkAction):
     name = "edit"
@@ -57,18 +66,22 @@ class DeleteGroup(tables.BatchAction):
     classes = ('btn-danger', 'btn-terminate')
 
     def action(self, request, obj_id):
-        vdi = vdiclient(request)
-        vdi.groups.delete(obj_id)
+        sahara = vdiclient(request)
+        sahara.groups.delete(obj_id)
 
 
 class UpdateRow(tables.Row):
     ajax = True
 
     def get_data(self, request, instance_id):
-        vdi = vdiclient(request)
-        instance = vdi.groups.get(instance_id)
+        sahara = vdiclient(request)
+        instance = sahara.groups.get(instance_id)
         return instance
 
+
+# def get_instances_count(cluster):
+#     return sum([len(ng["instances"])
+#                 for ng in cluster.node_groups])
 
 
 def get_instances_count(group):

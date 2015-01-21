@@ -28,11 +28,13 @@ from horizon import exceptions
 
 LOG = logging.getLogger(__name__)
 
-#from openstack_dashboard.dashboards.vdi import api
-from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+from openstack_dashboard import api
+import openstack_dashboard.api.keystone as keystone
 
+from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from openstack_dashboard.dashboards.vdi.pools import tables as pool_tables
-from openstack_dashboard.dashboards.vdi.pools import forms as project_forms
+# import openstack_dashboard.dashboards.vdi.pools.tabs as _tabs
+import openstack_dashboard.dashboards.vdi.pools.forms as project_forms
 import openstack_dashboard.dashboards.vdi.pools.instances.tables as instance_table
 
 
@@ -41,13 +43,20 @@ class PoolsIndexView(tables.DataTableView):
     template_name = 'pools/pools.html'
 
     def get_data(self):
+        domain_context = self.request.session.get('domain_context', None)
+        user = self.request.user
         try:
             vdi = vdiclient(self.request)
-            pools = vdi.pools.list()
+            if domain_context:
+                domain = domain_context
+            else:
+                domain = user.user_domain_id
+            pools = vdi.pools.list_domain_pools(domain)
+            if not user.is_superuser:
+                pools = [pool for pool in pools if user.project_id in pool.vdi_group]
         except Exception:
             pools = []
-            exceptions.handle(self.request,
-                              _('Unable to retrieve pools.'))
+            exceptions.handle(self.request, _('Unable to retrieve pools.'))
         if pools:
             for pool in pools:
                 try:
@@ -144,6 +153,16 @@ class CreatePoolView(forms.ModalFormView):
     # def dispatch(self, *args, **kwargs):
     #     return super(CreatePoolView, self).dispatch(*args, **kwargs)
 
+    def get_initial(self):
+        domain_context = self.request.session.get('domain_context', None)
+        if domain_context:
+            domain = domain_context
+        else:
+            domain = self.request.user.user_domain_id
+        domain = keystone.domain_get(self.request, domain)
+        return {'domain_id': domain.id,
+                'domain_name': domain.name}
+
 
 class UpdatePoolView(forms.ModalFormView):
     form_class = project_forms.UpdatePoolForm
@@ -167,7 +186,9 @@ class UpdatePoolView(forms.ModalFormView):
 
     def get_initial(self):
         pool = self.get_object()
-        return {'id': pool.id,
+        return {'domain_id': pool.domain_id,
+                'domain_name': keystone.domain_get(self.request, pool.domain_id).name if pool.domain_id else '',
+                'id': pool.id,
                 'description': pool.description,
                 'name': pool.name,
                 'image_ref': pool.image_ref,
