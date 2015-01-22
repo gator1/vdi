@@ -22,17 +22,12 @@ import stevedore
 from werkzeug import exceptions as werkzeug_exceptions
 
 from vdi.api import v10 as api_v10
-from vdi.api import v11 as api_v11
 from vdi import context
 from vdi.middleware import auth_valid
 from vdi.middleware import log_exchange
 from vdi.openstack.common import log
-from vdi.plugins import base as plugins_base
-from vdi.service import api as service_api
-from vdi.service import periodic
 from vdi.utils import api as api_utils
 from vdi.utils import patches
-from vdi.utils import remote
 
 
 LOG = log.getLogger(__name__)

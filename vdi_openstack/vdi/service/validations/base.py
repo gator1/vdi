@@ -19,7 +19,6 @@ from oslo.config import cfg
 from vdi import conductor as cond
 from vdi import context
 import vdi.exceptions as ex
-import vdi.plugins.base as plugin_base
 import vdi.service.api as api
 import vdi.utils.openstack.heat as heat
 import vdi.utils.openstack.keystone as keystone

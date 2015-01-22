@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import vdi.exceptions as ex
-from vdi.plugins import base as plugin_base
+# from vdi.plugins import base as plugin_base
 
 
 CONVERT_TO_TEMPLATE_SCHEMA = None

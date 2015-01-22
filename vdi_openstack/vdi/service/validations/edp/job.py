@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import vdi.exceptions as e
-from vdi.service.edp import api
+# from vdi.service.edp import api
 from vdi.utils import edp
 
 JOB_SCHEMA = {

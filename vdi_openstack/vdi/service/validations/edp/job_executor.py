@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import vdi.exceptions as ex
-from vdi.service.edp import api
+# from vdi.service.edp import api
 import vdi.service.validations.base as main_base
 import vdi.service.validations.edp.base as b
 from vdi.utils import edp

@@ -20,12 +20,8 @@ from vdi import conductor as c
 from vdi import context
 from vdi.openstack.common import excutils
 from vdi.openstack.common import log as logging
-from vdi.plugins import base as plugin_base
-from vdi.plugins import provisioning
-from vdi.service.edp import job_manager as jm
 from vdi.service import trusts
 from vdi.utils import general as g
-from vdi.utils.openstack import nova
 
 
 conductor = c.API
