@@ -26,5 +26,5 @@ class GroupsPanel(horizon.Panel):
     slug = 'groups'
 
 
-# dashboard.SaharaDashboard.register(GroupsPanel)
+# dashboard.vdiDashboard.register(GroupsPanel)
 dashboard.VDIDashboard.register(GroupsPanel)

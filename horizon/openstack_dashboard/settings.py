@@ -56,7 +56,7 @@ STATIC_URL = '/static/'
 ROOT_URLCONF = 'openstack_dashboard.urls'
 
 HORIZON_CONFIG = {
-    #'dashboards': ('project', 'admin', 'settings', 'router', 'sahara'),
+    #'dashboards': ('project', 'admin', 'settings', 'router', 'vdi'),
     'dashboards': ('project', 'admin', 'settings', 'router', 'vdi'),
     'default_dashboard': 'project',
     'user_home': 'openstack_dashboard.views.get_user_home',
@@ -157,8 +157,6 @@ INSTALLED_APPS = [
     'compressor',
     'horizon',
     'openstack_auth',
-    # 'saharadashboard',
-    # 'vdidashboard',
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

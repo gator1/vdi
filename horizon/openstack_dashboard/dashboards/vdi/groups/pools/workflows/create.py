@@ -179,7 +179,7 @@ class ConfigureCluster(whelpers.StatusFormatMixin, workflows.Workflow):
     finalize_button_name = _("Create")
     success_message = _("Created Cluster %s")
     name_property = "general_cluster_name"
-    success_url = "horizon:sahara:clusters:index"
+    success_url = "horizon:vdi:clusters:index"
     default_steps = (GeneralConfig, )
 
     def handle(self, request, context):

@@ -41,15 +41,15 @@ class ImageForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
-            sahara = vdiclient.client(request)
+            vdi = vdiclient.client(request)
 
             image_id = data['image_id']
             user_name = data['user_name']
             desc = data['description']
-            sahara.images.update_image(image_id, user_name, desc)
+            vdi.images.update_image(image_id, user_name, desc)
 
             image_tags = json.loads(data["tags_list"])
-            sahara.images.update_tags(image_id, image_tags)
+            vdi.images.update_tags(image_id, image_tags)
 
             messages.success(request, self.message)
 
@@ -114,8 +114,8 @@ class RegisterImageForm(ImageForm):
 
         final_images = []
 
-        sahara = vdiclient.client(request)
-        image_ids = [img.id for img in sahara.images.list()]
+        vdi = vdiclient.client(request)
+        image_ids = [img.id for img in vdi.images.list()]
 
         for image in images:
             if image.id not in image_ids:

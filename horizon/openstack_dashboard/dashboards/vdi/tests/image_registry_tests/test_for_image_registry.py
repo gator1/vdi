@@ -16,7 +16,7 @@
 from testtools import testcase
 
 from openstack_dashboard.dashboards.vdi.tests import base
-import saharadashboard.tests.configs.config as cfg
+import openstack_dashboard.dashboards.vdi.tests.configs.config as cfg
 
 
 class UIImageRegistry(base.UITestCase):

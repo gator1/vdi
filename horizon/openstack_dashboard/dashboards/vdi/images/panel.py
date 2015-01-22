@@ -27,5 +27,4 @@ class ImagesPanel(horizon.Panel):
     slug = 'images'
 
 
-# dashboard.SaharaDashboard.register(ImagesPanel)
 dashboard.VDIDashboard.register(ImagesPanel)

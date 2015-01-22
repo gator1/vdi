@@ -15,7 +15,7 @@
 
 
 import openstack_dashboard.dashboards.vdi.pools.views as views
-from saharadashboard.utils import importutils
+from openstack_dashboard.dashboards.vdi.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',
                               'django.conf.urls')
