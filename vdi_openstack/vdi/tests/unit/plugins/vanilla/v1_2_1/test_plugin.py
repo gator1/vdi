@@ -29,7 +29,7 @@ from vdi.tests.unit import testutils as tu
 conductor = cond.API
 
 
-class VanillaPluginTest(base.SaharaWithDbTestCase):
+class VanillaPluginTest(base.VdiWithDbTestCase):
     def setUp(self):
         super(VanillaPluginTest, self).setUp()
         self.pl = p.VanillaProvider()

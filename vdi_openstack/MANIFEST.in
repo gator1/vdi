@@ -2,36 +2,36 @@ include AUTHORS
 include README.rst
 include ChangeLog
 include LICENSE
-include sahara/db/migration/README
-include sahara/db/migration/alembic.ini
-include sahara/db/migration/alembic_migrations/script.py.mako
-include sahara/db/migration/alembic_migrations/versions/README
+include vdi/db/migration/README
+include vdi/db/migration/alembic.ini
+include vdi/db/migration/alembic_migrations/script.py.mako
+include vdi/db/migration/alembic_migrations/versions/README
 
-recursive-include sahara/locale *
+recursive-include vdi/locale *
 
-include sahara/plugins/intel/v2_5_1/resources/*.xml
-include sahara/plugins/intel/v2_5_1/resources/*.xsd
-include sahara/plugins/intel/v3_0_2/resources/*.xml
-include sahara/plugins/intel/v3_0_2/resources/*.xsd
-include sahara/plugins/vanilla/v1_2_1/resources/*.xml
-include sahara/plugins/vanilla/v1_2_1/resources/*.sh
-include sahara/plugins/vanilla/v1_2_1/resources/*.sql
-include sahara/plugins/vanilla/v2_3_0/resources/*.xml
-include sahara/plugins/vanilla/v2_3_0/resources/*.sh
-include sahara/plugins/vanilla/v2_3_0/resources/*.sql
-include sahara/plugins/vanilla/v2_3_0/resources/*.template
-include sahara/plugins/hdp/versions/1_3_2/resources/*.template
-include sahara/plugins/hdp/versions/1_3_2/resources/*.json
-include sahara/plugins/hdp/versions/2_0/resources/*.template
-include sahara/plugins/hdp/versions/2_0/resources/*.json
-include sahara/resources/*.heat
-include sahara/service/edp/resources/*.xml
-include sahara/swift/resources/*.xml
-include sahara/tests/unit/plugins/vanilla/v2_3_0/resources/*.txt
-include sahara/tests/unit/resources/*.heat
-include sahara/tests/unit/resources/*.xml
-include sahara/tests/unit/resources/*.txt
-include sahara/topology/resources/*.xml
+include vdi/plugins/intel/v2_5_1/resources/*.xml
+include vdi/plugins/intel/v2_5_1/resources/*.xsd
+include vdi/plugins/intel/v3_0_2/resources/*.xml
+include vdi/plugins/intel/v3_0_2/resources/*.xsd
+include vdi/plugins/vanilla/v1_2_1/resources/*.xml
+include vdi/plugins/vanilla/v1_2_1/resources/*.sh
+include vdi/plugins/vanilla/v1_2_1/resources/*.sql
+include vdi/plugins/vanilla/v2_3_0/resources/*.xml
+include vdi/plugins/vanilla/v2_3_0/resources/*.sh
+include vdi/plugins/vanilla/v2_3_0/resources/*.sql
+include vdi/plugins/vanilla/v2_3_0/resources/*.template
+include vdi/plugins/hdp/versions/1_3_2/resources/*.template
+include vdi/plugins/hdp/versions/1_3_2/resources/*.json
+include vdi/plugins/hdp/versions/2_0/resources/*.template
+include vdi/plugins/hdp/versions/2_0/resources/*.json
+include vdi/resources/*.heat
+include vdi/service/edp/resources/*.xml
+include vdi/swift/resources/*.xml
+include vdi/tests/unit/plugins/vanilla/v2_3_0/resources/*.txt
+include vdi/tests/unit/resources/*.heat
+include vdi/tests/unit/resources/*.xml
+include vdi/tests/unit/resources/*.txt
+include vdi/topology/resources/*.xml
 
 exclude .gitignore
 exclude .gitreview

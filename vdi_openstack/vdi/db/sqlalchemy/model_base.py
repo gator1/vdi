@@ -19,7 +19,7 @@ from sqlalchemy.orm import attributes
 from vdi.openstack.common.db.sqlalchemy import models as oslo_models
 
 
-class _SaharaBase(oslo_models.ModelBase, oslo_models.TimestampMixin):
+class _VdiBase(oslo_models.ModelBase, oslo_models.TimestampMixin):
     """Base class for all SQLAlchemy DB Models."""
 
     def to_dict(self):
@@ -89,6 +89,6 @@ def datetime_to_str(dct, attr_name):
     if dct.get(attr_name) is not None:
         dct[attr_name] = dct[attr_name].isoformat(' ')
 
-SaharaBase = declarative.declarative_base(cls=_SaharaBase)
+VdiBase = declarative.declarative_base(cls=_VdiBase)
 VDIBase = declarative.declarative_base(cls=_VDIBase)
 Base = declarative.declarative_base(cls=_Base)

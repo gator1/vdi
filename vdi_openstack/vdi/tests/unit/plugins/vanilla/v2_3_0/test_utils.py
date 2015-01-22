@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Mirantis Inc.
+# Copyright (c) 2015 Huawei Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ from vdi.tests.unit import base
 from vdi.utils import files
 
 
-class UtilsTestCase(base.SaharaTestCase):
+class UtilsTestCase(base.VdiTestCase):
     @mock.patch('vdi.plugins.general.utils.get_namenode')
     def test_datanodes_status(self, nn):
         report = files.get_file_text(

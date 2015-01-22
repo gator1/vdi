@@ -270,7 +270,7 @@ class PoolMembership(mb.Base):
         return d
 
 
-class Cluster(mb.SaharaBase):
+class Cluster(mb.VdiBase):
     """Contains all info about cluster."""
 
     __tablename__ = 'clusters'
@@ -311,7 +311,7 @@ class Cluster(mb.SaharaBase):
         return d
 
 
-class NodeGroup(mb.SaharaBase):
+class NodeGroup(mb.VdiBase):
     """Specifies group of nodes within a cluster."""
 
     __tablename__ = 'node_groups'
@@ -350,7 +350,7 @@ class NodeGroup(mb.SaharaBase):
         return d
 
 
-class Instance(mb.SaharaBase):
+class Instance(mb.VdiBase):
     """An OpenStack instance created for the cluster."""
 
     __tablename__ = 'instances'
@@ -371,7 +371,7 @@ class Instance(mb.SaharaBase):
 
 ## Template objects: ClusterTemplate, NodeGroupTemplate, TemplatesRelation
 
-class ClusterTemplate(mb.SaharaBase):
+class ClusterTemplate(mb.VdiBase):
     """Template for Cluster."""
 
     __tablename__ = 'cluster_templates'
@@ -400,7 +400,7 @@ class ClusterTemplate(mb.SaharaBase):
         return d
 
 
-class NodeGroupTemplate(mb.SaharaBase):
+class NodeGroupTemplate(mb.VdiBase):
     """Template for NodeGroup."""
 
     __tablename__ = 'node_group_templates'
@@ -425,7 +425,7 @@ class NodeGroupTemplate(mb.SaharaBase):
     floating_ip_pool = sa.Column(sa.String(36))
 
 
-class TemplatesRelation(mb.SaharaBase):
+class TemplatesRelation(mb.VdiBase):
     """NodeGroupTemplate - ClusterTemplate relationship.
 
     In fact, it's a template of NodeGroup in Cluster.
@@ -457,7 +457,7 @@ class TemplatesRelation(mb.SaharaBase):
 
 ## EDP objects: DataSource, Job, Job Execution, JobBinary
 
-class DataSource(mb.SaharaBase):
+class DataSource(mb.VdiBase):
     """DataSource - represent a diffident types of data source,
     e.g. Swift, Cassandra etc.
     """
@@ -477,7 +477,7 @@ class DataSource(mb.SaharaBase):
     credentials = sa.Column(st.JsonDictType())
 
 
-class JobExecution(mb.SaharaBase):
+class JobExecution(mb.VdiBase):
     """JobExecution - represent a job execution of specific cluster
     """
     __tablename__ = 'job_executions'
@@ -502,7 +502,7 @@ class JobExecution(mb.SaharaBase):
     extra = sa.Column(st.JsonDictType())
 
 mains_association = sa.Table("mains_association",
-                             mb.SaharaBase.metadata,
+                             mb.VdiBase.metadata,
                              sa.Column("Job_id",
                                        sa.String(36),
                                        sa.ForeignKey("jobs.id")),
@@ -513,7 +513,7 @@ mains_association = sa.Table("mains_association",
 
 
 libs_association = sa.Table("libs_association",
-                            mb.SaharaBase.metadata,
+                            mb.VdiBase.metadata,
                             sa.Column("Job_id",
                                       sa.String(36),
                                       sa.ForeignKey("jobs.id")),
@@ -523,7 +523,7 @@ libs_association = sa.Table("libs_association",
                             )
 
 
-class Job(mb.SaharaBase):
+class Job(mb.VdiBase):
     """Job - description and location of a job binary
     """
 
@@ -552,7 +552,7 @@ class Job(mb.SaharaBase):
         return d
 
 
-class JobBinaryInternal(mb.SaharaBase):
+class JobBinaryInternal(mb.VdiBase):
     """JobBinaryInternal - raw binary storage for executable jobs
     """
     __tablename__ = 'job_binary_internal'
@@ -569,7 +569,7 @@ class JobBinaryInternal(mb.SaharaBase):
     datasize = sa.Column(sa.BIGINT)
 
 
-class JobBinary(mb.SaharaBase):
+class JobBinary(mb.VdiBase):
     """JobBinary - raw binary storage for executable jobs
     """
 

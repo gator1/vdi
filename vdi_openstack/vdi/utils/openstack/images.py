@@ -16,9 +16,9 @@
 from novaclient.v1_1 import images
 
 
-PROP_DESCR = '_sahara_description'
-PROP_USERNAME = '_sahara_username'
-PROP_TAG = '_sahara_tag_'
+PROP_DESCR = '_vdi_description'
+PROP_USERNAME = '_vdi_username'
+PROP_TAG = '_vdi_tag_'
 
 
 def _iter_tags(meta):
@@ -33,12 +33,12 @@ def _ensure_tags(tags):
     return [tags] if type(tags) in [str, unicode] else tags
 
 
-class SaharaImage(images.Image):
+class VdiImage(images.Image):
     def __init__(self, manager, info, loaded=False):
         info['description'] = info.get('metadata', {}).get(PROP_DESCR)
         info['username'] = info.get('metadata', {}).get(PROP_USERNAME)
         info['tags'] = [tag for tag in _iter_tags(info.get('metadata', {}))]
-        super(SaharaImage, self).__init__(manager, info, loaded)
+        super(VdiImage, self).__init__(manager, info, loaded)
 
     def tag(self, tags):
         self.manager.tag(self, tags)
@@ -67,13 +67,13 @@ class SaharaImage(images.Image):
         return result
 
 
-class SaharaImageManager(images.ImageManager):
-    """Manage :class:`SaharaImage` resources.
+class VdiImageManager(images.ImageManager):
+    """Manage :class:`VdiImage` resources.
 
     This is an extended version of nova client's ImageManager with support of
     additional description and image tags stored in images' meta.
     """
-    resource_class = SaharaImage
+    resource_class = VdiImage
 
     def set_description(self, image, username, description=None):
         """Sets human-readable information for image.
@@ -88,7 +88,7 @@ class SaharaImageManager(images.ImageManager):
         })
 
     def unset_description(self, image):
-        """Unsets all Sahara-related information.
+        """Unsets all Vdi-related information.
 
         It removes username, description and tags from the specified image.
         """

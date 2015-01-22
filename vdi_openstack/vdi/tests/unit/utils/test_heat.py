@@ -60,7 +60,7 @@ class TestHeat(unittest2.TestCase):
         self.assertEqual(expected, actual)
 
 
-class TestClusterTemplate(base.SaharaWithDbTestCase):
+class TestClusterTemplate(base.VdiWithDbTestCase):
     """This test checks valid structure of Resources
        section in generated Heat templates:
        1. It checks templates generation with different OpenStack

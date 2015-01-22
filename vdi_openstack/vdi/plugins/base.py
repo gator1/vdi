@@ -28,14 +28,14 @@ LOG = logging.getLogger(__name__)
 opts = [
     cfg.ListOpt('plugins',
                 default=['vanilla', 'hdp', 'idh'],
-                help='List of plugins to be loaded. Sahara preserves the '
+                help='List of plugins to be loaded. Vdi preserves the '
                      'order of the list when returning it.'),
 ]
 
 # opts = [
 #     cfg.ListOpt('plugins',
 #                 default=[],
-#                 help='List of plugins to be loaded. Sahara preserves the '
+#                 help='List of plugins to be loaded. Vdi preserves the '
 #                      'order of the list when returning it.'),
 # ]
 
@@ -97,7 +97,7 @@ class PluginManager(object):
         config_plugins = CONF.plugins
         extension_manager = enabled.EnabledExtensionManager(
             check_func=lambda ext: ext.name in config_plugins,
-            namespace='sahara.cluster.plugins',
+            namespace='vdi.cluster.plugins',
             invoke_on_load=True
         )
 

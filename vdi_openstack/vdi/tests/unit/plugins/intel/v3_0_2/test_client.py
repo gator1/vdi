@@ -34,7 +34,7 @@ SESSION_GET_DATA = {"items": [
 ]}
 
 
-class TestClient(base.SaharaTestCase):
+class TestClient(base.VdiTestCase):
     def _get_instance(self):
         inst_remote = mock.MagicMock()
         inst_remote.get_http_client.return_value = sessions.Session()

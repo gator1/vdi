@@ -1,17 +1,17 @@
-Sahara project
+Vdi project
 ===============
 
-Sahara at wiki.openstack.org: https://wiki.openstack.org/wiki/Sahara
+Vdi at wiki.openstack.org: https://wiki.openstack.org/wiki/Vdi
 
-Launchpad project: https://launchpad.net/sahara
+Launchpad project: https://launchpad.net/vdi
 
-Sahara docs site: http://docs.openstack.org/developer/sahara
+Vdi docs site: http://docs.openstack.org/developer/vdi
 
-Roadmap: https://wiki.openstack.org/wiki/Sahara/Roadmap
+Roadmap: https://wiki.openstack.org/wiki/Vdi/Roadmap
 
-Quickstart guide: http://docs.openstack.org/developer/sahara/devref/quickstart.html
+Quickstart guide: http://docs.openstack.org/developer/vdi/devref/quickstart.html
 
-How to participate: http://docs.openstack.org/developer/sahara/devref/how_to_participate.html
+How to participate: http://docs.openstack.org/developer/vdi/devref/how_to_participate.html
 
 
 License

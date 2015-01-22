@@ -39,7 +39,7 @@ edp_opts = [
 networking_opts = [
     cfg.BoolOpt('use_floating_ips',
                 default=True,
-                help='If set to True, Sahara will use floating IPs to '
+                help='If set to True, Vdi will use floating IPs to '
                      'communicate with instances. To make sure that all '
                      'instances have floating IPs assigned in Nova Network '
                      'set "auto_assign_floating_ip=True" in nova.conf. '

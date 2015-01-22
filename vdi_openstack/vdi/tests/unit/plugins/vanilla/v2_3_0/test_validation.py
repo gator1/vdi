@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Mirantis Inc.
+# Copyright (c) 2015 Huawei Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from vdi.tests.unit import base
 from vdi.tests.unit import testutils as tu
 
 
-class ValidationTest(base.SaharaTestCase):
+class ValidationTest(base.VdiTestCase):
     def setUp(self):
         super(ValidationTest, self).setUp()
         self.pl = p.VanillaProvider()

@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Mirantis Inc.
+# Copyright (c) 2015 Huawei Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -176,5 +176,5 @@ def get_config_value(service, name, cluster=None):
         if c.applicable_target == service and c.name == name:
             return c.default_value
 
-    raise ex.SaharaException("Unable get parameter '%s' from service %s",
+    raise ex.VdiException("Unable get parameter '%s' from service %s",
                              name, service)

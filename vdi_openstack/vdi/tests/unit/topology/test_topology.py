@@ -23,7 +23,7 @@ from vdi.tests.unit import base
 import vdi.topology.topology_helper as th
 
 
-class TopologyTestCase(base.SaharaTestCase):
+class TopologyTestCase(base.VdiTestCase):
     def setUp(self):
         context.set_ctx(context.Context(None, None, None, None))
 

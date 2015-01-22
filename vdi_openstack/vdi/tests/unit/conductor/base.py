@@ -19,7 +19,7 @@ from vdi.conductor import manager
 from vdi.tests.unit import base
 
 
-class ConductorManagerTestCase(base.SaharaWithDbTestCase):
+class ConductorManagerTestCase(base.VdiWithDbTestCase):
 
     def __init__(self, *args, **kwargs):
         """List of check callables could be specified.

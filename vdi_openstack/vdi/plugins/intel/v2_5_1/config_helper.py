@@ -68,7 +68,7 @@ HADOOP_SWIFTFS_JAR_URL = p.Config(
     description='Library that adds swift support to hadoop. '
                 'The file will be downloaded from VM with oozie.',
     priority=1, is_optional=True,
-    default_value='http://vdi-files.mirantis.com/'
+    default_value='http://vdi-files.huawei.com/'
                   'hadoop-swift/hadoop-swift-latest.jar')
 
 HIDDEN_CONFS = ['fs.default.name', 'dfs.name.dir', 'dfs.data.dir',

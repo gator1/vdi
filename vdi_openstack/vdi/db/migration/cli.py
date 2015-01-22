@@ -105,7 +105,7 @@ def main():
     config.set_main_option('script_location',
                            'vdi.db.migration:alembic_migrations')
     # attach the VDI conf to the Alembic conf
-    config.sahara_config = CONF
+    config.vdi_config = CONF
 
     CONF(project='vdi')
     CONF.command.func(config, CONF.command.name)

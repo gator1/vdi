@@ -21,7 +21,7 @@ import uuid
 
 from neutronclient.v2_0 import client as neutron_client
 from novaclient.v1_1 import client as nova_client
-import saharaclient.client as sahara_client
+import vdiclient.client as vdi_client
 from swiftclient import client as swift_client
 import unittest2
 
@@ -61,19 +61,19 @@ class ITestCase(unittest2.TestCase):
         self.idh_config = cfg.ITConfig().idh_config
 
         telnetlib.Telnet(
-            self.common_config.SAHARA_HOST, self.common_config.SAHARA_PORT
+            self.common_config.VDI_HOST, self.common_config.VDI_PORT
         )
 
-        self.sahara = sahara_client.Client(
-            version=self.common_config.SAHARA_API_VERSION,
+        self.vdi = vdi_client.Client(
+            version=self.common_config.VDI_API_VERSION,
             username=self.common_config.OS_USERNAME,
             api_key=self.common_config.OS_PASSWORD,
             project_name=self.common_config.OS_TENANT_NAME,
             auth_url=self.common_config.OS_AUTH_URL,
-            sahara_url='http://%s:%s/v%s/%s' % (
-                self.common_config.SAHARA_HOST,
-                self.common_config.SAHARA_PORT,
-                self.common_config.SAHARA_API_VERSION,
+            vdi_url='http://%s:%s/v%s/%s' % (
+                self.common_config.VDI_HOST,
+                self.common_config.VDI_PORT,
+                self.common_config.VDI_API_VERSION,
                 self.common_config.OS_TENANT_ID
             ))
 
@@ -114,7 +114,7 @@ class ITestCase(unittest2.TestCase):
                                    node_processes, node_configs,
                                    volumes_per_node=0, volume_size=0,
                                    floating_ip_pool=None):
-        data = self.sahara.node_group_templates.create(
+        data = self.vdi.node_group_templates.create(
             name, plugin_config.PLUGIN_NAME, plugin_config.HADOOP_VERSION,
             self.flavor_id, description, volumes_per_node, volume_size,
             node_processes, node_configs, floating_ip_pool)
@@ -128,7 +128,7 @@ class ITestCase(unittest2.TestCase):
             for key, value in node_group.items():
                 if value is None:
                     del node_group[key]
-        data = self.sahara.cluster_templates.create(
+        data = self.vdi.cluster_templates.create(
             name, plugin_config.PLUGIN_NAME, plugin_config.HADOOP_VERSION,
             description, cluster_configs, node_groups, anti_affinity, net_id)
         cluster_template_id = data.id
@@ -139,7 +139,7 @@ class ITestCase(unittest2.TestCase):
                                     node_groups=None, anti_affinity=None,
                                     net_id=None, is_transient=False):
         self.cluster_id = None
-        data = self.sahara.clusters.create(
+        data = self.vdi.clusters.create(
             self.common_config.CLUSTER_NAME + '-' + plugin_config.PLUGIN_NAME,
             plugin_config.PLUGIN_NAME, plugin_config.HADOOP_VERSION,
             cluster_template_id, plugin_config.IMAGE_ID, is_transient,
@@ -197,7 +197,7 @@ class ITestCase(unittest2.TestCase):
 #---------Helper methods for cluster info obtaining and its processing---------
 
     def poll_cluster_state(self, cluster_id):
-        data = self.sahara.clusters.get(cluster_id)
+        data = self.vdi.clusters.get(cluster_id)
         timeout = self.common_config.CLUSTER_CREATION_TIMEOUT * 60
         while str(data.status) != 'Active':
             if str(data.status) == 'Error':
@@ -208,13 +208,13 @@ class ITestCase(unittest2.TestCase):
                     'within %d minutes.'
                     % self.common_config.CLUSTER_CREATION_TIMEOUT
                 )
-            data = self.sahara.clusters.get(cluster_id)
+            data = self.vdi.clusters.get(cluster_id)
             time.sleep(10)
             timeout -= 10
         return str(data.status)
 
     def get_cluster_node_ip_list_with_node_processes(self, cluster_id):
-        data = self.sahara.clusters.get(cluster_id)
+        data = self.vdi.clusters.get(cluster_id)
         node_groups = data.node_groups
         node_ip_list_with_node_processes = {}
         for node_group in node_groups:
@@ -389,7 +389,7 @@ class ITestCase(unittest2.TestCase):
         def print_error_log(parameter, value):
             print(
                 '\nImage with %s "%s" was found in image list but it was '
-                'possibly not registered for Sahara. Please, make sure image '
+                'possibly not registered for Vdi. Please, make sure image '
                 'was correctly registered.' % (parameter, value)
             )
 
@@ -444,19 +444,19 @@ class ITestCase(unittest2.TestCase):
                     )
             self.fail(
                 '\n\nImage with tag "%s" not found in list of registered '
-                'images for Sahara. Please, make sure tag "%s" was added to '
+                'images for Vdi. Please, make sure tag "%s" was added to '
                 'image and image was correctly registered.\n'
                 % (plugin_config.IMAGE_TAG, plugin_config.IMAGE_TAG)
             )
         # If plugin_config.IMAGE_ID, plugin_config.IMAGE_NAME and
         # plugin_config.IMAGE_TAG are None then image is chosen
-        # by tag "sahara_i_tests". If image has tag "sahara_i_tests"
+        # by tag "vdi_i_tests". If image has tag "vdi_i_tests"
         # (at the same time image ID, image name and image tag were not
         # specified in configuration file of integration tests) then return
         # its ID and username. Found image will be chosen as image for tests.
-        # If image with tag "sahara_i_tests" not found then handle error
+        # If image with tag "vdi_i_tests" not found then handle error
         for image in images:
-            if (image.metadata.get(imgs.PROP_TAG + 'sahara_i_tests')) and (
+            if (image.metadata.get(imgs.PROP_TAG + 'vdi_i_tests')) and (
                     image.metadata.get(imgs.PROP_TAG + (
                                        '%s' % plugin_config.PLUGIN_NAME))):
                 try:
@@ -473,16 +473,16 @@ class ITestCase(unittest2.TestCase):
                                 ' was specified in configuration file of '
                                 'integration tests. That is why there was '
                                 'attempt to choose image by tag '
-                                '"sahara_i_tests" and image with such tag '
+                                '"vdi_i_tests" and image with such tag '
                                 'was found in image list but it was possibly '
-                                'not registered for Sahara. Please, make '
+                                'not registered for Vdi. Please, make '
                                 'sure image was correctly registered.'
                             )
         self.fail(
             '\n\nNone of parameters of image (ID, name, tag) was specified in '
             'configuration file of integration tests. That is why there was '
-            'attempt to choose image by tag "sahara_i_tests" but image with '
-            'such tag not found in list of registered images for Sahara. '
+            'attempt to choose image by tag "vdi_i_tests" but image with '
+            'such tag not found in list of registered images for Vdi. '
             'Please, make sure image was correctly registered. Please, '
             'specify one of parameters of image (ID, name or tag) in '
             'configuration file of integration tests.\n'
@@ -527,12 +527,12 @@ class ITestCase(unittest2.TestCase):
                        node_group_template_id_list=None):
         if not self.common_config.RETAIN_CLUSTER_AFTER_TEST:
             if cluster_id:
-                self.sahara.clusters.delete(cluster_id)
+                self.vdi.clusters.delete(cluster_id)
             if cluster_template_id:
-                self.sahara.cluster_templates.delete(cluster_template_id)
+                self.vdi.cluster_templates.delete(cluster_template_id)
             if node_group_template_id_list:
                 for node_group_template_id in node_group_template_id_list:
-                    self.sahara.node_group_templates.delete(
+                    self.vdi.node_group_templates.delete(
                         node_group_template_id
                     )
 

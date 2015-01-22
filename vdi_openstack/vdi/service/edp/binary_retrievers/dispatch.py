@@ -15,7 +15,7 @@
 
 from vdi import context
 from vdi.service.edp.binary_retrievers import internal_swift as i_swift
-from vdi.service.edp.binary_retrievers import sahara_db as db
+from vdi.service.edp.binary_retrievers import vdi_db as db
 from vdi.swift import utils as su
 
 

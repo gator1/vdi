@@ -32,7 +32,7 @@ _java_main_class = "org.apache.hadoop.examples.WordCount"
 _java_opts = "-Dparam1=val1 -Dparam2=val2"
 
 
-class TestJobManager(base.SaharaWithDbTestCase):
+class TestJobManager(base.VdiWithDbTestCase):
     def setUp(self):
         super(TestJobManager, self).setUp()
         p.patch_minidom_writexml()

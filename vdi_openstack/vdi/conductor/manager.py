@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Handles database requests from other Sahara services."""
+"""Handles database requests from other Vdi services."""
 
 import copy
 

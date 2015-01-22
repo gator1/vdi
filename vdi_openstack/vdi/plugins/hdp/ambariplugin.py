@@ -22,7 +22,7 @@ from vdi.openstack.common import log as logging
 from vdi.plugins.general import exceptions as ex
 from vdi.plugins.general import utils as u
 from vdi.plugins.hdp import hadoopserver as h
-from vdi.plugins.hdp import saharautils as utils
+from vdi.plugins.hdp import vdiutils as utils
 from vdi.plugins.hdp.versions import versionhandlerfactory as vhf
 from vdi.plugins import provisioning as p
 from vdi.topology import topology_helper as th
@@ -265,7 +265,7 @@ class AmbariPlugin(p.ProvisioningPluginBase):
 
     def get_description(self):
         return ('The Hortonworks OpenStack plugin works with project '
-                'Sahara to automate the deployment of the Hortonworks data'
+                'Vdi to automate the deployment of the Hortonworks data'
                 ' platform on OpenStack based public & private clouds')
 
     def validate(self, cluster):

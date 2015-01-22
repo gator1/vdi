@@ -16,7 +16,7 @@
 import vdi.exceptions as e
 
 
-class IntelPluginException(e.SaharaException):
+class IntelPluginException(e.VdiException):
     def __init__(self, message):
         self.message = message
         self.code = "INTEL_PLUGIN_EXCEPTION"

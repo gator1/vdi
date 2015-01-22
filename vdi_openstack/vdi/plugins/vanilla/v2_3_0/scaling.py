@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Mirantis Inc.
+# Copyright (c) 2015 Huawei Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ def _check_decommission(cluster, instances, check_func, timeout):
         else:
             context.sleep(5)
     else:
-        ex.SaharaException("Cannot finish decommission in %d seconds" %
+        ex.VdiException("Cannot finish decommission in %d seconds" %
                            timeout)
 
 

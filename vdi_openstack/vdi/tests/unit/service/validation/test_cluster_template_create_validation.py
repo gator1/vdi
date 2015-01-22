@@ -208,7 +208,7 @@ class TestClusterTemplateCreateValidation(u.ValidationTestCase):
                 'hadoop_version': "1.2.1",
             },
             bad_req_i=(1, 'INVALID_REFERENCE',
-                       "Sahara doesn't contain plugin "
+                       "Vdi doesn't contain plugin "
                        "with name 'wrong_plugin'")
         )
 
