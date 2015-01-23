@@ -34,7 +34,7 @@ class CreateGroup(tables.LinkAction):
 # class ScaleCluster(tables.LinkAction):
 #     name = "scale"
 #     verbose_name = _("Scale Cluster")
-#     url = "horizon:vdi:clusters:scale"
+#     url = "horizon:sahara:clusters:scale"
 #     classes = ("ajax-modal", "btn-edit")
 #
 #     def allowed(self, request, cluster=None):

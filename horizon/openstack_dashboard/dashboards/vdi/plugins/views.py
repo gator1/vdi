@@ -18,9 +18,9 @@ from horizon import tables
 from horizon import tabs
 import logging
 
-from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
-from openstack_dashboard.dashboards.vdi.plugins.tables import PluginsTable
-from openstack_dashboard.dashboards.vdi.plugins.tabs import PluginDetailsTabs
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
+from sahvdidashboardugins.tables import PluginsTable
+from saharadashboard.plugins.tabs import PluginDetailsTabs
 
 LOG = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ class PluginsView(tables.DataTableView):
     template_name = 'plugins/plugins.html'
 
     def get_data(self):
-        vdi = vdiclient(self.request)
+        vdi = saharaclient(self.request)
         return vdi.plugins.list()
 
 

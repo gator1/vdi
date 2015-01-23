@@ -79,29 +79,29 @@ class BaseUserForm(forms.SelfHandlingForm):
             image_choices.append(v)
         self.fields['image_ref'].choices = image_choices
 
-        # # Populate VDI group choices
-        # group_choices = []
-        # vdi = vdiclient(self.request)
-        # groups = vdi.groups.list()
-        # if domain_context:
-        #     temp_list = [(x.id, x.name) for x in groups if x.domain_id == domain_context]
-        # else:
-        #     temp_list = [(x.id, x.name) for x in groups]
-        # for v in sorted(temp_list, key=lambda y: y[1]):
-        #     group_choices.append(v)
-        # self.fields['vdi_group'].choices = group_choices
-
-        # Populate project choices
-        project_choices = []
+        # Populate VDI group choices
+        group_choices = []
+        vdi = vdiclient(self.request)
+        groups = vdi.groups.list()
         if domain_context:
-            domain = domain_context
+            temp_list = [(x.id, x.name) for x in groups if x.domain_id == domain_context]
         else:
-            domain = self.request.user.user_domain_id
-        projects, has_more = api.keystone.tenant_list(self.request, domain=domain)
-        temp_list = [(x.id, x.name) for x in projects]
+            temp_list = [(x.id, x.name) for x in groups]
         for v in sorted(temp_list, key=lambda y: y[1]):
-            project_choices.append(v)
-        self.fields['vdi_group'].choices = project_choices
+            group_choices.append(v)
+        self.fields['vdi_group'].choices = group_choices
+
+        # # Populate project choices
+        # project_choices = []
+        # if domain_context:
+        #     domain = domain_context
+        # else:
+        #     domain = self.request.user.user_domain_id
+        # projects, has_more = api.keystone.tenant_list(self.request, domain=domain)
+        # temp_list = [(x.id, x.name) for x in projects]
+        # for v in sorted(temp_list, key=lambda y: y[1]):
+        #     project_choices.append(v)
+        # self.fields['vdi_group'].choices = project_choices
 
     def clean(self):
         # Check to make sure password fields match.
@@ -128,7 +128,7 @@ class CreatePoolForm(BaseUserForm):
     name = forms.CharField(max_length=255, label=_("Pool Name"))
     description = forms.CharField(label=_("Description"))
     image_ref = forms.ChoiceField(label=_("Image"))
-    vdi_group = forms.MultipleChoiceField(label=_("Project"),
+    vdi_group = forms.MultipleChoiceField(label=_("Department"),
                                           required=True)
 
     def __init__(self, *args, **kwargs):
@@ -183,7 +183,7 @@ class UpdatePoolForm(BaseUserForm):
     name = forms.CharField(label=_("Pool Name"))
     description = forms.CharField(label=_("Description"))
     image_ref = forms.ChoiceField(label=_("Image"), required=True)
-    vdi_group = forms.MultipleChoiceField(label=_("Project"), required=False)
+    vdi_group = forms.MultipleChoiceField(label=_("Department"), required=False)
 
     def __init__(self, request, *args, **kwargs):
         super(UpdatePoolForm, self).__init__(request, *args, **kwargs)

@@ -17,7 +17,7 @@ from testtools import testcase
 import unittest2
 
 from openstack_dashboard.dashboards.vdi.tests import base
-import openstack_dashboard.dashboards.vdi.tests.configs.config as cfg
+import saharadashboard.tests.configs.config as cfg
 
 
 class UINegativeCreateNodeGroupTemplate(base.UITestCase):

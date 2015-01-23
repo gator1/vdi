@@ -31,4 +31,4 @@ class UsersPanel(horizon.Panel):
     slug = 'users'
 
 
-dashboard.VDIDashboard.register(UsersPanel)
+dashboard.SaharaDashboard.register(UsersPanel)

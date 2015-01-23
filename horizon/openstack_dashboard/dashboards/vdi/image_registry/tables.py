@@ -20,7 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
 
-from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
+from openstack_dashboard.dashboards.vdi.api.client import client as saharaclient
 from openstack_dashboard.dashboards.vdi.utils import compatibility
 
 LOG = logging.getLogger(__name__)
@@ -55,7 +55,7 @@ class UnregisterImages(tables.BatchAction):
     classes = ('btn-danger', 'btn-terminate')
 
     def action(self, request, obj_id):
-        vdi = vdiclient(request)
+        vdi = saharaclient(request)
         vdi.images.unregister_image(obj_id)
 
 

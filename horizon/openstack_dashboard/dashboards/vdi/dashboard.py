@@ -26,10 +26,10 @@ LOG = logging.getLogger(__name__)
 class VDIDashboard(horizon.Dashboard):
     name = _("VDI")
     slug = "vdi"
-    # panels = ('groups',
-    panels = ('pools',
+    panels = ('groups',
+              'pools',
               'users')
-    default_panel = 'pools'
+    default_panel = 'groups'
     nav = True
     supports_tenants = True
     # permissions = ('openstack.roles.vdi',)

@@ -44,8 +44,9 @@ def get_horizon_parameter(name, default_value):
 
 
 # These parameters should be defined in Horizon's local_settings.py
+# Example SAHARA_URL - http://localhost:9000/v1.0
 VDI_URL = get_horizon_parameter('VDI_URL', None)
-# "type" of vdi service registered in keystone
+# "type" of Sahara service registered in keystone
 VDI_SERVICE = get_horizon_parameter('VDI_SERVICE', 'data_processing')
 # hint to generate additional Neutron network field
 VDI_USE_NEUTRON = get_horizon_parameter('VDI_USE_NEUTRON', False)
