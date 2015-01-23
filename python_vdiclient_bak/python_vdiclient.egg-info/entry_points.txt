@@ -1,3 +1,0 @@
-[console_scripts]
-vdi = vdiclient.shell:main
-

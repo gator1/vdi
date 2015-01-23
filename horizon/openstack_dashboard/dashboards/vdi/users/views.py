@@ -36,7 +36,7 @@ from openstack_dashboard.dashboards.vdi.users import tables as project_tables
 
 class IndexView(tables.DataTableView):
     table_class = project_tables.UsersTable
-    template_name = 'vdi/users/index.html'
+    template_name = 'users/index.html'
 
     def get_data(self):
         users = []
