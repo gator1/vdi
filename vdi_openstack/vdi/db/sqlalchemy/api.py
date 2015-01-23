@@ -49,11 +49,11 @@ def model_query(model, context, session=None, project_only=True):
             query to match the context's tenant_id.
     """
     session = session or get_session()
-
     query = session.query(model)
 
     if project_only and not context.is_admin:
-        query = query.filter_by(tenant_id=context.tenant_id)
+        # query = query.filter_by(tenant_id=context.tenant_id)
+        query = query.filter_by(domain_id=context.domain_id)
 
     return query
 
@@ -182,7 +182,6 @@ def group_create(context, values):
         except db_exc.DBDuplicateEntry as e:
             raise ex.DBDuplicateEntry("Duplicate entry for Group: %s"
                                       % e.columns)
-
     return group_get(context, group.id)
 
 

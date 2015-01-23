@@ -14,7 +14,7 @@
 # limitations under the License.
 
 """
-DB abstraction for Vdi
+DB abstraction for Sahara
 """
 
 from vdi.db.api import *  # noqa

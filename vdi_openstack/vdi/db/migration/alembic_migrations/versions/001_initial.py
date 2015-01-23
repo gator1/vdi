@@ -94,6 +94,7 @@ def upgrade():
         sa.Column('id', sa.String(length=36), nullable=False),
         sa.Column('name', sa.String(length=80), nullable=False),
         sa.Column('description', sa.Text(), nullable=True),
+        sa.Column('domain_id', sa.String(length=36), nullable=True),
         sa.Column('tenant_id', sa.String(length=36), nullable=True),
         sa.Column('image_ref', sa.String(length=255), nullable=True),
         sa.Column('vdi_group', st.JsonDictType(), nullable=True),
@@ -115,7 +116,7 @@ def upgrade():
         # sa.ForeignKeyConstraint(['cluster_template_id'],
         #                         ['cluster_templates.id'], ),
         # sa.PrimaryKeyConstraint('id'),
-        sa.UniqueConstraint('name', 'tenant_id'),
+        sa.UniqueConstraint('name', 'domain_id'),
         mysql_engine=MYSQL_ENGINE,
         mysql_charset=MYSQL_CHARSET
     )

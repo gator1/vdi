@@ -137,8 +137,13 @@ def create_membership(user_id, group_id, data):
 
 @rest.get('/users/<user_id>/groups')
 def user_groups_list(user_id):
-   return u.render(groups=[g.to_dict() for g in api.get_user_groups(user_id)])
+    return u.render(groups=[g.to_dict() for g in api.get_user_groups(user_id)])
     # return u.render(groups=[g.to_dict() for g in api.get_group_memberships()])
+
+
+@rest.get('/domains/<domain_id>/groups')
+def domain_groups_list(domain_id):
+    return u.render(groups=[g.to_dict() for g in api.get_domain_groups(domain_id)])
 
 
 ## Image ops
@@ -222,10 +227,12 @@ def pool_update(pool_id, data):
 
 @rest.get('/groups/<group_id>/pools')
 def group_pools_list(group_id):
-
-    # import pdb; pdb.set_trace()
-
     return u.render(pools=[p.to_dict() for p in api.get_group_pools(group_id)])
+
+
+@rest.get('/domains/<domain_id>/pools')
+def domain_pools_list(domain_id):
+    return u.render(pools=[p.to_dict() for p in api.get_domain_pools(domain_id)])
 
 
 ## Cluster ops

@@ -33,7 +33,7 @@ def client():
 
     nova.client.auth_token = ctx.token
     nova.client.management_url = compute_url
-    nova.images = images.VdiImageManager(nova)
+    nova.images = images.SaharaImageManager(nova)
     return nova
 
 

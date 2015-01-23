@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Handles database requests from other Vdi services."""
+"""Handles database requests from other Sahara services."""
 
 import copy
 
@@ -216,7 +216,7 @@ class ConductorManager(db_base.Base):
         #loading defaults
         merged_values = copy.deepcopy(GROUP_DEFAULTS)
         # merged_values['domain_id'] = context.domain_id
-        merged_values['project_id'] = context.tenant_id
+        merged_values['tenant_id'] = context.tenant_id
 
         private_key, public_key = crypto.generate_key_pair()
         merged_values['management_private_key'] = private_key
@@ -334,6 +334,7 @@ class ConductorManager(db_base.Base):
 
         #loading defaults
         merged_values = copy.deepcopy(POOL_DEFAULTS)
+        # merged_values['domain_id'] = context.domain_id
         merged_values['tenant_id'] = context.tenant_id
 
         private_key, public_key = crypto.generate_key_pair()

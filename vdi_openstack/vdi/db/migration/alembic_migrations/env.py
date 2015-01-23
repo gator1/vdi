@@ -31,7 +31,7 @@ importutils.import_module('vdi.db.sqlalchemy.models')
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-vdi_config = config.vdi_config
+sahara_config = config.sahara_config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -41,7 +41,7 @@ c.fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = model_base.VdiBase.metadata
+target_metadata = model_base.SaharaBase.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -61,7 +61,7 @@ def run_migrations_offline():
     script output.
 
     """
-    context.configure(url=vdi_config.database.connection)
+    context.configure(url=sahara_config.database.connection)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -75,7 +75,7 @@ def run_migrations_online():
 
     """
     engine = create_engine(
-        vdi_config.database.connection,
+        sahara_config.database.connection,
         poolclass=pool.NullPool)
 
     connection = engine.connect()

@@ -70,7 +70,7 @@ def main():
     wsgi.server(eventlet.listen((cfg.CONF.host, cfg.CONF.port), backlog=500),
                 app,
                 log=logging.WritableLogger(LOG),
-                debug=False)
+                debug=True)
     # wsgi.server(eventlet.listen(('', 9000), backlog=500),
     #             app, debug=True)
 
