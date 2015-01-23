@@ -1,0 +1,134 @@
+
+VDI GUI Development Guide
+bitbucket.org vdi has everything
+horizon, whole horizon including vdi dashboard. the vdi dashboard locates at 
+horizon/openstack_dashboard/dashboards/vdi
+
+python_vdiclient, python vdi client for vdi-wi and vdi_openstack
+sahara_dashboard, not used 
+vdi_dashboard, no longer used, basically the same as horizon/openstack_dashboard/dashboards/vdi
+
+vdi_openstack, RestAPI for openstack API
+
+1. install devstack, there are a few prerequisites, reference the openstack.org. some examples are:
+    
+    Install prerequisites.
+        $ sudo apt-get update
+        $ sudo apt-get install git-core python-dev gcc python-setuptools python-virtualenv node-less libssl-dev libffi-dev
+           
+           sudo apt-get update
+           Umnt yum trouble
+           Apt-get clean
+           Apt-get autoclean
+           Apt-get -f install git
+
+           sudo apt-get install vim
+           Git clone https://github.com/openstack-dev/devstack.git -b stable/juno
+            ~/devstack/stackrc: change gitbase from openstack.org to github.com. I didn't do it and it's fine.
+
+            Use devstack on 192.168.255.226, edit the file at ~/devstack/openrc:
+              for juno, can't change host_ip
+
+              # Set api HOST_IP endpoint.  SERVICE_HOST may also be used to specify the endpoint,
+              # which is convenient for some localrc configurations.
+              #HOST_IP=${HOST_IP:-127.0.0.1}
+              export HOST_IP=192.168.255.226
+              export SERVICE_HOST=192.168.255.226
+              SERVICE_HOST=${SERVICE_HOST:-$HOST_IP}
+              SERVICE_PROTOCOL=${SERVICE_PROTOCOL:-http}
+
+              Setup HOST_IP and SERVICE_HOST to 192.168.255.226, then run
+              $ source openrc admin demo
+              ./stack.sh
+
+
+              2 install VDI horizon, with multi-tenancy and VDI dashboard
+
+              cp ~/vdi/horizon to a directory such as ~/test_horizon. Not mandatory but you want to have an original copy from git
+
+              go to ~/test_horizon/openstack_dashboard/local  to modify local_settings.py
+              change to where openstack is if necessary. 
+
+              OPENSTACK_HOST = "192.168.253.162"
+              VDI_URL = "192.168.253.162:9090/v1.0"
+
+
+              cp -r ~/vdi/vdi_dashboard/vdidashboard ~/test_horizon/openstack_dashboard/dashboards/vdi, this is already done in the git. 
+
+              modify a sample file to make ~/test_horizon/openstack_dashboard/enabled/_50_vdi.py, already done in git. 
+
+              ~/test_horizon/tools$ python install_venv.py to install  horizon and it also build .vent env
+
+              """"
+               Openstack development environment setup is complete.
+
+                   Openstack development uses virtualenv to track and manage Python
+                       dependencies while in development and testing.
+
+                           To activate the Openstack virtualenv for the extent of your current shell
+                               session you can run:
+
+                                   $ source /home/jim/test_horizon/.venv/bin/activate
+
+                                       Or, if you prefer, you can run commands in the virtualenv on a case by case
+                                           basis by running:
+
+                                               $ /home/jim/test_horizon/tools/with_venv.sh <your command>
+
+                                                   Also, make test will automatically use the virtualenv.
+                                                   """"
+
+
+                                                   install vdi client
+                                                    /home/jim/test_horizon/tools/with_venv.sh pip install -e ~/vdi/python_vdiclient/
+
+                                                        chmod 600 .secret_key_store at ~/test_horizon/openstack_dashboard/local
+
+
+                                                        :change user.py at ~/test_horizon/.venv/local/lib/python2.7/site-packages/openstack_auth
+                                                        Run it by executing ./test.sh
+
+
+
+
+
+3.  install vdi_openstack, RestAPI
+                                                               Clone vdi_openstack project from bitbucket.  
+                                                                      sudo apt-get install libmysqlclient-dev
+                                                                      modify ~/vdi_openstack/etc/vdi/vdi.conf to make the right password:
+                                                                      os_admin_password=nomoresecrete
+                                                                      connection=mysql://root:stackdb@127.0.0.1/vdi
+
+
+
+                                                                            Run it by executing ./test.sh
+
+
+                                                                            some notes:
+
+                                                                            1. List the endpoints from devstack.  Make sure they point to 192.168.255.226.
+                                                                                $ keystone endpoint
+                                                                                        
+
+                                                                                        2. Check out horizon.
+                                                                                                $ git clone https://github.com/openstack/horizon -b stable/icehouse
+
+
+
+
+                                                                                                3. Adding/modifying tabs for VDI in saharadashboard/dashboard.py:
+                                                                                                class SaharaDashboard(horizon.Dashboard):
+                                                                                                   name = _("VDI")
+                                                                                                      slug = "vdi"
+                                                                                                         panels = ('groups',
+                                                                                                                      # 'groups',
+                                                                                                                                   # 'nodegroup_templates',
+                                                                                                                                                # 'job_executions',
+                                                                                                                                                             # 'jobs',
+                                                                                                                                                                          # 'job_binaries',
+                                                                                                                                                                                       # 'data_sources',
+                                                                                                                                                                                                    # 'image_registry',
+                                                                                                                                                                                                                 'plugins')
+                                                                                                                                                                                                                    default_panel = 'groups'
+                                                                                                                                                                                                                       nav = True
+                                                                                                                                                                                                                          supports_tenants = True

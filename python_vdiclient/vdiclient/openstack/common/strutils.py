@@ -24,7 +24,7 @@ import unicodedata
 
 import six
 
-from vdiclient.common.gettextutils import _
+from vdiclient.openstack.common.gettextutils import _
 
 
 UNIT_PREFIX_EXPONENT = {

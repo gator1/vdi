@@ -15,8 +15,8 @@
 
 
 from openstack_dashboard.dashboards.vdi.plugins.views import PluginDetailsView
-from sahvdidashboardugins.views import PluginsView
-from saharadashboard.utils import importutils
+from openstack_dashboard.dashboards.vdi.plugins.views import PluginsView
+from openstack_dashboard.dashboards.vdi.utils import importutils
 
 urls = importutils.import_any('django.conf.urls.defaults',
                               'django.conf.urls')

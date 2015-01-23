@@ -28,10 +28,10 @@ import prettytable
 import six
 from six import moves
 
-from vdiclient.common.apiclient import exceptions
-from vdiclient.common.gettextutils import _
-from vdiclient.common import strutils
-from vdiclient.common import uuidutils
+from vdiclient.openstack.common.apiclient import exceptions
+from vdiclient.openstack.common.gettextutils import _
+from vdiclient.openstack.common import strutils
+from vdiclient.openstack.common import uuidutils
 
 
 def validate_args(fn, *args, **kwargs):

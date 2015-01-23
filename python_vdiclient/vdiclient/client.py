@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Huawei Technologies Inc.
+# Copyright (c) 2014 Mirantis Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vdiclient.common import importutils
+from vdiclient.openstack.common import importutils
 
 
 class UnsupportedVersion(Exception):
@@ -36,7 +36,6 @@ def get_client_class(version):
                "%(versions)s") % {'version': version,
                                   'versions': supported_versions}
         raise UnsupportedVersion(msg)
-
     return importutils.import_class(client_path)
 
 

@@ -1,5 +1,5 @@
-# Copyright (c) 2014 Huawei Technologies.
-# Copyright 2014 OpenStack Foundation
+# Copyright 2010 Jacob Kaplan-Moss
+# Copyright 2011 OpenStack Foundation
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -55,11 +55,11 @@ except ImportError:
 
 from vdiclient.api import client
 from vdiclient.api import shell as shell_api
-# from vdiclient.nova import auth_plugin as nova_auth_plugin
-# from vdiclient.nova import extension as nova_extension
-from vdiclient.common.apiclient import exceptions as exc
-from vdiclient.common import cliutils
-from vdiclient.common import strutils
+from vdiclient.nova import auth_plugin as nova_auth_plugin
+from vdiclient.nova import extension as nova_extension
+from vdiclient.openstack.common.apiclient import exceptions as exc
+from vdiclient.openstack.common import cliutils
+from vdiclient.openstack.common import strutils
 from vdiclient import version
 
 DEFAULT_API_VERSION = 'api'
@@ -394,7 +394,7 @@ class OpenStackVDIShell(object):
                             help=argparse.SUPPRESS)
 
         # The auth-system-plugins might require some extra options
-        # nova_auth_plugin.load_auth_system_opts(parser)
+        nova_auth_plugin.load_auth_system_opts(parser)
 
         return parser
 
@@ -518,7 +518,7 @@ class OpenStackVDIShell(object):
         self.setup_debugging(options.debug)
 
         # Discover available auth plugins
-        # nova_auth_plugin.discover_auth_systems()
+        nova_auth_plugin.discover_auth_systems()
 
         # build available subcommands based on version
         self.extensions = \
@@ -635,7 +635,7 @@ class OpenStackVDIShell(object):
 #                raise exc.CommandError("You must provide an auth url "
 #                        "via either --os-auth-url or env[OS_AUTH_URL]")
 
-# NOTE: The Vdi client authenticates when you create it. So instead of
+# NOTE: The VDI client authenticates when you create it. So instead of
 #       creating here and authenticating later, which is what the novaclient
 #       does, we just create the client later.
 
@@ -681,7 +681,7 @@ class OpenStackVDIShell(object):
 #            if not utils.isunauthenticated(args.func):
 #                self.cs.authenticate()
 #        except exc.Unauthorized:
-#            raise exc.CommandError("Invalid OpenStack Vdi credentials.")
+#            raise exc.CommandError("Invalid OpenStack VDI credentials.")
 #        except exc.AuthorizationFailure:
 #            raise exc.CommandError("Unable to authorize user")
 

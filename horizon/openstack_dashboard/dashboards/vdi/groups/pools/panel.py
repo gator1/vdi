@@ -25,4 +25,4 @@ class PoolsPanel(horizon.Panel):
     slug = 'pools'
 
 
-dashboard.SaharaDashboard.register(PoolsPanel)
+dashboard.VDIDashboard.register(PoolsPanel)

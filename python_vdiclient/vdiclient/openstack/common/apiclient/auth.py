@@ -24,7 +24,7 @@ import os
 import six
 from stevedore import extension
 
-from vdiclient.common.apiclient import exceptions
+from vdiclient.openstack.common.apiclient import exceptions
 
 
 _discovered_plugins = {}

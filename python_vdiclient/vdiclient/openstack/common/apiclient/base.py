@@ -29,8 +29,8 @@ import copy
 import six
 from six.moves.urllib import parse
 
-from vdiclient.common.apiclient import exceptions
-from vdiclient.common import strutils
+from vdiclient.openstack.common.apiclient import exceptions
+from vdiclient.openstack.common import strutils
 
 
 def getid(obj):

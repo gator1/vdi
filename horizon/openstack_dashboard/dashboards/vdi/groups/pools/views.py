@@ -32,7 +32,6 @@ from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from openstack_dashboard.dashboards.vdi.pools.tables import tables as pool_tables
 import openstack_dashboard.dashboards.vdi.pools.tabs as _tabs
 import openstack_dashboard.dashboards.vdi.pools.workflows.create as create_flow
-# import saharadashboard.groups.images.tables as image_tables
 
 
 class PoolsIndexView(tables.DataTableView):
@@ -124,13 +123,13 @@ class CreateGroupView(workflows.WorkflowView):
 
 # class ConfigureClusterView(workflows.WorkflowView):
 #     workflow_class = create_flow.ConfigureCluster
-#     success_url = "horizon:sahara:clusters"
+#     success_url = "horizon:vdi:clusters"
 #     template_name = "clusters/configure.html"
 #
 #
 # class ScaleClusterView(workflows.WorkflowView):
 #     workflow_class = scale_flow.ScaleCluster
-#     success_url = "horizon:sahara:clusters"
+#     success_url = "horizon:vdi:clusters"
 #     classes = ("ajax-modal")
 #     template_name = "clusters/scale.html"
 #
@@ -144,8 +143,8 @@ class CreateGroupView(workflows.WorkflowView):
 #     def get_object(self, *args, **kwargs):
 #         if not hasattr(self, "_object"):
 #             template_id = self.kwargs['cluster_id']
-#             sahara = vdiclient(self.request)
-#             template = sahara.cluster_templates.get(template_id)
+#             vdi = vdiclient(self.request)
+#             template = vdi.cluster_templates.get(template_id)
 #             self._object = template
 #         return self._object
 #

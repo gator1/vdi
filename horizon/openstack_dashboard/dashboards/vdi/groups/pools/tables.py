@@ -34,7 +34,7 @@ class CreateGroup(tables.LinkAction):
 # class ScaleCluster(tables.LinkAction):
 #     name = "scale"
 #     verbose_name = _("Scale Cluster")
-#     url = "horizon:sahara:clusters:scale"
+#     url = "horizon:vdi:clusters:scale"
 #     classes = ("ajax-modal", "btn-edit")
 #
 #     def allowed(self, request, cluster=None):
@@ -66,16 +66,16 @@ class DeleteGroup(tables.BatchAction):
     classes = ('btn-danger', 'btn-terminate')
 
     def action(self, request, obj_id):
-        sahara = vdiclient(request)
-        sahara.groups.delete(obj_id)
+        vdi = vdiclient(request)
+        vdi.groups.delete(obj_id)
 
 
 class UpdateRow(tables.Row):
     ajax = True
 
     def get_data(self, request, instance_id):
-        sahara = vdiclient(request)
-        instance = sahara.groups.get(instance_id)
+        vdi = vdiclient(request)
+        instance = vdi.groups.get(instance_id)
         return instance
 
 
