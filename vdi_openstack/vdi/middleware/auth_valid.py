@@ -29,7 +29,6 @@ class AuthValidator:
         self.app = app
         self.conf = conf
 
-
     def __call__(self, env, start_response):
         """Ensures that tenants in url and token are equal.
 
@@ -40,26 +39,35 @@ class AuthValidator:
         Reject request if tenant_id from headers not equals to tenant_id from
         url.
         """
-
-        token_tenant = env['HTTP_X_TENANT_ID']
-        if not token_tenant:
-            LOG.warn("Can't get tenant_id from env")
+        token_domain = env['HTTP_X_USER_DOMAIN_ID']
+        if not token_domain:
+            LOG.warn("Can't get domain_id from env")
             resp = ex.HTTPServiceUnavailable()
             return resp(env, start_response)
 
+        # token_tenant = env['HTTP_X_TENANT_ID']
+        # if not token_tenant:
+        #     LOG.warn("Can't get tenant_id from env")
+        #     resp = ex.HTTPServiceUnavailable()
+        #     return resp(env, start_response)
+
         path = env['PATH_INFO']
-        # if path != '/' or '/api/help':
         if path not in ['/', '/api/help']:
-            version, url_tenant, rest = commons.split_path(path, 3, 3, True)
-            if not version or not url_tenant or not rest:
+            version, url_target, rest = commons.split_path(path, 3, 3, True)
+            if not version or not url_target or not rest:
                 LOG.info("Incorrect path: %s", path)
                 resp = ex.HTTPNotFound("Incorrect path")
                 return resp(env, start_response)
 
-            if token_tenant != url_tenant:
-                LOG.debug("Unauthorized: token tenant != requested tenant")
-                resp = ex.HTTPUnauthorized('Token tenant != requested tenant')
+            if token_domain != url_target:
+                LOG.debug("Unauthorized: token domain != requested domain")
+                resp = ex.HTTPUnauthorized('Token domain != requested domain')
                 return resp(env, start_response)
+
+            # if token_tenant != url_target:
+            #     LOG.debug("Unauthorized: token tenant != requested tenant")
+            #     resp = ex.HTTPUnauthorized('Token tenant != requested tenant')
+            #     return resp(env, start_response)
 
         return self.app(env, start_response)
 
