@@ -31,7 +31,6 @@ import re
 import time
 
 from keystoneclient import adapter
-from oslo.utils import importutils
 from oslo.utils import netutils
 import requests
 from requests import adapters
@@ -44,9 +43,9 @@ except ImportError:
 from six.moves.urllib import parse
 
 from novaclient import exceptions
-from novaclient.i18n import _
-from novaclient.openstack.common import cliutils
+from novaclient.openstack.common.gettextutils import _
 from novaclient import service_catalog
+from novaclient import utils
 
 
 class _ClientConnectionPool(object):
@@ -90,8 +89,8 @@ class CompletionCache(object):
         """
         uniqifier = hashlib.md5(username.encode('utf-8') +
                                 auth_url.encode('utf-8')).hexdigest()
-        base_dir = cliutils.env('NOVACLIENT_UUID_CACHE_DIR',
-                                default="~/.novaclient")
+        base_dir = utils.env('NOVACLIENT_UUID_CACHE_DIR',
+                             default="~/.novaclient")
         return os.path.expanduser(os.path.join(base_dir, uniqifier))
 
     def _prepare_directory(self):
@@ -137,34 +136,19 @@ class CompletionCache(object):
 
 class SessionClient(adapter.LegacyJsonAdapter):
 
-    def __init__(self, *args, **kwargs):
-        self.times = []
-        super(SessionClient, self).__init__(*args, **kwargs)
-
     def request(self, url, method, **kwargs):
         # NOTE(jamielennox): The standard call raises errors from
         # keystoneclient, where we need to raise the novaclient errors.
         raise_exc = kwargs.pop('raise_exc', True)
-        start_time = time.time()
         resp, body = super(SessionClient, self).request(url,
                                                         method,
                                                         raise_exc=False,
                                                         **kwargs)
 
-        end_time = time.time()
-        self.times.append(('%s %s' % (method, url),
-                          start_time, end_time))
-
         if raise_exc and resp.status_code >= 400:
             raise exceptions.from_response(resp, body, url, method)
 
         return resp, body
-
-    def get_timings(self):
-        return self.times
-
-    def reset_timings(self):
-        self.times = []
 
 
 def _original_only(f):
@@ -199,16 +183,16 @@ class HTTPClient(object):
                  os_cache=False, no_cache=True,
                  http_log_debug=False, auth_system='keystone',
                  auth_plugin=None, auth_token=None,
-                 cacert=None, tenant_id=None, user_id=None,
-                 connection_pool=False):
+                 # cacert=None, tenant_id=None, user_id=None,
+                 cacert=None, tenant_id=None, domain='Default',
+                 user_id=None, connection_pool=False):
         self.user = user
         self.user_id = user_id
         self.password = password
         self.projectid = projectid
         self.tenant_id = tenant_id
-
-        self._connection_pool = (_ClientConnectionPool()
-                                 if connection_pool else None)
+        self.domain = domain
+        self._connection_pool = (_ClientConnectionPool() if connection_pool else None)
 
         # This will be called by #_get_password if self.password is None.
         # EG if a password can only be obtained by prompting the user, but a
@@ -332,7 +316,7 @@ class HTTPClient(object):
         if not self.http_log_debug:
             return
 
-        string_parts = ['curl -g -i']
+        string_parts = ['curl -i']
 
         if not kwargs.get('verify', True):
             string_parts.append(' --insecure')
@@ -393,10 +377,10 @@ class HTTPClient(object):
                     self._session.close()
                 self._current_url = service_url
                 self._logger.debug(
-                    "New session created for: (%s)" % service_url)
+                        "New session created for: (%s)" % service_url)
                 self._session = requests.Session()
                 self._session.mount(service_url,
-                                    self._connection_pool.get(service_url))
+                        self._connection_pool.get(service_url))
             return self._session
         elif self._session:
             return self._session
@@ -435,8 +419,7 @@ class HTTPClient(object):
             # to check the body.  httplib2 tests check for 'Connection refused'
             # or 'actively refused' in the body, so that's what we'll do.
             if resp.status_code == 400:
-                if ('Connection refused' in resp.text or
-                        'actively refused' in resp.text):
+                if 'Connection refused' in resp.text or'actively refused' in resp.text:
                     raise exceptions.ConnectionRefused(resp.text)
             try:
                 body = json.loads(resp.text)
@@ -477,7 +460,6 @@ class HTTPClient(object):
             kwargs.setdefault('headers', {})['X-Auth-Token'] = self.auth_token
             if self.projectid:
                 kwargs['headers']['X-Auth-Project-Id'] = self.projectid
-
             resp, body = self._time_request(url, method, **kwargs)
             return resp, body
         except exceptions.Unauthorized as e:
@@ -615,6 +597,8 @@ class HTTPClient(object):
                 # with the endpoints any more, we need to replace
                 # our service account token with the user token.
                 self.auth_token = self.proxy_token
+        elif self.version == "v3":
+            auth_url = self._v3_auth(auth_url)
         else:
             try:
                 while auth_url:
@@ -692,10 +676,29 @@ class HTTPClient(object):
 
         return self._authenticate(url, body)
 
+    def _v3_auth(self, auth_url):
+        body = {"auth":
+                    {"identity":
+                         {"methods": ["password"], "password":
+                             {"user":
+                                  {"domain": {"name": self.domain},
+                                   "name": self.user,
+                                   "password": self._get_password()}}},
+                     "scope":
+                         {"project":
+                              {"domain": {"name": self.domain},
+                               "name": self.projectid}}
+                    }
+        }
+        auth_url += '/auth'
+        return self._authenticate(auth_url, body)
+
     def _authenticate(self, url, body, **kwargs):
         """Authenticate and extract the service catalog."""
         method = "POST"
         token_url = url + "/tokens"
+
+        import pdb; pdb.set_trace()
 
         # Make sure we follow redirects when trying to reach Keystone
         resp, respbody = self._time_request(
@@ -708,7 +711,7 @@ class HTTPClient(object):
         return self._extract_service_catalog(url, resp, respbody)
 
 
-def _construct_http_client(username=None, password=None, project_id=None,
+def _construct_http_client(username=None, password=None, domain=None, project_id=None,
                            auth_url=None, insecure=False, timeout=None,
                            proxy_tenant_id=None, proxy_token=None,
                            region_name=None, endpoint_type='publicURL',
@@ -720,11 +723,11 @@ def _construct_http_client(username=None, password=None, project_id=None,
                            auth_token=None, cacert=None, tenant_id=None,
                            user_id=None, connection_pool=False, session=None,
                            auth=None, user_agent='python-novaclient',
-                           interface=None, **kwargs):
+                           **kwargs):
     if session:
         return SessionClient(session=session,
                              auth=auth,
-                             interface=interface or endpoint_type,
+                             interface=endpoint_type,
                              service_type=service_type,
                              region_name=region_name,
                              service_name=service_name,
@@ -736,6 +739,7 @@ def _construct_http_client(username=None, password=None, project_id=None,
         return HTTPClient(username,
                           password,
                           user_id=user_id,
+                          domain=domain,
                           projectid=project_id,
                           tenant_id=tenant_id,
                           auth_url=auth_url,
@@ -763,7 +767,7 @@ def get_client_class(version):
     version_map = {
         '1.1': 'novaclient.v1_1.client.Client',
         '2': 'novaclient.v1_1.client.Client',
-        '3': 'novaclient.v1_1.client.Client',
+        '3': 'novaclient.v3.client.Client',
     }
     try:
         client_path = version_map[str(version)]
@@ -773,7 +777,7 @@ def get_client_class(version):
                                'keys': ', '.join(version_map.keys())}
         raise exceptions.UnsupportedVersion(msg)
 
-    return importutils.import_class(client_path)
+    return utils.import_class(client_path)
 
 
 def Client(version, *args, **kwargs):

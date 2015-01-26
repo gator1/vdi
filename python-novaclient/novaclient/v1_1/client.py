@@ -101,10 +101,11 @@ class Client(object):
                  volume_service_name=None, timings=False, bypass_url=None,
                  os_cache=False, no_cache=True, http_log_debug=False,
                  auth_system='keystone', auth_plugin=None, auth_token=None,
-                 cacert=None, tenant_id=None, user_id=None,
+                 # cacert=None, tenant_id=None, user_id=None,
+                 cacert=None, tenant_id=None, domain=None, user_id=None,
                  connection_pool=False, session=None, auth=None,
-                 completion_cache=None, **kwargs):
-        # FIXME(comstud): Rename the api_key argument above when we
+                 completion_cache=None):
+       # FIXME(comstud): Rename the api_key argument above when we
         # know it's not being used as keyword argument
 
         # NOTE(cyeoh): In the novaclient context (unlike Nova) the
@@ -165,11 +166,11 @@ class Client(object):
                 if extension.manager_class:
                     setattr(self, extension.name,
                             extension.manager_class(self))
-
         self.client = client._construct_http_client(
             username=username,
             password=password,
             user_id=user_id,
+            domain=domain,
             project_id=project_id,
             tenant_id=tenant_id,
             auth_url=auth_url,
@@ -192,9 +193,7 @@ class Client(object):
             cacert=cacert,
             connection_pool=connection_pool,
             session=session,
-            auth=auth,
-            **kwargs)
-
+            auth=auth)
         self.completion_cache = completion_cache
 
     def write_object_to_completion_cache(self, obj):
@@ -218,9 +217,11 @@ class Client(object):
     def set_management_url(self, url):
         self.client.set_management_url(url)
 
+    @client._original_only
     def get_timings(self):
         return self.client.get_timings()
 
+    @client._original_only
     def reset_timings(self):
         self.client.reset_timings()
 
