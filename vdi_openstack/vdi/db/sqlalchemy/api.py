@@ -187,18 +187,12 @@ def group_create(context, values):
 
 def group_update(context, group_id, values):
     session = get_session()
-
-    # print group_id, values
-    # raw_input("sqlalchemy-api-group-update")
-
     with session.begin():
         group = _group_get(context, session, group_id)
         if group is None:
             raise ex.NotFoundException(group_id,
                                        "Group id '%s' not found!")
-
         group.update(values)
-
     return group
 
 
