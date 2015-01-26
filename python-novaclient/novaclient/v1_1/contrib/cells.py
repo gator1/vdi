@@ -14,8 +14,7 @@
 #    under the License.
 
 from novaclient import base
-from novaclient.i18n import _
-from novaclient.openstack.common import cliutils
+from novaclient.openstack.common.gettextutils import _
 from novaclient import utils
 
 
@@ -47,21 +46,19 @@ class CellsManager(base.Manager):
         return self._get("/os-cells/%s" % path, "cell")
 
 
-@cliutils.arg(
-    'cell',
-    metavar='<cell-name>',
-    help=_('Name of the cell.'))
+@utils.arg('cell',
+        metavar='<cell-name>',
+        help=_('Name of the cell.'))
 def do_cell_show(cs, args):
     """Show details of a given cell."""
     cell = cs.cells.get(args.cell)
     utils.print_dict(cell._info)
 
 
-@cliutils.arg(
-    '--cell',
-    metavar='<cell-name>',
-    help=_("Name of the cell to get the capacities."),
-    default=None)
+@utils.arg('--cell',
+        metavar='<cell-name>',
+        help=_("Name of the cell to get the capacities."),
+        default=None)
 def do_cell_capacities(cs, args):
     """Get cell capacities for all cells or a given cell."""
     cell = cs.cells.capacities(args.cell)

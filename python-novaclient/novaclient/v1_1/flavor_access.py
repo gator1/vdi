@@ -16,7 +16,7 @@
 """Flavor access interface."""
 
 from novaclient import base
-from novaclient.i18n import _
+from novaclient.openstack.common.gettextutils import _
 
 
 class FlavorAccess(base.Resource):
@@ -67,4 +67,4 @@ class FlavorAccessManager(base.ManagerWithFind):
         _resp, body = self.api.client.post(url, body=body)
 
         return [self.resource_class(self, res)
-                for res in body['flavor_access']]
+                    for res in body['flavor_access']]

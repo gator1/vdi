@@ -21,7 +21,7 @@ from six.moves.urllib import parse
 
 from novaclient import base
 from novaclient import exceptions
-from novaclient.i18n import _
+from novaclient.openstack.common.gettextutils import _
 from novaclient import utils
 
 
@@ -55,7 +55,8 @@ class Flavor(base.Resource):
         :param flavor: The :class:`Flavor` to get extra specs from
         """
         _resp, body = self.manager.api.client.get(
-            "/flavors/%s/os-extra_specs" % base.getid(self))
+                            "/flavors/%s/os-extra_specs" %
+                            base.getid(self))
         return body["extra_specs"]
 
     def set_keys(self, metadata):
@@ -69,8 +70,10 @@ class Flavor(base.Resource):
 
         body = {'extra_specs': metadata}
         return self.manager._create(
-            "/flavors/%s/os-extra_specs" % base.getid(self), body,
-            "extra_specs", return_raw=True)
+                            "/flavors/%s/os-extra_specs" % base.getid(self),
+                            body,
+                            "extra_specs",
+                            return_raw=True)
 
     def unset_keys(self, keys):
         """
@@ -81,7 +84,8 @@ class Flavor(base.Resource):
         """
         for k in keys:
             self.manager._delete(
-                "/flavors/%s/os-extra_specs/%s" % (base.getid(self), k))
+                         "/flavors/%s/os-extra_specs/%s" % (
+                         base.getid(self), k))
 
     def delete(self):
         """

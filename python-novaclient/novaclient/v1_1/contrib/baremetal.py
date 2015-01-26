@@ -16,10 +16,8 @@
 """
 Baremetal interface (v2 extension).
 """
-
 from novaclient import base
-from novaclient.i18n import _
-from novaclient.openstack.common import cliutils
+from novaclient.openstack.common.gettextutils import _
 from novaclient import utils
 
 
@@ -72,14 +70,14 @@ class BareMetalNodeManager(base.ManagerWithFind):
         :rtype: :class:`BareMetalNode`
         """
         body = {'node': {'service_host': service_host,
-                         'cpus': cpus,
-                         'memory_mb': memory_mb,
-                         'local_gb': local_gb,
-                         'pm_address': pm_address,
-                         'pm_user': pm_user,
-                         'pm_password': pm_password,
-                         'prov_mac_address': prov_mac_address,
-                         'terminal_port': terminal_port}}
+                        'cpus': cpus,
+                        'memory_mb': memory_mb,
+                        'local_gb': local_gb,
+                        'pm_address': pm_address,
+                        'pm_user': pm_user,
+                        'pm_password': pm_password,
+                        'prov_mac_address': prov_mac_address,
+                        'terminal_port': terminal_port}}
 
         return self._create('/os-baremetal-nodes', body, 'node')
 
@@ -152,61 +150,49 @@ class BareMetalNodeManager(base.ManagerWithFind):
         return interfaces
 
 
-@cliutils.arg(
-    'service_host',
+@utils.arg('service_host',
     metavar='<service_host>',
     help=_('Name of nova compute host which will control this baremetal '
            'node'))
-@cliutils.arg(
-    'cpus',
+@utils.arg('cpus',
     metavar='<cpus>',
     type=int,
     help=_('Number of CPUs in the node'))
-@cliutils.arg(
-    'memory_mb',
+@utils.arg('memory_mb',
     metavar='<memory_mb>',
     type=int,
     help=_('Megabytes of RAM in the node'))
-@cliutils.arg(
-    'local_gb',
+@utils.arg('local_gb',
     metavar='<local_gb>',
     type=int,
     help=_('Gigabytes of local storage in the node'))
-@cliutils.arg(
-    'prov_mac_address',
+@utils.arg('prov_mac_address',
     metavar='<prov_mac_address>',
     help=_('MAC address to provision the node'))
-@cliutils.arg(
-    '--pm_address', default=None,
+@utils.arg('--pm_address', default=None,
     metavar='<pm_address>',
     help=_('Power management IP for the node'))
-@cliutils.arg(
-    '--pm_user', default=None,
+@utils.arg('--pm_user', default=None,
     metavar='<pm_user>',
     help=_('Username for the node\'s power management'))
-@cliutils.arg(
-    '--pm_password', default=None,
+@utils.arg('--pm_password', default=None,
     metavar='<pm_password>',
     help=_('Password for the node\'s power management'))
-@cliutils.arg(
-    '--terminal_port', default=None,
+@utils.arg('--terminal_port', default=None,
     metavar='<terminal_port>',
     type=int,
     help=_('ShellInABox port?'))
 def do_baremetal_node_create(cs, args):
     """Create a baremetal node."""
     node = cs.baremetal.create(args.service_host, args.cpus,
-                               args.memory_mb, args.local_gb,
-                               args.prov_mac_address,
-                               pm_address=args.pm_address,
-                               pm_user=args.pm_user,
-                               pm_password=args.pm_password,
-                               terminal_port=args.terminal_port)
+            args.memory_mb, args.local_gb, args.prov_mac_address,
+            pm_address=args.pm_address, pm_user=args.pm_user,
+            pm_password=args.pm_password,
+            terminal_port=args.terminal_port)
     _print_baremetal_resource(node)
 
 
-@cliutils.arg(
-    'node',
+@utils.arg('node',
     metavar='<node>',
     help=_('ID of the node to delete.'))
 def do_baremetal_node_delete(cs, args):
@@ -257,7 +243,7 @@ def _print_baremetal_nodes_list(nodes):
         'PM Username',
         'PM Password',
         'Terminal Port',
-    ], formatters=formatters)
+        ], formatters=formatters)
 
 
 def do_baremetal_node_list(cs, _args):
@@ -284,55 +270,47 @@ def _print_baremetal_node_interfaces(interfaces):
         'Datapath_ID',
         'Port_No',
         'Address',
-    ])
+        ])
 
 
-@cliutils.arg(
-    'node',
-    metavar='<node>',
-    help=_("ID of node"))
+@utils.arg('node',
+     metavar='<node>',
+     help=_("ID of node"))
 def do_baremetal_node_show(cs, args):
     """Show information about a baremetal node."""
     node = _find_baremetal_node(cs, args.node)
     _print_baremetal_resource(node)
 
 
-@cliutils.arg(
-    'node',
+@utils.arg('node',
     metavar='<node>',
     help=_("ID of node"))
-@cliutils.arg(
-    'address',
+@utils.arg('address',
     metavar='<address>',
     help=_("MAC address of interface"))
-@cliutils.arg(
-    '--datapath_id',
+@utils.arg('--datapath_id',
     default=0,
     metavar='<datapath_id>',
     help=_("OpenFlow Datapath ID of interface"))
-@cliutils.arg(
-    '--port_no',
+@utils.arg('--port_no',
     default=0,
     metavar='<port_no>',
     help=_("OpenFlow port number of interface"))
 def do_baremetal_interface_add(cs, args):
     """Add a network interface to a baremetal node."""
     bmif = cs.baremetal.add_interface(args.node, args.address,
-                                      args.datapath_id, args.port_no)
+            args.datapath_id, args.port_no)
     _print_baremetal_resource(bmif)
 
 
-@cliutils.arg('node', metavar='<node>', help=_("ID of node"))
-@cliutils.arg(
-    'address',
-    metavar='<address>',
-    help=_("MAC address of interface"))
+@utils.arg('node', metavar='<node>', help=_("ID of node"))
+@utils.arg('address', metavar='<address>', help=_("MAC address of interface"))
 def do_baremetal_interface_remove(cs, args):
     """Remove a network interface from a baremetal node."""
     cs.baremetal.remove_interface(args.node, args.address)
 
 
-@cliutils.arg('node', metavar='<node>', help=_("ID of node"))
+@utils.arg('node', metavar='<node>', help=_("ID of node"))
 def do_baremetal_interface_list(cs, args):
     """List network interfaces associated with a baremetal node."""
     interfaces = cs.baremetal.list_interfaces(args.node)

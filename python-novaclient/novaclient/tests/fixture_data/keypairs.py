@@ -10,8 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslo.serialization import jsonutils
-
+from novaclient.openstack.common import jsonutils
 from novaclient.tests import fakes
 from novaclient.tests.fixture_data import base
 
@@ -45,3 +44,8 @@ class V1(base.Fixture):
         self.requests.register_uri('POST', self.url(),
                                    json=post_os_keypairs,
                                    headers=headers)
+
+
+class V3(V1):
+
+    base_url = 'keypairs'

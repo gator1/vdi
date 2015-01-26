@@ -10,8 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslo.serialization import jsonutils
-
+from novaclient.openstack.common import jsonutils
 from novaclient.tests import fakes
 from novaclient.tests.fixture_data import base
 
@@ -47,8 +46,8 @@ class FloatingFixture(base.Fixture):
             ip['pool'] = body.get('pool')
             return {'floating_ip': ip}
         self.requests.register_uri('POST', self.url(),
-                                   json=post_os_floating_ips,
-                                   headers=self.json_headers)
+                                  json=post_os_floating_ips,
+                                  headers=self.json_headers)
 
 
 class DNSFixture(base.Fixture):
@@ -105,18 +104,18 @@ class DNSFixture(base.Fixture):
             'dns_entries': [
                 {
                     'dns_entry': {
-                        'ip': '1.2.3.4',
-                        'name': "host1",
-                        'type': "A",
-                        'domain': 'testdomain'
-                    }
+                         'ip': '1.2.3.4',
+                         'name': "host1",
+                         'type': "A",
+                         'domain': 'testdomain'
+                     }
                 },
                 {
                     'dns_entry': {
-                        'ip': '1.2.3.4',
-                        'name': "host2",
-                        'type': "A",
-                        'domain': 'testdomain'
+                         'ip': '1.2.3.4',
+                         'name': "host2",
+                         'type': "A",
+                         'domain': 'testdomain'
                     }
                 },
             ]
@@ -182,9 +181,9 @@ class BulkFixture(base.Fixture):
             interface = params.get('interface', 'defaultInterface')
             return {
                 'floating_ips_bulk_create': {
-                    'ip_range': '192.168.1.0/30',
-                    'pool': pool,
-                    'interface': interface
+                     'ip_range': '192.168.1.0/30',
+                     'pool': pool,
+                     'interface': interface
                 }
             }
 

@@ -10,9 +10,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslo.serialization import jsonutils
 from six.moves.urllib import parse
 
+from novaclient.openstack.common import jsonutils
 from novaclient.tests.fixture_data import base
 
 
@@ -147,3 +147,23 @@ class V1(BaseFixture):
     def get_host_shutdown(self):
         return {'host': 'sample_host',
                 'power_action': 'shutdown'}
+
+
+class V3(V1):
+    def put_host_1(self):
+        return {'host': super(V3, self).put_host_1()}
+
+    def put_host_2(self):
+        return {'host': super(V3, self).put_host_2()}
+
+    def put_host_3(self):
+        return {'host': super(V3, self).put_host_3()}
+
+    def get_host_reboot(self):
+        return {'host': super(V3, self).get_host_reboot()}
+
+    def get_host_startup(self):
+        return {'host': super(V3, self).get_host_startup()}
+
+    def get_host_shutdown(self):
+        return {'host': super(V3, self).get_host_shutdown()}

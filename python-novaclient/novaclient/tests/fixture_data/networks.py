@@ -10,8 +10,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslo.serialization import jsonutils
-
+from novaclient.openstack.common import jsonutils
 from novaclient.tests.fixture_data import base
 
 
@@ -44,8 +43,8 @@ class Fixture(base.Fixture):
             return {'network': body}
 
         self.requests.register_uri("POST", self.url(),
-                                   json=post_os_networks,
-                                   headers=headers)
+                               json=post_os_networks,
+                               headers=headers)
 
         get_os_networks_1 = {'network': {"label": "1", "cidr": "10.0.0.0/24"}}
 

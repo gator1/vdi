@@ -16,6 +16,7 @@ from keystoneclient import fixture
 from keystoneclient import session
 
 from novaclient.v1_1 import client as v1_1client
+from novaclient.v3 import client as v3client
 
 IDENTITY_URL = 'http://identityserver:5000/v2.0'
 COMPUTE_URL = 'http://compute.host'
@@ -46,8 +47,8 @@ class V1(fixtures.Fixture):
         auth_url = '%s/tokens' % self.identity_url
         headers = {'X-Content-Type': 'application/json'}
         self.requests.register_uri('POST', auth_url,
-                                   json=self.token,
-                                   headers=headers)
+                               json=self.token,
+                               headers=headers)
         self.client = self.new_client()
 
     def new_client(self):
@@ -57,9 +58,26 @@ class V1(fixtures.Fixture):
                                  auth_url=self.identity_url)
 
 
+class V3(V1):
+
+    def new_client(self):
+        return v3client.Client(username='xx',
+                               password='xx',
+                               project_id='xx',
+                               auth_url=self.identity_url)
+
+
 class SessionV1(V1):
 
     def new_client(self):
         self.session = session.Session()
         self.session.auth = v2.Password(self.identity_url, 'xx', 'xx')
         return v1_1client.Client(session=self.session)
+
+
+class SessionV3(V1):
+
+    def new_client(self):
+        self.session = session.Session()
+        self.session.auth = v2.Password(self.identity_url, 'xx', 'xx')
+        return v3client.Client(session=self.session)

@@ -19,7 +19,7 @@ Security group rules interface (1.1 extension).
 
 from novaclient import base
 from novaclient import exceptions
-from novaclient.i18n import _
+from novaclient.openstack.common.gettextutils import _
 
 
 class SecurityGroupRule(base.Resource):
@@ -59,12 +59,12 @@ class SecurityGroupRuleManager(base.Manager):
                                             ", or 'icmp'."))
 
         body = {"security_group_rule": {
-            "ip_protocol": ip_protocol,
-            "from_port": from_port,
-            "to_port": to_port,
-            "cidr": cidr,
-            "group_id": group_id,
-            "parent_group_id": parent_group_id}}
+                    "ip_protocol": ip_protocol,
+                    "from_port": from_port,
+                    "to_port": to_port,
+                    "cidr": cidr,
+                    "group_id": group_id,
+                    "parent_group_id": parent_group_id}}
 
         return self._create('/os-security-group-rules', body,
                             'security_group_rule')

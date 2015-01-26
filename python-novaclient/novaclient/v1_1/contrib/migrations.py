@@ -17,8 +17,7 @@ migration interface
 from six.moves.urllib import parse
 
 from novaclient import base
-from novaclient.i18n import _
-from novaclient.openstack.common import cliutils
+from novaclient.openstack.common.gettextutils import _
 from novaclient import utils
 
 
@@ -54,21 +53,18 @@ class MigrationManager(base.ManagerWithFind):
         return self._list("/os-migrations%s" % query_string, "migrations")
 
 
-@cliutils.arg(
-    '--host',
-    dest='host',
-    metavar='<host>',
-    help=_('Fetch migrations for the given host.'))
-@cliutils.arg(
-    '--status',
-    dest='status',
-    metavar='<status>',
-    help=_('Fetch migrations for the given status.'))
-@cliutils.arg(
-    '--cell_name',
-    dest='cell_name',
-    metavar='<cell_name>',
-    help=_('Fetch migrations for the given cell_name.'))
+@utils.arg('--host',
+           dest='host',
+           metavar='<host>',
+           help=_('Fetch migrations for the given host.'))
+@utils.arg('--status',
+           dest='status',
+           metavar='<status>',
+           help=_('Fetch migrations for the given status.'))
+@utils.arg('--cell_name',
+           dest='cell_name',
+           metavar='<cell_name>',
+           help=_('Fetch migrations for the given cell_name.'))
 def do_migration_list(cs, args):
     """Print a list of migrations."""
     _print_migrations(cs.migrations.list(args.host, args.status,
@@ -77,8 +73,8 @@ def do_migration_list(cs, args):
 
 def _print_migrations(migrations):
     fields = ['Source Node', 'Dest Node', 'Source Compute', 'Dest Compute',
-              'Dest Host', 'Status', 'Instance UUID', 'Old Flavor',
-              'New Flavor', 'Created At', 'Updated At']
+            'Dest Host', 'Status', 'Instance UUID', 'Old Flavor',
+            'New Flavor', 'Created At', 'Updated At']
 
     def old_flavor(migration):
         return migration.old_instance_type_id

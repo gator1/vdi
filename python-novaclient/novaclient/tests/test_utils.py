@@ -267,6 +267,15 @@ class FlattenTestCase(test_utils.TestCase):
                           'a3': ('t',)},
                          squashed)
 
+    def test_pretty_choice_list(self):
+        l = []
+        r = utils.pretty_choice_list(l)
+        self.assertEqual("", r)
+
+        l = ["v1", "v2", "v3"]
+        r = utils.pretty_choice_list(l)
+        self.assertEqual("'v1', 'v2', 'v3'", r)
+
     def test_pretty_choice_dict(self):
         d = {}
         r = utils.pretty_choice_dict(d)
@@ -312,26 +321,3 @@ class ResourceManagerExtraKwargsHookTestCase(test_utils.TestCase):
         except_error = ("Hook 'hook2' is attempting to redefine "
                         "attributes")
         self.assertIn(except_error, six.text_type(exc))
-
-
-class DoActionOnManyTestCase(test_utils.TestCase):
-
-    def _test_do_action_on_many(self, side_effect, fail):
-        action = mock.Mock(side_effect=side_effect)
-
-        if fail:
-            self.assertRaises(exceptions.CommandError,
-                              utils.do_action_on_many,
-                              action, [1, 2], 'success with %s', 'error')
-        else:
-            utils.do_action_on_many(action, [1, 2], 'success with %s', 'error')
-        action.assert_has_calls([mock.call(1), mock.call(2)])
-
-    def test_do_action_on_many_success(self):
-        self._test_do_action_on_many([None, None], fail=False)
-
-    def test_do_action_on_many_first_fails(self):
-        self._test_do_action_on_many([Exception(), None], fail=True)
-
-    def test_do_action_on_many_last_fails(self):
-        self._test_do_action_on_many([None, Exception()], fail=True)

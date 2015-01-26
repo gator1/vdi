@@ -26,6 +26,7 @@ import six
 
 from novaclient import exceptions
 from novaclient.openstack.common.apiclient import base
+from novaclient import utils
 
 Resource = base.Resource
 
@@ -41,7 +42,7 @@ def getid(obj):
         return obj
 
 
-class Manager(base.HookableMixin):
+class Manager(utils.HookableMixin):
     """
     Managers interact with a particular type of API (servers, flavors, images,
     etc.) and provide CRUD operations for them.

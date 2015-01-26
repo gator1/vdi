@@ -56,7 +56,6 @@ class ShellTest(utils.TestCase):
         'NOVA_PROJECT_ID': 'project_id',
         'OS_COMPUTE_API_VERSION': '1.1',
         'NOVA_URL': 'http://no.where',
-        'OS_AUTH_URL': 'http://no.where/v2.0',
     }
 
     def setUp(self):
@@ -801,8 +800,8 @@ class ShellTest(utils.TestCase):
         )
 
     def test_create_image_show(self):
-        output = self.run_command(
-            'image-create sample-server mysnapshot --show')
+        output = self.run_command('image-create '
+                                    'sample-server mysnapshot --show')
         self.assert_called_anytime(
             'POST', '/servers/1234/action',
             {'createImage': {'name': 'mysnapshot', 'metadata': {}}},
@@ -839,76 +838,9 @@ class ShellTest(utils.TestCase):
         self.run_command('list --flavor 1')
         self.assert_called('GET', '/servers/detail?flavor=1')
 
-    def test_list_by_tenant(self):
-        self.run_command('list --tenant fake_tenant')
-        self.assert_called(
-            'GET',
-            '/servers/detail?all_tenants=1&tenant_id=fake_tenant')
-
-    def test_list_by_user(self):
-        self.run_command('list --user fake_user')
-        self.assert_called(
-            'GET',
-            '/servers/detail?all_tenants=1&user_id=fake_user')
-
-    def test_list_with_single_sort_key_no_dir(self):
-        self.run_command('list --sort 1')
-        self.assert_called(
-            'GET', ('/servers/detail?sort_dir=desc&sort_key=1'))
-
-    def test_list_with_single_sort_key_and_dir(self):
-        self.run_command('list --sort 1:asc')
-        self.assert_called(
-            'GET', ('/servers/detail?sort_dir=asc&sort_key=1'))
-
-    def test_list_with_sort_keys_no_dir(self):
-        self.run_command('list --sort 1,2')
-        self.assert_called(
-            'GET', ('/servers/detail?sort_dir=desc&sort_dir=desc&'
-                    'sort_key=1&sort_key=2'))
-
-    def test_list_with_sort_keys_and_dirs(self):
-        self.run_command('list --sort 1:asc,2:desc')
-        self.assert_called(
-            'GET', ('/servers/detail?sort_dir=asc&sort_dir=desc&'
-                    'sort_key=1&sort_key=2'))
-
-    def test_list_with_sort_keys_and_some_dirs(self):
-        self.run_command('list --sort 1,2:asc')
-        self.assert_called(
-            'GET', ('/servers/detail?sort_dir=desc&sort_dir=asc&'
-                    'sort_key=1&sort_key=2'))
-
-    def test_list_with_invalid_sort_dir_one(self):
-        cmd = 'list --sort 1:foo'
-        self.assertRaises(exceptions.CommandError, self.run_command, cmd)
-
-    def test_list_with_invalid_sort_dir_two(self):
-        cmd = 'list --sort 1:asc,2:foo'
-        self.assertRaises(exceptions.CommandError, self.run_command, cmd)
-
-    def test_list_sortby_index_with_sort(self):
-        # sortby_index is None if there is sort information
-        for cmd in ['list --sort key',
-                    'list --sort key:desc',
-                    'list --sort key1,key2:asc']:
-            with mock.patch('novaclient.utils.print_list') as mock_print_list:
-                self.run_command(cmd)
-                mock_print_list.assert_called_once_with(
-                    mock.ANY, mock.ANY, mock.ANY, sortby_index=None)
-
-    def test_list_sortby_index_without_sort(self):
-        # sortby_index is 1 without sort information
-        for cmd in ['list', 'list --minimal', 'list --deleted']:
-            with mock.patch('novaclient.utils.print_list') as mock_print_list:
-                self.run_command(cmd)
-                mock_print_list.assert_called_once_with(
-                    mock.ANY, mock.ANY, mock.ANY, sortby_index=1)
-
     def test_list_fields(self):
-        output = self.run_command(
-            'list --fields '
-            'host,security_groups,OS-EXT-MOD:some_thing')
+        output = self.run_command('list --fields '
+                         'host,security_groups,OS-EXT-MOD:some_thing')
         self.assert_called('GET', '/servers/detail')
         self.assertIn('computenode1', output)
         self.assertIn('securitygroup1', output)
@@ -1006,16 +938,6 @@ class ShellTest(utils.TestCase):
     def test_rescue(self):
         self.run_command('rescue sample-server')
         self.assert_called('POST', '/servers/1234/action', {'rescue': None})
-
-    def test_rescue_password(self):
-        self.run_command('rescue sample-server --password asdf')
-        self.assert_called('POST', '/servers/1234/action',
-                           {'rescue': {'adminPass': 'asdf'}})
-
-    def test_rescue_image(self):
-        self.run_command('rescue sample-server --image 1')
-        self.assert_called('POST', '/servers/1234/action',
-                           {'rescue': {'rescue_image_ref': 1}})
 
     def test_unrescue(self):
         self.run_command('unrescue sample-server')
@@ -1467,51 +1389,6 @@ class ShellTest(utils.TestCase):
                                                'block_migration': True,
                                                'disk_over_commit': True}})
 
-    def test_host_evacuate_live_with_no_target_host(self):
-        self.run_command('host-evacuate-live hyper')
-        self.assert_called('GET', '/os-hypervisors/hyper/servers', pos=0)
-        body = {'os-migrateLive': {'host': None,
-                                   'block_migration': False,
-                                   'disk_over_commit': False}}
-        self.assert_called('POST', '/servers/uuid1/action', body, pos=1)
-        self.assert_called('POST', '/servers/uuid2/action', body, pos=2)
-        self.assert_called('POST', '/servers/uuid3/action', body, pos=3)
-        self.assert_called('POST', '/servers/uuid4/action', body, pos=4)
-
-    def test_host_evacuate_live_with_target_host(self):
-        self.run_command('host-evacuate-live hyper '
-                         '--target-host hostname')
-        self.assert_called('GET', '/os-hypervisors/hyper/servers', pos=0)
-        body = {'os-migrateLive': {'host': 'hostname',
-                                   'block_migration': False,
-                                   'disk_over_commit': False}}
-        self.assert_called('POST', '/servers/uuid1/action', body, pos=1)
-        self.assert_called('POST', '/servers/uuid2/action', body, pos=2)
-        self.assert_called('POST', '/servers/uuid3/action', body, pos=3)
-        self.assert_called('POST', '/servers/uuid4/action', body, pos=4)
-
-    def test_host_evacuate_live_with_block_migration(self):
-        self.run_command('host-evacuate-live --block-migrate hyper')
-        self.assert_called('GET', '/os-hypervisors/hyper/servers', pos=0)
-        body = {'os-migrateLive': {'host': None,
-                                   'block_migration': True,
-                                   'disk_over_commit': False}}
-        self.assert_called('POST', '/servers/uuid1/action', body, pos=1)
-        self.assert_called('POST', '/servers/uuid2/action', body, pos=2)
-        self.assert_called('POST', '/servers/uuid3/action', body, pos=3)
-        self.assert_called('POST', '/servers/uuid4/action', body, pos=4)
-
-    def test_host_evacuate_live_with_disk_over_commit(self):
-        self.run_command('host-evacuate-live --disk-over-commit hyper')
-        self.assert_called('GET', '/os-hypervisors/hyper/servers', pos=0)
-        body = {'os-migrateLive': {'host': None,
-                                   'block_migration': False,
-                                   'disk_over_commit': True}}
-        self.assert_called('POST', '/servers/uuid1/action', body, pos=1)
-        self.assert_called('POST', '/servers/uuid2/action', body, pos=2)
-        self.assert_called('POST', '/servers/uuid3/action', body, pos=3)
-        self.assert_called('POST', '/servers/uuid4/action', body, pos=4)
-
     def test_reset_state(self):
         self.run_command('reset-state sample-server')
         self.assert_called('POST', '/servers/1234/action',
@@ -1718,32 +1595,26 @@ class ShellTest(utils.TestCase):
         self.assert_called('GET', '/os-hypervisors/statistics')
 
     def test_quota_show(self):
-        self.run_command(
-            'quota-show --tenant '
-            '97f4c221bff44578b0300df4ef119353')
-        self.assert_called(
-            'GET',
-            '/os-quota-sets/97f4c221bff44578b0300df4ef119353')
+        self.run_command('quota-show --tenant '
+                '97f4c221bff44578b0300df4ef119353')
+        self.assert_called('GET',
+                '/os-quota-sets/97f4c221bff44578b0300df4ef119353')
 
     def test_user_quota_show(self):
-        self.run_command(
-            'quota-show --tenant '
-            '97f4c221bff44578b0300df4ef119353 --user u1')
-        self.assert_called(
-            'GET',
-            '/os-quota-sets/97f4c221bff44578b0300df4ef119353?user_id=u1')
+        self.run_command('quota-show --tenant '
+                '97f4c221bff44578b0300df4ef119353 --user u1')
+        self.assert_called('GET',
+                '/os-quota-sets/97f4c221bff44578b0300df4ef119353?user_id=u1')
 
     def test_quota_show_no_tenant(self):
         self.run_command('quota-show')
         self.assert_called('GET', '/os-quota-sets/tenant_id')
 
     def test_quota_defaults(self):
-        self.run_command(
-            'quota-defaults --tenant '
-            '97f4c221bff44578b0300df4ef119353')
-        self.assert_called(
-            'GET',
-            '/os-quota-sets/97f4c221bff44578b0300df4ef119353/defaults')
+        self.run_command('quota-defaults --tenant '
+                '97f4c221bff44578b0300df4ef119353')
+        self.assert_called('GET',
+                '/os-quota-sets/97f4c221bff44578b0300df4ef119353/defaults')
 
     def test_quota_defaults_no_tenant(self):
         self.run_command('quota-defaults')
@@ -1799,9 +1670,8 @@ class ShellTest(utils.TestCase):
         self.run_command('quota-delete --tenant '
                          '97f4c221bff44578b0300df4ef119353 '
                          '--user u1')
-        self.assert_called(
-            'DELETE',
-            '/os-quota-sets/97f4c221bff44578b0300df4ef119353?user_id=u1')
+        self.assert_called('DELETE',
+                '/os-quota-sets/97f4c221bff44578b0300df4ef119353?user_id=u1')
 
     def test_quota_class_show(self):
         self.run_command('quota-class-show test')
@@ -1831,9 +1701,8 @@ class ShellTest(utils.TestCase):
         self.assert_called('GET', '/os-networks')
 
     def test_network_list_fields(self):
-        output = self.run_command(
-            'network-list --fields '
-            'vlan,project_id')
+        output = self.run_command('network-list --fields '
+                         'vlan,project_id')
         self.assert_called('GET', '/os-networks')
         self.assertIn('1234', output)
         self.assertIn('4ffc664c198e435e9853f2538fbcd7a7', output)
@@ -2074,21 +1943,13 @@ class ShellTest(utils.TestCase):
                                 'cidr': None,
                                 'group_id': 2}})
 
-    def test_security_group_delete_valid_group_rule(self):
+    def test_security_group_delete_group_rule(self):
         self.run_command('secgroup-delete-group-rule test test2 TCP 222 222')
         self.assert_called('DELETE', '/os-security-group-rules/12')
 
-    def test_security_group_delete_valid_group_rule_protocol_case(self):
+    def test_security_group_delete_group_rule_protocol_case(self):
         self.run_command('secgroup-delete-group-rule test test2 tcp 222 222')
         self.assert_called('DELETE', '/os-security-group-rules/12')
-
-    def test_security_group_delete_invalid_group_rule(self):
-        self.run_command('secgroup-delete-group-rule test test4 TCP -1 -1')
-        self.assert_called('DELETE', '/os-security-group-rules/14')
-
-    def test_security_group_delete_invalid_group_rule_protocol_case(self):
-        self.run_command('secgroup-delete-group-rule test test4 tcp -1 -1')
-        self.assert_called('DELETE', '/os-security-group-rules/14')
 
     def test_security_group_list_rules(self):
         self.run_command('secgroup-list-rules test')
@@ -2198,9 +2059,8 @@ class ShellTest(utils.TestCase):
 
     def test_instance_action_get(self):
         self.run_command('instance-action sample-server req-abcde12345')
-        self.assert_called(
-            'GET',
-            '/servers/1234/os-instance-actions/req-abcde12345')
+        self.assert_called('GET',
+                '/servers/1234/os-instance-actions/req-abcde12345')
 
     def test_cell_show(self):
         self.run_command('cell-show child_cell')
@@ -2232,11 +2092,11 @@ class ShellTest(utils.TestCase):
             addresses = {
                 "skynet": [
                     {'version': 4, 'addr': "1.1.1.1",
-                     "OS-EXT-IPS:type": 'fixed'},
+                    "OS-EXT-IPS:type": 'fixed'},
                     {'version': 4, 'addr': "2.2.2.2",
-                     "OS-EXT-IPS:type": 'floating'},
+                    "OS-EXT-IPS:type": 'floating'},
                     {'version': 6, 'addr': "2607:f0d0:1002::4",
-                     "OS-EXT-IPS:type": 'fixed'},
+                    "OS-EXT-IPS:type": 'fixed'},
                     {'version': 6, 'addr': "7612:a1b2:2004::6"}
                 ]
             }
@@ -2280,10 +2140,10 @@ class ShellTest(utils.TestCase):
             addresses = {
                 "skynet": [
                     {'version': 4, 'addr': "1.1.1.1",
-                     "OS-EXT-IPS:type": 'fixed'},
+                    "OS-EXT-IPS:type": 'fixed'},
                     {'version': 4, 'addr': "2.2.2.2"},
                     {'version': 6, 'addr': "2607:f0d0:1002::4",
-                     "OS-EXT-IPS:type": 'fixed'}
+                    "OS-EXT-IPS:type": 'fixed'}
                 ],
                 "other": [
                     {'version': 4, 'addr': "2.3.4.5"},
@@ -2307,12 +2167,13 @@ class ShellTest(utils.TestCase):
                                {'name': 'test'}})
 
     @mock.patch.object(builtins, 'open',
-                       mock.mock_open(read_data='FAKE_PUBLIC_KEY'))
+             mock.mock_open(read_data='FAKE_PUBLIC_KEY'))
     def test_keypair_import(self):
         self.run_command('keypair-add --pub-key test.pub test')
-        self.assert_called(
-            'POST', '/os-keypairs', {
-                'keypair': {'public_key': 'FAKE_PUBLIC_KEY', 'name': 'test'}})
+        self.assert_called('POST', '/os-keypairs',
+                           {'keypair':
+                              {'public_key': 'FAKE_PUBLIC_KEY',
+                               'name': 'test'}})
 
     def test_keypair_list(self):
         self.run_command('keypair-list')
@@ -2329,8 +2190,9 @@ class ShellTest(utils.TestCase):
     def test_create_server_group(self):
         self.run_command('server-group-create wjsg affinity')
         self.assert_called('POST', '/os-server-groups',
-                           {'server_group': {'name': 'wjsg',
-                                             'policies': ['affinity']}})
+                           {'server_group':
+                              {'name': 'wjsg',
+                               'policies': ['affinity']}})
 
     def test_delete_multi_server_groups(self):
         self.run_command('server-group-delete 12345 56789')

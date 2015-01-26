@@ -30,7 +30,8 @@ class HypervisorsTest(utils.FixturedTestCase):
     def test_hypervisor_index(self):
         expected = [
             dict(id=1234, hypervisor_hostname='hyper1'),
-            dict(id=5678, hypervisor_hostname='hyper2')]
+            dict(id=5678, hypervisor_hostname='hyper2'),
+            ]
 
         result = self.cs.hypervisors.list(False)
         self.assert_called('GET', '/os-hypervisors')
@@ -84,7 +85,8 @@ class HypervisorsTest(utils.FixturedTestCase):
     def test_hypervisor_search(self):
         expected = [
             dict(id=1234, hypervisor_hostname='hyper1'),
-            dict(id=5678, hypervisor_hostname='hyper2')]
+            dict(id=5678, hypervisor_hostname='hyper2'),
+            ]
 
         result = self.cs.hypervisors.search('hyper')
         self.assert_called('GET', '/os-hypervisors/hyper/search')
@@ -97,14 +99,14 @@ class HypervisorsTest(utils.FixturedTestCase):
             dict(id=1234,
                  hypervisor_hostname='hyper1',
                  servers=[
-                     dict(name='inst1', uuid='uuid1'),
-                     dict(name='inst2', uuid='uuid2')]),
+                    dict(name='inst1', uuid='uuid1'),
+                    dict(name='inst2', uuid='uuid2')]),
             dict(id=5678,
                  hypervisor_hostname='hyper2',
                  servers=[
-                     dict(name='inst3', uuid='uuid3'),
-                     dict(name='inst4', uuid='uuid4')]),
-        ]
+                    dict(name='inst3', uuid='uuid3'),
+                    dict(name='inst4', uuid='uuid4')]),
+            ]
 
         result = self.cs.hypervisors.search('hyper', True)
         self.assert_called('GET', '/os-hypervisors/hyper/servers')
@@ -162,7 +164,7 @@ class HypervisorsTest(utils.FixturedTestCase):
             current_workload=4,
             running_vms=4,
             disk_available_least=200,
-        )
+            )
 
         result = self.cs.hypervisors.statistics()
         self.assert_called('GET', '/os-hypervisors/statistics')

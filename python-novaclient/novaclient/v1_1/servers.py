@@ -27,7 +27,7 @@ from six.moves.urllib import parse
 
 from novaclient import base
 from novaclient import crypto
-from novaclient.i18n import _
+from novaclient.openstack.common.gettextutils import _
 from novaclient.v1_1 import security_groups
 
 
@@ -199,14 +199,11 @@ class Server(base.Resource):
         """
         self.manager.resume(self)
 
-    def rescue(self, password=None, image=None):
+    def rescue(self):
         """
         Rescue -- Rescue the problematic server.
-
-        :param password: The admin password to be set in the rescue instance.
-        :param image: The :class:`Image` to rescue with.
         """
-        return self.manager.rescue(self, password, image)
+        return self.manager.rescue(self)
 
     def unrescue(self):
         """
@@ -266,7 +263,7 @@ class Server(base.Resource):
         self.manager.reboot(self, reboot_type)
 
     def rebuild(self, image, password=None, preserve_ephemeral=False,
-                **kwargs):
+            **kwargs):
         """
         Rebuild -- shut down and then re-image -- this server.
 
@@ -276,8 +273,7 @@ class Server(base.Resource):
             be preserved when rebuilding the instance. Defaults to False.
         """
         return self.manager.rebuild(self, image, password=password,
-                                    preserve_ephemeral=preserve_ephemeral,
-                                    **kwargs)
+            preserve_ephemeral=preserve_ephemeral, **kwargs)
 
     def resize(self, flavor, **kwargs):
         """
@@ -490,8 +486,8 @@ class ServerManager(base.BootingManagerWithFind):
         body["server"]["max_count"] = max_count
 
         if security_groups:
-            body["server"]["security_groups"] = [{'name': sg}
-                                                 for sg in security_groups]
+            body["server"]["security_groups"] =\
+             [{'name': sg} for sg in security_groups]
 
         # Files are a slight bit tricky. They're passed in a "personality"
         # list to the POST. Each item is a dict giving a file name and the
@@ -518,7 +514,7 @@ class ServerManager(base.BootingManagerWithFind):
         # Block device mappings are passed as a list of dictionaries
         if block_device_mapping:
             body['server']['block_device_mapping'] = \
-                self._parse_block_device_mapping(block_device_mapping)
+                    self._parse_block_device_mapping(block_device_mapping)
         elif block_device_mapping_v2:
             # Append the image to the list only if we have new style BDMs
             if image:
@@ -538,7 +534,7 @@ class ServerManager(base.BootingManagerWithFind):
                 if nic_info.get('net-id'):
                     net_data['uuid'] = nic_info['net-id']
                 if (nic_info.get('v4-fixed-ip') and
-                        nic_info.get('v6-fixed-ip')):
+                    nic_info.get('v6-fixed-ip')):
                     raise base.exceptions.CommandError(_(
                         "Only one of 'v4-fixed-ip' and 'v6-fixed-ip' may be"
                         " provided."))
@@ -566,8 +562,7 @@ class ServerManager(base.BootingManagerWithFind):
         """
         return self._get("/servers/%s" % base.getid(server), "server")
 
-    def list(self, detailed=True, search_opts=None, marker=None, limit=None,
-             sort_keys=None, sort_dirs=None):
+    def list(self, detailed=True, search_opts=None, marker=None, limit=None):
         """
         Get a list of servers.
 
@@ -576,8 +571,6 @@ class ServerManager(base.BootingManagerWithFind):
         :param marker: Begin returning servers that appear later in the server
                        list than that represented by this server id (optional).
         :param limit: Maximum number of servers to return (optional).
-        :param sort_keys: List of sort keys
-        :param sort_dirs: List of sort directions
 
         :rtype: list of :class:`Server`
         """
@@ -598,16 +591,8 @@ class ServerManager(base.BootingManagerWithFind):
 
         # Transform the dict to a sequence of two-element tuples in fixed
         # order, then the encoded string will be consistent in Python 2&3.
-        if qparams or sort_keys or sort_dirs:
-            # sort keys and directions are unique since the same parameter
-            # key is repeated for each associated value
-            # (ie, &sort_key=key1&sort_key=key2&sort_key=key3)
-            items = list(qparams.items())
-            if sort_keys:
-                items.extend(('sort_key', sort_key) for sort_key in sort_keys)
-            if sort_dirs:
-                items.extend(('sort_dir', sort_dir) for sort_dir in sort_dirs)
-            new_qparams = sorted(items, key=lambda x: x[0])
+        if qparams:
+            new_qparams = sorted(qparams.items(), key=lambda x: x[0])
             query_string = "?%s" % parse.urlencode(new_qparams)
         else:
             query_string = ""
@@ -803,20 +788,11 @@ class ServerManager(base.BootingManagerWithFind):
         """
         self._action('resume', server, None)
 
-    def rescue(self, server, password=None, image=None):
+    def rescue(self, server):
         """
         Rescue the server.
-
-        :param server: The :class:`Server` to rescue.
-        :param password: The admin password to be set in the rescue instance.
-        :param image: The :class:`Image` to rescue with.
         """
-        info = {}
-        if password:
-            info['adminPass'] = password
-        if image:
-            info['rescue_image_ref'] = base.getid(image)
-        return self._action('rescue', server, info or None)
+        return self._action('rescue', server, None)
 
     def unrescue(self, server):
         """
@@ -923,7 +899,7 @@ class ServerManager(base.BootingManagerWithFind):
 
         response_key = "server"
         return self._boot(resource_url, response_key, *boot_args,
-                          **boot_kwargs)
+                **boot_kwargs)
 
     def update(self, server, name=None):
         """
@@ -1067,7 +1043,7 @@ class ServerManager(base.BootingManagerWithFind):
 
         :param server: The :class:`Server` (or its ID) to share onto.
         :param image_name: Name to give the snapshot image
-        :param metadata: Metadata to give newly-created image entity
+        :param meta: Metadata to give newly-created image entity
         """
         body = {'name': image_name, 'metadata': metadata or {}}
         resp = self._action('createImage', server, body)[0]
@@ -1098,7 +1074,7 @@ class ServerManager(base.BootingManagerWithFind):
         """
         body = {'metadata': metadata}
         return self._create("/servers/%s/metadata" % base.getid(server),
-                            body, "metadata")
+                             body, "metadata")
 
     def set_meta_item(self, server, key, value):
         """

@@ -13,10 +13,10 @@
 #    under the License.
 
 import mock
-from oslo.serialization import jsonutils
 import six
 
 from novaclient import exceptions
+from novaclient.openstack.common import jsonutils
 from novaclient.tests.fixture_data import client
 from novaclient.tests.fixture_data import floatingips
 from novaclient.tests.fixture_data import servers as data
@@ -46,25 +46,6 @@ class ServersTest(utils.FixturedTestCase):
     def test_list_servers_with_marker_limit(self):
         sl = self.cs.servers.list(marker=1234, limit=2)
         self.assert_called('GET', '/servers/detail?limit=2&marker=1234')
-        for s in sl:
-            self.assertIsInstance(s, servers.Server)
-
-    def test_list_servers_sort_single(self):
-        sl = self.cs.servers.list(sort_keys=['display_name'],
-                                  sort_dirs=['asc'])
-        self.assert_called(
-            'GET',
-            '/servers/detail?sort_dir=asc&sort_key=display_name')
-        for s in sl:
-            self.assertIsInstance(s, servers.Server)
-
-    def test_list_servers_sort_multiple(self):
-        sl = self.cs.servers.list(sort_keys=['display_name', 'id'],
-                                  sort_dirs=['asc', 'desc'])
-        self.assert_called(
-            'GET',
-            ('/servers/detail?sort_dir=asc&sort_dir=desc&'
-             'sort_key=display_name&sort_key=id'))
         for s in sl:
             self.assertIsInstance(s, servers.Server)
 
@@ -396,7 +377,7 @@ class ServersTest(utils.FixturedTestCase):
         s.add_floating_ip('11.0.0.1', fixed_address='12.0.0.1')
         self.assert_called('POST', '/servers/1234/action')
         self.cs.servers.add_floating_ip(s, '11.0.0.1',
-                                        fixed_address='12.0.0.1')
+                                   fixed_address='12.0.0.1')
         self.assert_called('POST', '/servers/1234/action')
         f = self.cs.floating_ips.list()[0]
         self.cs.servers.add_floating_ip(s, f)
@@ -450,24 +431,6 @@ class ServersTest(utils.FixturedTestCase):
         self.assert_called('POST', '/servers/1234/action')
         self.cs.servers.rescue(s)
         self.assert_called('POST', '/servers/1234/action')
-
-    def test_rescue_password(self):
-        s = self.cs.servers.get(1234)
-        s.rescue(password='asdf')
-        self.assert_called('POST', '/servers/1234/action',
-                           {'rescue': {'adminPass': 'asdf'}})
-        self.cs.servers.rescue(s, password='asdf')
-        self.assert_called('POST', '/servers/1234/action',
-                           {'rescue': {'adminPass': 'asdf'}})
-
-    def test_rescue_image(self):
-        s = self.cs.servers.get(1234)
-        s.rescue(image=1)
-        self.assert_called('POST', '/servers/1234/action',
-                           {'rescue': {'rescue_image_ref': 1}})
-        self.cs.servers.rescue(s, image=1)
-        self.assert_called('POST', '/servers/1234/action',
-                           {'rescue': {'rescue_image_ref': 1}})
 
     def test_unrescue(self):
         s = self.cs.servers.get(1234)
@@ -617,7 +580,7 @@ class ServersTest(utils.FixturedTestCase):
                        disk_over_commit=False)
         self.assert_called('POST', '/servers/1234/action')
         self.cs.servers.live_migrate(s, host='hostname', block_migration=False,
-                                     disk_over_commit=False)
+                                disk_over_commit=False)
         self.assert_called('POST', '/servers/1234/action')
 
     def test_reset_state(self):
@@ -677,12 +640,11 @@ class ServersTest(utils.FixturedTestCase):
             'port_id': 'f35079da-36d5-4513-8ec1-0298d703f70e',
             'mac_addr': 'fa:16:3e:4c:37:c8',
             'port_state': 'ACTIVE',
-            'fixed_ips': [
-                {
-                    'subnet_id': 'f1ad93ad-2967-46ba-b403-e8cbbe65f7fa',
-                    'ip_address': '10.2.0.96'
+            'fixed_ips': [{
+                'subnet_id': 'f1ad93ad-2967-46ba-b403-e8cbbe65f7fa',
+                'ip_address': '10.2.0.96'
                 }]
-        }]
+            }]
         # If server is not string representable, it will raise an exception,
         # because attribute named 'name' cannot be found.
         # Parameter 'loaded' must be True or it will try to get attribute

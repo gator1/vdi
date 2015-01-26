@@ -30,7 +30,7 @@ class ServerGroup(base.Resource):
         return '<ServerGroup: %s>' % self.id
 
     def delete(self):
-        self.manager.delete(self.id)
+        self.manager.delete(self)
 
 
 class ServerGroupsManager(base.ManagerWithFind):
