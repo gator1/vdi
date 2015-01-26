@@ -57,7 +57,10 @@ class Context(object):
         self.username = username
         self.domain_name = domain_name
         self.tenant_name = tenant_name
-        self.is_admin = 'admin' in is_admin
+        if is_admin:
+            self.is_admin = 'admin' in is_admin
+        else:
+            self.is_admin = False
         # self.is_admin = 'admin' in roles
         self.remote_semaphore = remote_semaphore or semaphore.Semaphore(
             CONF.cluster_remote_threshold)
