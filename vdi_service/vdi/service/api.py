@@ -169,8 +169,9 @@ def get_domain_pools(domain_id):
     all_pools = get_pools()
     pools = []
     for pool in all_pools:
-        if domain_id in pool.domain_id:
-            pools.append(pool)
+        if pool.domain_id:
+            if pool.domain_id in domain_id :
+                pools.append(pool)
     return pools
 
 
@@ -218,8 +219,9 @@ def get_domain_groups(domain_id):
     all_groups = get_groups()
     groups = []
     for group in all_groups:
-        if group.domain_id in domain_id:
-            groups.append(group)
+        if  group.domain_id:
+            if group.domain_id in domain_id:
+                groups.append(group)
     return groups
 
 
