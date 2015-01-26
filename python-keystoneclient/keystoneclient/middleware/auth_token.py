@@ -596,8 +596,8 @@ class AuthProtocol(object):
         self.http_connect_timeout = (http_connect_timeout_cfg and
                                      int(http_connect_timeout_cfg))
         # self.auth_version = None
-        # Force auth_version to v3
-        self.auth_version = "v3.0"
+	# Force auth_version to v3.0
+	self.auth_version = "v3.0"
         self.http_request_max_retries = (
             self._conf_get('http_request_max_retries'))
 
@@ -918,6 +918,7 @@ class AuthProtocol(object):
 
         """
         token_id = None
+
         try:
             token_ids, cached = self._token_cache.get(user_token)
             token_id = token_ids[0]
