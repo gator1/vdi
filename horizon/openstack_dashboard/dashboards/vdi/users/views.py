@@ -147,12 +147,13 @@ class CreateView(forms.ModalFormView):
         domain = api.keystone.get_default_domain(self.request)
         user = self.request.user
         default_role = api.keystone.get_default_role(self.request)
+        vdi_role = None
         roles = api.keystone.role_list(self.request)
         for role in roles:
             if role.name == "vdi":
-                vdi_role = role
+                vdi_role = role.id
                 break
         return {'domain_id': domain.id,
                 'domain_name': domain.name,
-                'role_id': vdi_role.id or default_role.id,
+                'role_id': vdi_role or default_role.id,
                 'project': user.project_id}
