@@ -133,6 +133,7 @@ class PoolDetailsView(tables.MultiTableView):
             else:
                 user_ids = [user.id]
                 user_names = [user.username]
+
             for instance in instances:
                 names = instance.name.split(':')
                 if len(names) >= 2:
@@ -143,7 +144,7 @@ class PoolDetailsView(tables.MultiTableView):
                     instance_list.append(instance)
                     break
                 else:
-                    if user_name in user_names and pool.name in pool_name:
+                    if user_name[0] in user_names and pool.name in pool_name:
                         instance_list.append(instance)
                         break
         except Exception:
