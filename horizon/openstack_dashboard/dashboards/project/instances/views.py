@@ -133,6 +133,7 @@ class LaunchInstanceView(workflows.WorkflowView):
         initial['user_id'] = self.request.user.id
         # add pool name as instance initial name, 10/09/2014, Ching Sun
         # initial['name'] = self.request.GET.get('source_name')
+        initial['pool'] = self.request.GET.get('source_name')
         return initial
 
 

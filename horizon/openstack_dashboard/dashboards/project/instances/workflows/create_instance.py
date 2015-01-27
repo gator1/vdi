@@ -82,6 +82,11 @@ class SetInstanceDetailsAction(workflows.Action):
     user = forms.ChoiceField(label=_("User Name"),
                              help_text="User who owns this instance.")
 
+    pool = forms.CharField(label=_("Pool Name"),
+                           help_text="Pool which launches this instance.",
+                           required=False,
+                           widget=forms.HiddenInput())
+
     name = forms.CharField(label=_("Instance Name"),
                            max_length=255)
 
@@ -432,7 +437,7 @@ class SetInstanceDetails(workflows.Step):
     action_class = SetInstanceDetailsAction
     depends_on = ("project_id", "user_id")
     contributes = ("source_type", "source_id",
-                   "availability_zone", "name", "count", "user", "flavor",
+                   "availability_zone", "user", "pool", "name", "count", "flavor",
                    "device_name",  # Can be None for an image.
                    "delete_on_terminate")
 
@@ -444,8 +449,11 @@ class SetInstanceDetails(workflows.Step):
     def contribute(self, data, context):
         context = super(SetInstanceDetails, self).contribute(data, context)
         # Allow setting the source dynamically.
-        if "name" in context and "user" in context:
-            context["name"] = context["user"] + '_' + context["name"]
+        # Add user name in front of instance name, ** Hack - Ching Sun
+
+
+        if "name" in context and "user" in context and "pool" in context:
+            context["name"] = context["user"] + ':' + context["pool"] + ':' + context["name"]
 
         if ("source_type" in context and "source_id" in context
                 and context["source_type"] not in context):
@@ -701,7 +709,6 @@ class LaunchInstance(workflows.Workflow):
         dev_mapping_2 = None
 
         image_id = ''
-
         user_id = context['user_id']
 
         # Determine volume mapping options

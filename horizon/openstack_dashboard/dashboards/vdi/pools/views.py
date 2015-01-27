@@ -33,7 +33,6 @@ import openstack_dashboard.api.keystone as keystone
 
 from openstack_dashboard.dashboards.vdi.api.client import client as vdiclient
 from openstack_dashboard.dashboards.vdi.pools import tables as pool_tables
-# import openstack_dashboard.dashboards.vdi.pools.tabs as _tabs
 import openstack_dashboard.dashboards.vdi.pools.forms as project_forms
 import openstack_dashboard.dashboards.vdi.pools.instances.tables as instance_table
 
@@ -51,9 +50,22 @@ class PoolsIndexView(tables.DataTableView):
                 domain = domain_context
             else:
                 domain = user.user_domain_id
-            pools = vdi.pools.list_domain_pools(domain)
+            pools_list = vdi.pools.list_domain_pools(domain)
             if not user.is_superuser:
-                pools = [pool for pool in pools if user.project_id in pool.vdi_group]
+                vdi_groups = api.keystone.user_get(self.request, user.id)
+                if hasattr(vdi_groups, 'vdi_group'):
+                    groups = vdi_groups.vdi_group
+                else:
+                    groups = []
+                pools = []
+                for pool in pools_list:
+                    for group in pool.vdi_group:
+                        if group in groups:
+                            pools.append(pool)
+                            break
+
+            else:
+                pools = pools_list
         except Exception:
             pools = []
             exceptions.handle(self.request, _('Unable to retrieve pools.'))
@@ -94,24 +106,50 @@ class PoolDetailsView(tables.MultiTableView):
     failure_url = reverse_lazy('horizon:vdi:pools')
 
     def get_instances_data(self):
-        user_id = self.request.user.id
         try:
-            # pool = self._get_data()
+            pool_id = self.kwargs['pool_id']
+            vdi = vdiclient(self.request)
+            pool = vdi.pools.get(pool_id)
+        except Exception:
+            redirect = self.failure_url
+            exceptions.handle(self.request,
+                              _('Unable to retrieve details for '
+                                'pool "%s".') % pool_id,
+                              redirect=redirect)
+        domain_context = self.request.session.get('domain_context', None)
+        user = self.request.user
+        try:
             servers = api.nova.server_list(self.request)
             instances = servers[0]
             instance_list = []
+            if user.is_superuser:
+                if domain_context:
+                    domain = domain_context
+                else:
+                    domain = user.domain_id
+                users = api.keystone.user_list(self.request, domain=domain)
+                user_ids = [x.id for x in users]
+                user_names = [x.name for x in users]
+            else:
+                user_ids = [user.id]
+                user_names = [user.username]
             for instance in instances:
-                # if hasattr(instance, "name"):
-                #     if pool.name in instance.name:
-                #         instance_list.append(instance)
-                if user_id in instance.user_id:
+                names = instance.name.split(':')
+                if len(names) >= 2:
+                    user_name, pool_name = names[0:1], names[1:2]
+                else:
+                    user_name, pool_name = '', ''
+                if instance.user_id in user_ids and pool.name in pool_name:
                     instance_list.append(instance)
+                    break
+                else:
+                    if user_name in user_names and pool.name in pool_name:
+                        instance_list.append(instance)
+                        break
         except Exception:
             instance_list = []
             msg = _('Instance list can not be retrieved.')
             exceptions.handle(self.request, msg)
-        # return sorted(user_list, key=lambda x: x.name)
-        # import pdb; pdb.set_trace()
         return sorted(instance_list, key=lambda x: x.name)
 
     @memoized.memoized_method
