@@ -116,6 +116,7 @@ class Client(object):
 
         password = api_key
         self.projectid = project_id
+        self.domain = domain
         self.tenant_id = tenant_id
         self.user_id = user_id
         self.flavors = flavors.FlavorManager(self)

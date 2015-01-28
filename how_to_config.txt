@@ -42,6 +42,12 @@ vdi_openstack, RestAPI for openstack API
               $ source openrc admin demo
               ./stack.sh
 
+         to support v3 keystone, do ./unstack.sh
+         replace auth_token.py at /usr/local/lib/python2.7/dist-packages/keystoneclient/middleware with ~/vdi/auth_token.py
+         sodu is needed 
+         replace policy.json at /etc/keystone with ~/vdi/policy.json
+         ./rejoin_stack.sh
+
 
 2. install VDI horizon, with multi-tenancy and VDI dashboard
 
@@ -77,7 +83,30 @@ vdi_openstack, RestAPI for openstack API
 
               Also, make test will automatically use the virtualenv.
                """"
+         to hack for keystone v3: modify /opt/stack/horizon/openstack_dashboard/local/local_settings.py
+                  a. uncomment
+                     OPENSTACK_API_VERSIONS = {
+                          "identity": 3,
+                          "volume": 2
+                      }
 
+                  b. uncomment
+                      OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
+
+                  c. uncomment
+                      OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = 'Default'
+              
+         restart an openstack service:
+             screen -r
+             ctl-a", (to do " you have to hold Shift), but this somehow doesn't change to v3. 
+             you can go to /opt/stack/horizon do python manager.py runserver localhost:anotherport
+
+         to support keystone v3, 
+             ./tools/with_venv.sh pip uninstall python-keystoneclient
+             ./tools/with_venv.sh pip uninstall python-novaclient
+             ./tools/with_venv.sh pip install -e ~/vdi/python-keystoneclient
+             ./tools/with_venv.sh pip install -e ~/vdi/python-novaclient
+             ./tools/with_venv.sh pip install -e ~/vdi/python_vdiclient
 
 3. install vdi client
               /home/jim/test_horizon/tools/with_venv.sh pip install -e ~/vdi/python_vdiclient/
@@ -114,6 +143,7 @@ vdi_openstack, RestAPI for openstack API
     pip install -r requirements.txt
     cd ~/vdi-wi/vdi-wi
     modify settings.py to change auth-url to the right address, keystone. 
+    pip install -e ~/vdi/python-client
     python manager.py runserver localhost:7070
 
 
