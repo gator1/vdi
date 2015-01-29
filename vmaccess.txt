@@ -30,5 +30,5 @@ nova-manage floating delete 192.168.1.230/28
 
 change /etc/nova/nova.conf public_interface=br100 to wlan0 ???
 
-
+~/devstack source openrc to access nova command.
 
