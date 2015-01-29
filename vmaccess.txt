@@ -32,3 +32,4 @@ change /etc/nova/nova.conf public_interface=br100 to wlan0 ???
 
 ~/devstack source openrc to access nova command.
 
+https://www.mirantis.com/blog/configuring-floating-ip-addresses-networking-openstack-public-private-clouds/
