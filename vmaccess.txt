@@ -30,6 +30,9 @@ nova-manage floating delete 192.168.1.230/28
 
 change /etc/nova/nova.conf public_interface=br100 to wlan0 ???
 
+stack.sh has a floating ip range, default to 172.x.x.x, change it to the right 
+range before ./stack.sh
+
 ~/devstack source openrc to access nova command.
 
 https://www.mirantis.com/blog/configuring-floating-ip-addresses-networking-openstack-public-private-clouds/
