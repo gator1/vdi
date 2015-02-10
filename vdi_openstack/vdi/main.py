@@ -22,12 +22,17 @@ import stevedore
 from werkzeug import exceptions as werkzeug_exceptions
 
 from vdi.api import v10 as api_v10
+from vdi.api import v11 as api_v11
 from vdi import context
 from vdi.middleware import auth_valid
 from vdi.middleware import log_exchange
 from vdi.openstack.common import log
+from vdi.plugins import base as plugins_base
+from vdi.service import api as service_api
+from vdi.service import periodic
 from vdi.utils import api as api_utils
 from vdi.utils import patches
+from vdi.utils import remote
 
 
 LOG = log.getLogger(__name__)
@@ -44,7 +49,7 @@ opts = [
                default='http',
                help='Protocol used to access OpenStack Identity service.'),
     cfg.StrOpt('os_auth_host',
-               default='127.0.0.1',
+               default='192.168.253.190',
                help='IP or hostname of machine on which OpenStack Identity '
                     'service is located.'),
     cfg.StrOpt('os_auth_port',
@@ -67,7 +72,7 @@ opts = [
     #                 'infrastructure for Hadoop cluster.'),
     cfg.StrOpt('remote',
                default='ssh',
-               help='A method for VDI to execute commands '
+               help='A method for Sahara to execute commands '
                     'on VMs.')
 ]
 
@@ -81,6 +86,7 @@ def make_app():
     Entry point for VDI REST API server
     """
     app = flask.Flask('vdi.api')
+    # app = flask.Flask(__name__)
 
     @app.route('/', methods=['GET'])
     def version_list():
@@ -92,7 +98,7 @@ def make_app():
         })
 
     @app.route('/api/help', methods=['GET'])
-    def _help():
+    def help_():
         """
         Print available routes and functions.
         """
@@ -150,6 +156,7 @@ def make_app():
     app.wsgi_app = auth_valid.filter_factory(app.config)(app.wsgi_app)
 
     auth_version = "v3.0" if CONF.use_identity_api_v3 else "v2.0"
+
     app.wsgi_app = auth_token.filter_factory(
         app.config,
         auth_host=CONF.os_auth_host,
@@ -157,7 +164,7 @@ def make_app():
         auth_protocol=CONF.os_auth_protocol,
         admin_user=CONF.os_admin_username,
         admin_password=CONF.os_admin_password,
-        admin_tenant_name=CONF.os_admin_tenant_name,
+        # admin_tenant_name=CONF.os_admin_tenant_name,
         auth_version=auth_version
     )(app.wsgi_app)
 

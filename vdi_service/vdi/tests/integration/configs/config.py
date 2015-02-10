@@ -54,13 +54,13 @@ COMMON_CONFIG_OPTS = [
                help='OpenStack auth version for Swift.'),
     cfg.StrOpt('SAHARA_HOST',
                default='127.0.0.1',
-               help='Host for Sahara.'),
+               help='Host for VDI.'),
     cfg.IntOpt('SAHARA_PORT',
                default=8386,
-               help='Port for Sahara.'),
+               help='Port for VDI.'),
     cfg.StrOpt('SAHARA_API_VERSION',
                default='1.1',
-               help='API version for Sahara.'),
+               help='API version for VDI.'),
     cfg.StrOpt('FLAVOR_ID',
                default=None,
                help='OpenStack flavor ID for virtual machines. If you leave '
@@ -92,7 +92,7 @@ COMMON_CONFIG_OPTS = [
                help='Name for cluster.'),
     cfg.StrOpt('USER_KEYPAIR_ID',
                default='vdi-i-test-key-pair',
-               help='OpenStack key pair ID of your SSH public key. Sahara '
+               help='OpenStack key pair ID of your SSH public key. VDI '
                     'transfers this key to cluster nodes for access by users '
                     'to virtual machines of cluster via SSH. You can export '
                     'your id_rsa.pub public key to OpenStack and specify its '
@@ -119,18 +119,18 @@ COMMON_CONFIG_OPTS = [
                     'automatically, using nova client.'),
     cfg.StrOpt('FLOATING_IP_POOL',
                default=None,
-               help='Pool name for floating IPs. If Sahara uses Nova '
+               help='Pool name for floating IPs. If VDI uses Nova '
                     'management network and auto assignment of IPs was '
                     'enabled then you should leave default value of this '
                     'parameter. If auto assignment was not enabled, then you '
                     'should specify value (floating IP pool name) of this '
-                    'parameter. If Sahara uses Neutron management network, '
+                    'parameter. If VDI uses Neutron management network, '
                     'then you should always specify value (floating IP pool '
                     'name) of this parameter.'),
     cfg.BoolOpt('NEUTRON_ENABLED',
                 default=False,
-                help='If Sahara uses Nova management network, then you '
-                     'should leave default value of this flag. If Sahara '
+                help='If VDI uses Nova management network, then you '
+                     'should leave default value of this flag. If VDI '
                      'uses Neutron management network, then you should set '
                      'this flag to True and specify values of the following '
                      'parameters: FLOATING_IP_POOL and '

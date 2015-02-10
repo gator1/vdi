@@ -26,24 +26,24 @@ from vdi.utils import edp
 class EDPTest(base.ITestCase):
 
     def _create_data_source(self, name, data_type, url, description=''):
-        return self.vdi.data_sources.create(
+        return self.sahara.data_sources.create(
             name, description, data_type, url, self.common_config.OS_USERNAME,
             self.common_config.OS_PASSWORD).id
 
     def _create_job_binary_internals(self, name, data):
-        return self.vdi.job_binary_internals.create(name, data).id
+        return self.sahara.job_binary_internals.create(name, data).id
 
     def _create_job_binary(self, name, url):
-        return self.vdi.job_binaries.create(name, url,
+        return self.sahara.job_binaries.create(name, url,
                                                description='', extra={}).id
 
     def _create_job(self, name, job_type, mains, libs):
-        return self.vdi.jobs.create(name, job_type, mains, libs,
+        return self.sahara.jobs.create(name, job_type, mains, libs,
                                        description='').id
 
     def _await_job_execution(self, job):
         timeout = self.common_config.JOB_LAUNCH_TIMEOUT * 60
-        status = self.vdi.job_executions.get(job.id).info['status']
+        status = self.sahara.job_executions.get(job.id).info['status']
         while status != 'SUCCEEDED':
             if status == 'KILLED':
                 self.fail('Job status == \'KILLED\'.')
@@ -52,7 +52,7 @@ class EDPTest(base.ITestCase):
                     'Job did not return to \'SUCCEEDED\' status within '
                     '%d minute(s).' % self.common_config.JOB_LAUNCH_TIMEOUT
                 )
-            status = self.vdi.job_executions.get(job.id).info['status']
+            status = self.sahara.job_executions.get(job.id).info['status']
             time.sleep(10)
             timeout -= 10
 
@@ -77,19 +77,19 @@ class EDPTest(base.ITestCase):
     def _delete_job(self, execution_job, job_id, job_binary_list,
                     job_binary_internal_list, input_id, output_id):
         if execution_job:
-            self.vdi.job_executions.delete(execution_job.id)
+            self.sahara.job_executions.delete(execution_job.id)
         if job_id:
-            self.vdi.jobs.delete(job_id)
+            self.sahara.jobs.delete(job_id)
         if job_binary_list:
             for job_binary_id in job_binary_list:
-                self.vdi.job_binaries.delete(job_binary_id)
+                self.sahara.job_binaries.delete(job_binary_id)
         if job_binary_internal_list:
             for internal_id in job_binary_internal_list:
-                self.vdi.job_binary_internals.delete(internal_id)
+                self.sahara.job_binary_internals.delete(internal_id)
         if input_id:
-            self.vdi.data_sources.delete(input_id)
+            self.sahara.data_sources.delete(input_id)
         if output_id:
-            self.vdi.data_sources.delete(output_id)
+            self.sahara.data_sources.delete(output_id)
 
     def _add_swift_configs(self, configs):
         swift_user = "fs.swift.service.vdi.username"
@@ -170,7 +170,7 @@ class EDPTest(base.ITestCase):
                     configs["args"] = [swift_input_url,
                                        swift_output_url]
 
-            job_execution = self.vdi.job_executions.create(
+            job_execution = self.sahara.job_executions.create(
                 job_id, self.cluster_id, input_id, output_id,
                 configs=configs)
 

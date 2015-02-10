@@ -29,7 +29,7 @@ from vdi.utils import general as g
 conductor = cond.API
 
 
-class AbstractInstanceTest(base.VdiWithDbTestCase):
+class AbstractInstanceTest(base.SaharaWithDbTestCase):
     def setUp(self):
         super(AbstractInstanceTest, self).setUp()
 

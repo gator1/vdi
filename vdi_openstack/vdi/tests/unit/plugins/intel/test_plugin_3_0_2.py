@@ -20,7 +20,7 @@ from vdi.tests.unit import base
 from vdi.tests.unit import testutils as tu
 
 
-class TestIDHPlugin302(base.VdiWithDbTestCase):
+class TestIDHPlugin302(base.SaharaWithDbTestCase):
 
     def test_get_configs(self):
         plugin = p.IDHProvider()

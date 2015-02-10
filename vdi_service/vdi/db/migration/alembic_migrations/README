@@ -15,71 +15,71 @@ under the License.
 -->
 
 The migrations in the alembic/versions contain the changes needed to migrate
-from older Sahara releases to newer versions. A migration occurs by executing
+from older VDI releases to newer versions. A migration occurs by executing
 a script that details the changes needed to upgrade/downgrade the database. The
 migration scripts are ordered so that multiple scripts can run sequentially to
-update the database. The scripts are executed by Sahara's migration wrapper
-which uses the Alembic library to manage the migration. Sahara supports
+update the database. The scripts are executed by VDI's migration wrapper
+which uses the Alembic library to manage the migration. VDI supports
 migration from Icehouse or later.
 
 
 If you are a deployer or developer and want to migrate from Icehouse to later
 release you must first add version tracking to the database:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf stamp icehouse
+$ vdi-db-manage --config-file /path/to/vdi.conf stamp icehouse
 ```
 
 You can upgrade to the latest database version via:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf upgrade head
+$ vdi-db-manage --config-file /path/to/vdi.conf upgrade head
 ```
 
 To check the current database version:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf current
+$ vdi-db-manage --config-file /path/to/vdi.conf current
 ```
 
 To create a script to run the migration offline:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf upgrade head --sql
+$ vdi-db-manage --config-file /path/to/vdi.conf upgrade head --sql
 ```
 
 To run the offline migration between specific migration versions:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf upgrade \
+$ vdi-db-manage --config-file /path/to/vdi.conf upgrade \
     <start version>:<end version> --sql
 ```
 
 Upgrade the database incrementally:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf upgrade --delta \
+$ vdi-db-manage --config-file /path/to/vdi.conf upgrade --delta \
     <# of revs>
 ```
 
 Downgrade the database by a certain number of revisions:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf downgrade --delta \
+$ vdi-db-manage --config-file /path/to/vdi.conf downgrade --delta \
     <# of revs>
 ```
 
 Create new revision:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf revision \
+$ vdi-db-manage --config-file /path/to/vdi.conf revision \
     -m "description of revision" --autogenerate
 ```
 
 Create a blank file:
 ```
-$ sahara-db-manage --config-file /path/to/sahara.conf revision \
+$ vdi-db-manage --config-file /path/to/vdi.conf revision \
     -m "description of revision"
 ```
 
 To verify that the timeline does branch, you can run this command:
 ```
-    $ sahara-db-manage --config-file /path/to/sahara.conf check_migration
+    $ vdi-db-manage --config-file /path/to/vdi.conf check_migration
 ```
 
 If the migration path does branch, you can find the branch point via:
 ```
-    $ sahara-db-manage --config-file /path/to/sahara.conf history
+    $ vdi-db-manage --config-file /path/to/vdi.conf history
 ```

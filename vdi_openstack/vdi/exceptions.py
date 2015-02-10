@@ -159,7 +159,7 @@ class SwiftClientException(VDIException):
     '''General wrapper object for swift client exceptions
 
     This exception is intended for wrapping the message from a
-    swiftclient.ClientException in a VdiException. The ClientException
+    swiftclient.ClientException in a SaharaException. The ClientException
     should be caught and an instance of SwiftClientException raised instead.
     '''
     def __init__(self, message):

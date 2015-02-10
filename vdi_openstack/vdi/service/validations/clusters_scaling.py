@@ -16,6 +16,7 @@
 import copy
 
 import vdi.exceptions as ex
+import vdi.plugins.base as plugin_base
 import vdi.service.api as api
 import vdi.service.validations.base as b
 import vdi.service.validations.cluster_templates as cl_t

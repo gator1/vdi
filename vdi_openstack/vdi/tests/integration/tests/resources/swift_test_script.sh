@@ -53,10 +53,10 @@ check_swift_availability() {
     sudo -u $HADOOP_USER bash -c "hadoop dfs -copyFromLocal /tmp/test-file /swift-test/"
     check_return_code_after_command_execution -clean_hdfs `echo "$?"`
 
-    sudo -u $HADOOP_USER bash -c "hadoop distcp -D fs.swift.service.vdi.username=$OS_USERNAME -D fs.swift.service.vdi.tenant=$OS_TENANT_NAME -D fs.swift.service.vdi.password=$OS_PASSWORD /swift-test/test-file swift://$SWIFT_CONTAINER_NAME.vdi/"
+    sudo -u $HADOOP_USER bash -c "hadoop distcp -D fs.swift.service.sahara.username=$OS_USERNAME -D fs.swift.service.sahara.tenant=$OS_TENANT_NAME -D fs.swift.service.sahara.password=$OS_PASSWORD /swift-test/test-file swift://$SWIFT_CONTAINER_NAME.sahara/"
     check_return_code_after_command_execution -clean_hdfs `echo "$?"`
 
-    sudo -u $HADOOP_USER bash -c "hadoop distcp -D fs.swift.service.vdi.username=$OS_USERNAME -D fs.swift.service.vdi.tenant=$OS_TENANT_NAME -D fs.swift.service.vdi.password=$OS_PASSWORD swift://$SWIFT_CONTAINER_NAME.vdi/test-file /swift-test/swift-test-file"
+    sudo -u $HADOOP_USER bash -c "hadoop distcp -D fs.swift.service.sahara.username=$OS_USERNAME -D fs.swift.service.sahara.tenant=$OS_TENANT_NAME -D fs.swift.service.sahara.password=$OS_PASSWORD swift://$SWIFT_CONTAINER_NAME.sahara/test-file /swift-test/swift-test-file"
     check_return_code_after_command_execution -clean_hdfs `echo "$?"`
 
     sudo -u $HADOOP_USER bash -c "hadoop dfs -copyToLocal /swift-test/swift-test-file /tmp/swift-test-file"

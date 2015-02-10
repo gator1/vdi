@@ -273,7 +273,7 @@ class OpenStackVDIShell(object):
         parser.add_argument('--os-username',
                             metavar='<auth-user-name>',
                             default=cliutils.env('OS_USERNAME',
-                                                 'VDI_USERNAME'),
+                                                 'SAHARA_USERNAME'),
                             help='Defaults to env[OS_USERNAME].')
         parser.add_argument('--os_username',
                             help=argparse.SUPPRESS)
@@ -281,7 +281,7 @@ class OpenStackVDIShell(object):
         parser.add_argument('--os-password',
                             metavar='<auth-password>',
                             default=cliutils.env('OS_PASSWORD',
-                                                 'VDI_PASSWORD'),
+                                                 'SAHARA_PASSWORD'),
                             help='Defaults to env[OS_PASSWORD].')
         parser.add_argument('--os_password',
                             help=argparse.SUPPRESS)
@@ -289,7 +289,7 @@ class OpenStackVDIShell(object):
         parser.add_argument('--os-tenant-name',
                             metavar='<auth-tenant-name>',
                             default=cliutils.env('OS_TENANT_NAME',
-                                                 'VDI_PROJECT_ID'),
+                                                 'SAHARA_PROJECT_ID'),
                             help='Defaults to env[OS_TENANT_NAME].')
         parser.add_argument('--os_tenant_name',
                             help=argparse.SUPPRESS)
@@ -301,7 +301,7 @@ class OpenStackVDIShell(object):
 
         parser.add_argument('--os-auth-url',
                             metavar='<auth-url>',
-                            default=cliutils.env('OS_AUTH_URL', 'VDI_URL'),
+                            default=cliutils.env('OS_AUTH_URL', 'SAHARA_URL'),
                             help='Defaults to env[OS_AUTH_URL].')
         parser.add_argument('--os_auth_url',
                             help=argparse.SUPPRESS)
@@ -309,7 +309,7 @@ class OpenStackVDIShell(object):
 # NA
 #        parser.add_argument('--os-region-name',
 #            metavar='<region-name>',
-#            default=utils.env('OS_REGION_NAME', 'VDI_REGION_NAME'),
+#            default=utils.env('OS_REGION_NAME', 'SAHARA_REGION_NAME'),
 #            help='Defaults to env[OS_REGION_NAME].')
 #        parser.add_argument('--os_region_name',
 #            help=argparse.SUPPRESS)
@@ -331,8 +331,8 @@ class OpenStackVDIShell(object):
 # NA
 #        parser.add_argument('--service-name',
 #            metavar='<service-name>',
-#            default=utils.env('VDI_SERVICE_NAME'),
-#            help='Defaults to env[VDI_SERVICE_NAME]')
+#            default=utils.env('SAHARA_SERVICE_NAME'),
+#            help='Defaults to env[SAHARA_SERVICE_NAME]')
 #        parser.add_argument('--service_name',
 #            help=argparse.SUPPRESS)
 
@@ -635,7 +635,7 @@ class OpenStackVDIShell(object):
 #                raise exc.CommandError("You must provide an auth url "
 #                        "via either --os-auth-url or env[OS_AUTH_URL]")
 
-# NOTE: The VDI client authenticates when you create it. So instead of
+# NOTE: The Sahara client authenticates when you create it. So instead of
 #       creating here and authenticating later, which is what the novaclient
 #       does, we just create the client later.
 
@@ -681,7 +681,7 @@ class OpenStackVDIShell(object):
 #            if not utils.isunauthenticated(args.func):
 #                self.cs.authenticate()
 #        except exc.Unauthorized:
-#            raise exc.CommandError("Invalid OpenStack VDI credentials.")
+#            raise exc.CommandError("Invalid OpenStack Sahara credentials.")
 #        except exc.AuthorizationFailure:
 #            raise exc.CommandError("Unable to authorize user")
 
