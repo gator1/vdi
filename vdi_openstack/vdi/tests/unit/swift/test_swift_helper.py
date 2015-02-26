@@ -32,7 +32,7 @@ SERVICE_SPECIFIC = ["auth.url", "tenant",
                     "region", "apikey"]
 
 
-class SwiftIntegrationTestCase(base.VdiTestCase):
+class SwiftIntegrationTestCase(base.SaharaTestCase):
 
     @mock.patch('vdi.utils.openstack.base.url_for')
     def test_get_swift_configs(self, authUrlConfig):

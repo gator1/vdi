@@ -19,6 +19,7 @@ from oslo.config import cfg
 from vdi import conductor as cond
 from vdi import context
 import vdi.exceptions as ex
+import vdi.plugins.base as plugin_base
 import vdi.service.api as api
 import vdi.utils.openstack.heat as heat
 import vdi.utils.openstack.keystone as keystone
@@ -44,7 +45,7 @@ def _get_plugin_configs(plugin_name, hadoop_version, scope=None):
 
 def check_plugin_name_exists(name):
     if name not in [p.name for p in api.get_plugins()]:
-        raise ex.InvalidException("Vdi doesn't contain plugin with name "
+        raise ex.InvalidException("Sahara doesn't contain plugin with name "
                                   "'%s'" % name)
 
 

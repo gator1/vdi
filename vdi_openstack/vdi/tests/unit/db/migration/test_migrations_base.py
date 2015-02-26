@@ -78,14 +78,14 @@ def _is_backend_avail(backend, user, passwd, database):
 
 
 def _have_mysql(user, passwd, database):
-    present = os.environ.get('VDI_MYSQL_PRESENT')
+    present = os.environ.get('SAHARA_MYSQL_PRESENT')
     if present is None:
         return _is_backend_avail('mysql', user, passwd, database)
     return present.lower() in ('', 'true')
 
 
 def _have_postgresql(user, passwd, database):
-    present = os.environ.get('VDI_TEST_POSTGRESQL_PRESENT')
+    present = os.environ.get('SAHARA_TEST_POSTGRESQL_PRESENT')
     if present is None:
         return _is_backend_avail('postgres', user, passwd, database)
     return present.lower() in ('', 'true')
@@ -120,7 +120,7 @@ def get_pgsql_connection_info(conn_pieces):
 
 
 class CommonTestsMixIn(object):
-    """These tests are shared between TestVdiMigrations and
+    """These tests are shared between TestSaharaMigrations and
     TestBaremetalMigrations.
 
     BaseMigrationTestCase is effectively an abstract class, meant to be derived
@@ -182,10 +182,10 @@ class BaseMigrationTestCase(unittest2.TestCase):
         self.DEFAULT_CONFIG_FILE = os.path.join(
             os.path.dirname(__file__),
             'test_migrations.conf')
-        # Test machines can set the VDI_TEST_MIGRATIONS_CONF variable
+        # Test machines can set the SAHARA_TEST_MIGRATIONS_CONF variable
         # to override the location of the config file for migration testing
         self.CONFIG_FILE_PATH = os.environ.get(
-            'VDI_TEST_MIGRATIONS_CONF',
+            'SAHARA_TEST_MIGRATIONS_CONF',
             self.DEFAULT_CONFIG_FILE)
 
         self.ALEMBIC_CONFIG = alembic_config.Config(
@@ -193,7 +193,7 @@ class BaseMigrationTestCase(unittest2.TestCase):
                          'alembic.ini')
         )
 
-        self.ALEMBIC_CONFIG.vdi_config = CONF
+        self.ALEMBIC_CONFIG.sahara_config = CONF
 
         self.snake_walk = False
         self.downgrade = False

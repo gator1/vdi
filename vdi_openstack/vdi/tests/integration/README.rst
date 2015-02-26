@@ -1,20 +1,20 @@
-Integration tests for VDI project
+Integration tests for Sahara project
 =====================================
 
 How to run
 ----------
 
-Create the config file for integration tests: `/vdi/tests/integration/configs/itest.conf`.
-You can take a look at sample config files - `/vdi/tests/integration/configs/itest.conf.sample`,
-`/vdi/tests/integration/configs/itest.conf.sample-full`.
-All values used in the `/vdi/tests/integration/configs/config.py` file are
+Create the config file for integration tests: `/sahara/tests/integration/configs/itest.conf`.
+You can take a look at sample config files - `/sahara/tests/integration/configs/itest.conf.sample`,
+`/sahara/tests/integration/configs/itest.conf.sample-full`.
+All values used in the `/sahara/tests/integration/configs/config.py` file are
 defaults, so, if they are applicable for your environment then you can skip
 config file creation.
 
 To run all integration tests you should use the corresponding tox env: `tox -e integration`.
 In this case all tests will be launched except disabled tests.
-Tests may be disabled in the `/vdi/tests/integration/configs/config.py` file
-or created the config file `/vdi/tests/integration/configs/itest.conf`.
+Tests may be disabled in the `/sahara/tests/integration/configs/config.py` file
+or created the config file `/sahara/tests/integration/configs/itest.conf`.
 
 If you want to run integration tests for one plugin or a few plugins you should use
 the corresponding tox env: `tox -e integration -- <plugin_name>` or
@@ -25,7 +25,7 @@ For example: `tox -e integration -- vanilla` or `tox -e integration vanilla hdp`
 Contents
 --------
 
-These integration tests check capacity for work of two plugins for VDI:
+These integration tests check capacity for work of two plugins for Sahara:
 Vanilla and HDP.
 
 Vanilla plugin has the following checks:

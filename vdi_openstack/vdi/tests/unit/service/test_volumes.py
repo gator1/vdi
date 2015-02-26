@@ -22,7 +22,7 @@ from vdi.service import volumes
 from vdi.tests.unit import base
 
 
-class TestAttachVolume(base.VdiWithDbTestCase):
+class TestAttachVolume(base.SaharaWithDbTestCase):
 
     @mock.patch(
         'vdi.service.engine.Engine.get_node_group_image_username')

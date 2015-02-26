@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Huawei Inc.
+# Copyright (c) 2014 Mirantis Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ from vdi.plugins.vanilla.v2_3_0 import config as c
 from vdi.tests.unit import base
 
 
-class VanillaTwoConfigTestCase(base.VdiTestCase):
+class VanillaTwoConfigTestCase(base.SaharaTestCase):
     def test_get_hadoop_dirs(self):
         ng = FakeNG(storage_paths=['/vol1', '/vol2'])
         dirs = c._get_hadoop_dirs(ng)

@@ -24,10 +24,10 @@ from vdi import main
 from vdi.openstack.common.db.sqlalchemy import session
 
 
-class VdiTestCase(unittest2.TestCase):
+class SaharaTestCase(unittest2.TestCase):
 
     def setUp(self):
-        super(VdiTestCase, self).setUp()
+        super(SaharaTestCase, self).setUp()
 
         self.maxDiff = None
         self.setup_context()
@@ -47,9 +47,9 @@ class VdiTestCase(unittest2.TestCase):
         self.addCleanup(main.CONF.clear_override, name, group)
 
 
-class VdiWithDbTestCase(VdiTestCase):
+class SaharaWithDbTestCase(SaharaTestCase):
     def setUp(self):
-        super(VdiWithDbTestCase, self).setUp()
+        super(SaharaWithDbTestCase, self).setUp()
         self.setup_db()
 
     def setup_db(self):

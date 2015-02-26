@@ -16,7 +16,7 @@
 """Cluster creation related checks"""
 
 import vdi.exceptions as ex
-# import vdi.service.edp.api as api
+import vdi.service.edp.api as api
 
 
 data_source_type = {

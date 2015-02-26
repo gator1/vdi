@@ -17,9 +17,9 @@ from vdiclient.api import parameters as params
 
 
 class Helpers(object):
-    def __init__(self, vdi_client):
-        self.vdi = vdi_client
-        self.plugins = self.vdi.plugins
+    def __init__(self, sahara_client):
+        self.sahara = sahara_client
+        self.plugins = self.sahara.plugins
 
     def _get_node_processes(self, plugin):
         processes = []
