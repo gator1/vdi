@@ -1,0 +1,15 @@
+{% load i18n sizeformat %}
+{% load url from future %}
+<h3>{% trans "Group Overview" %}</h3>
+<div class="status row-fluid detail">
+    <dl>
+        <dt>{% trans "Name" %}</dt>
+        <dd>{{ image.name }}</dd>
+        <dt>{% trans "ID" %}</dt>
+        <dd>{{ group.id }}</dd>
+        <dt>{% trans "Description" %}</dt>
+        <dd>{{ group.description|default:"None" }}</dd>
+        <dt>{% trans "Status" %}</dt>
+        <dd>{{ group.status }}</dd>
+    </dl>
+</div>
