@@ -255,7 +255,7 @@ class UITestCase(unittest2.TestCase):
                 "//select[@id='id_job_binary_internal']/option[text()"
                 "='%s']" % internal_binary).click()
             if internal_binary == '*Upload a new file':
-                file = '%s/vdidashboard/tests/resources/%s' % (
+                file = '%s/saharadashboard/tests/resources/%s' % (
                     os.getcwd(), parameters_of_storage['filename'])
                 driver.find_element_by_id('id_job_binary_file').send_keys(file)
 
@@ -660,7 +660,7 @@ class UITestCase(unittest2.TestCase):
                         if second not in list_for_check_tags:
                             list_for_check_tags.append(second)
                     elif first == 'custom_tag':
-                        self.find_clear_send(by.By.ID, '_vdi_image_tag',
+                        self.find_clear_send(by.By.ID, '_sahara_image_tag',
                                              second)
                         driver.find_element_by_id('add_tag_btn').click()
                         if second not in list_for_check_tags:

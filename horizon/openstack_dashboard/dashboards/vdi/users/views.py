@@ -103,7 +103,6 @@ class UpdateView(forms.ModalFormView):
     def get_initial(self):
         user = self.get_object()
         domain_id = getattr(user, "domain_id", None)
-        domain_name = ''
         # Retrieve the domain name where the project belong
         if api.keystone.VERSIONS.active >= 3:
             try:
@@ -115,9 +114,9 @@ class UpdateView(forms.ModalFormView):
                 'domain_name': domain_name,
                 'id': user.id,
                 'name': user.name,
-                'project': self.request.user.project_id,
-                'email': getattr(user, 'email', None),}
-                # 'vdi_group': getattr(user, 'vdi_group', None)}
+                'project': user.default_project_id,
+                'email': getattr(user, 'email', None),
+                'vdi_group': getattr(user, 'vdi_group', None)}
 
 
 class CreateView(forms.ModalFormView):
@@ -148,12 +147,13 @@ class CreateView(forms.ModalFormView):
         domain = api.keystone.get_default_domain(self.request)
         user = self.request.user
         default_role = api.keystone.get_default_role(self.request)
+        vdi_role = None
         roles = api.keystone.role_list(self.request)
         for role in roles:
             if role.name == "vdi":
-                vdi_role = role
+                vdi_role = role.id
                 break
         return {'domain_id': domain.id,
                 'domain_name': domain.name,
-                'role_id': vdi_role.id or default_role.id,
+                'role_id': vdi_role or default_role.id,
                 'project': user.project_id}

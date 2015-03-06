@@ -52,15 +52,15 @@ COMMON_CONFIG_OPTS = [
     cfg.StrOpt('SWIFT_AUTH_VERSION',
                default=2,
                help='OpenStack auth version for Swift.'),
-    cfg.StrOpt('VDI_HOST',
+    cfg.StrOpt('SAHARA_HOST',
                default='127.0.0.1',
-               help='Host for Vdi.'),
-    cfg.IntOpt('VDI_PORT',
-               default=1492,
-               help='Port for Vdi.'),
-    cfg.StrOpt('VDI_API_VERSION',
+               help='Host for Sahara.'),
+    cfg.IntOpt('SAHARA_PORT',
+               default=8386,
+               help='Port for Sahara.'),
+    cfg.StrOpt('SAHARA_API_VERSION',
                default='1.1',
-               help='API version for Vdi.'),
+               help='API version for Sahara.'),
     cfg.StrOpt('FLAVOR_ID',
                default=None,
                help='OpenStack flavor ID for virtual machines. If you leave '
@@ -92,7 +92,7 @@ COMMON_CONFIG_OPTS = [
                help='Name for cluster.'),
     cfg.StrOpt('USER_KEYPAIR_ID',
                default='vdi-i-test-key-pair',
-               help='OpenStack key pair ID of your SSH public key. Vdi '
+               help='OpenStack key pair ID of your SSH public key. Sahara '
                     'transfers this key to cluster nodes for access by users '
                     'to virtual machines of cluster via SSH. You can export '
                     'your id_rsa.pub public key to OpenStack and specify its '
@@ -119,18 +119,18 @@ COMMON_CONFIG_OPTS = [
                     'automatically, using nova client.'),
     cfg.StrOpt('FLOATING_IP_POOL',
                default=None,
-               help='Pool name for floating IPs. If Vdi uses Nova '
+               help='Pool name for floating IPs. If Sahara uses Nova '
                     'management network and auto assignment of IPs was '
                     'enabled then you should leave default value of this '
                     'parameter. If auto assignment was not enabled, then you '
                     'should specify value (floating IP pool name) of this '
-                    'parameter. If Vdi uses Neutron management network, '
+                    'parameter. If Sahara uses Neutron management network, '
                     'then you should always specify value (floating IP pool '
                     'name) of this parameter.'),
     cfg.BoolOpt('NEUTRON_ENABLED',
                 default=False,
-                help='If Vdi uses Nova management network, then you '
-                     'should leave default value of this flag. If Vdi '
+                help='If Sahara uses Nova management network, then you '
+                     'should leave default value of this flag. If Sahara '
                      'uses Neutron management network, then you should set '
                      'this flag to True and specify values of the following '
                      'parameters: FLOATING_IP_POOL and '
@@ -158,21 +158,21 @@ VANILLA_CONFIG_OPTS = [
                     'you can specify image name or tag of image instead of '
                     'image ID. If you do not specify image related parameters '
                     'then image for cluster creation will be chosen by '
-                    'tag "vdi_i_tests".'),
+                    'tag "sahara_i_tests".'),
     cfg.StrOpt('IMAGE_NAME',
                default=None,
                help='Name for image which is used for cluster creation. Also '
                     'you can specify image ID or tag of image instead of '
                     'image name. If you do not specify image related '
                     'parameters, then the image for cluster creation will be '
-                    'chosen by tag "vdi_i_tests".'),
+                    'chosen by tag "sahara_i_tests".'),
     cfg.StrOpt('IMAGE_TAG',
                default=None,
                help='Tag for image which is used for cluster creation. Also '
                     'you can specify image ID or image name instead of tag of '
                     'image. If you do not specify image related parameters, '
                     'then image for cluster creation will be chosen by '
-                    'tag "vdi_i_tests".'),
+                    'tag "sahara_i_tests".'),
     cfg.StrOpt('SSH_USERNAME',
                default=None,
                help='Username to get cluster node with SSH.'),
@@ -234,21 +234,21 @@ HDP_CONFIG_OPTS = [
                     'you can specify image name or tag of image instead of '
                     'image ID. If you do not specify image related '
                     'parameters, then image for cluster creation will be '
-                    'chosen by tag "vdi_i_tests".'),
+                    'chosen by tag "sahara_i_tests".'),
     cfg.StrOpt('IMAGE_NAME',
                default=None,
                help='Name for image which is used for cluster creation. Also '
                     'you can specify image ID or tag of image instead of '
                     'image name. If you do not specify image related '
                     'parameters, then image for cluster creation will be '
-                    'chosen by tag "vdi_i_tests".'),
+                    'chosen by tag "sahara_i_tests".'),
     cfg.StrOpt('IMAGE_TAG',
                default=None,
                help='Tag for image which is used for cluster creation. Also '
                     'you can specify image ID or image name instead of tag of '
                     'image. If you do not specify image related parameters, '
                     'then image for cluster creation will be chosen by '
-                    'tag "vdi_i_tests".'),
+                    'tag "sahara_i_tests".'),
     cfg.StrOpt('SSH_USERNAME',
                default=None,
                help='Username to get cluster node with SSH.'),
@@ -321,21 +321,21 @@ IDH_CONFIG_OPTS = [
                     'you can specify image name or tag of image instead of '
                     'image ID. If you do not specify image related '
                     'parameters, then image for cluster creation will be '
-                    'chosen by tag "vdi_i_tests".'),
+                    'chosen by tag "sahara_i_tests".'),
     cfg.StrOpt('IMAGE_NAME',
                default=None,
                help='Name for image which is used for cluster creation. Also '
                     'you can specify image ID or tag of image instead of '
                     'image name. If you do not specify image related '
                     'parameters, then image for cluster creation will be '
-                    'chosen by tag "vdi_i_tests".'),
+                    'chosen by tag "sahara_i_tests".'),
     cfg.StrOpt('IMAGE_TAG',
                default=None,
                help='Tag for image which is used for cluster creation. Also '
                     'you can specify image ID or image name instead of tag of '
                     'image. If you do not specify image related parameters, '
                     'then image for cluster creation will be chosen by '
-                    'tag "vdi_i_tests".'),
+                    'tag "sahara_i_tests".'),
     cfg.StrOpt('SSH_USERNAME',
                default=None,
                help='Username to get cluster node with SSH.'),
@@ -430,7 +430,7 @@ class ITConfig:
         register_config(cfg.CONF, IDH_CONFIG_GROUP, IDH_CONFIG_OPTS)
 
         cfg.CONF(
-            [], project='Vdi_integration_tests',
+            [], project='Sahara_integration_tests',
             default_config_files=config_files
         )
 

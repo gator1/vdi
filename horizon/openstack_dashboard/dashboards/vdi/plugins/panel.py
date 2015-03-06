@@ -25,4 +25,4 @@ class PluginsPanel(horizon.Panel):
     slug = 'plugins'
 
 
-dashboard.VDIDashboard.register(PluginsPanel)
+dashboard.SaharaDashboard.register(PluginsPanel)

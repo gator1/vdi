@@ -207,7 +207,7 @@ class UpdateGroupView(forms.ModalFormView):
     def get_initial(self):
         group = self.get_object()
         return {'domain_id': group.domain_id,
-                'domain_name': keystone.domain_get(self.request, group.domain_id).name if group.domain_id else '',
+                'domain_name': api.keystone.domain_get(self.request, group.domain_id).name if group.domain_id else '',
                 # 'id': group.id,
                 'description': group.description,
                 'name': group.name}

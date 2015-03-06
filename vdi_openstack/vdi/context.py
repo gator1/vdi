@@ -38,11 +38,15 @@ class Context(object):
                  token=None,
                  service_catalog=None,
                  username=None,
+                 domain_name=None,
                  tenant_name=None,
                  roles=None,
                  is_admin=None,
                  remote_semaphore=None,
                  **kwargs):
+
+        # import pdb; pdb.set_trace()
+
         if kwargs:
             LOG.warn('Arguments dropped when creating context: %s', kwargs)
         self.user_id = user_id
@@ -51,8 +55,13 @@ class Context(object):
         self.token = token
         self.service_catalog = service_catalog
         self.username = username
+        self.domain_name = domain_name
         self.tenant_name = tenant_name
-        self.is_admin = is_admin
+        if is_admin:
+            self.is_admin = 'admin' in is_admin
+        else:
+            self.is_admin = False
+        # self.is_admin = 'admin' in roles
         self.remote_semaphore = remote_semaphore or semaphore.Semaphore(
             CONF.cluster_remote_threshold)
         self.roles = roles
@@ -65,6 +74,7 @@ class Context(object):
             self.token,
             self.service_catalog,
             self.username,
+            self.domain_name,
             self.tenant_name,
             self.roles,
             self.is_admin,
@@ -78,6 +88,7 @@ class Context(object):
             'token': self.token,
             'service_catalog': self.service_catalog,
             'username': self.username,
+            'domain_name': self.domain_name,
             'tenant_name': self.tenant_name,
             'is_admin': self.is_admin,
             'roles': self.roles,

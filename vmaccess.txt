@@ -1,0 +1,38 @@
+sudo bash
+echo 1 > /proc/sys/net/ipv4/ip_forward
+echo 1 > /proc/sys/net/ipv4/conf/wlan0/proxy_arp
+iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE 
+
+
+It worked last time with the above setting, it's NAT not route or ip forward. 
+
+http://stackoverflow.com/questions/23401425/openstack-vm-is-not-accessible-on-lan
+
+
+1
+down vote
+You need to assign a floating IP to the VMs you create if you want a host from outside the openstack network to connect to it. The internal IPs are only accessible from inside the openstack network.
+
+See how to assign a floating IP to a VM here: http://docs.openstack.org/user-guide/content/floating_ip_allocate.html
+
+To access the VM's floating IP from another host (that is not the devstack host) you should make sure that the devstack host is configured to forward packets. You can do this with:
+
+sudo bash
+echo 1 > /proc/sys/net/ipv4/ip_forward
+echo 1 > /proc/sys/net/ipv4/conf/eth0/proxy_arp
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE 
+See more details here: http://barakme.tumblr.com/post/70895539608/openstack-in-a-box-setting-up-devstack-havana-on-your
+
+floating address can be checked, created, deleted by nova-manage floating
+nova-manage floating list
+nova-manage floating create --pool public --ip_range 192.168.1.230/28 --interface wlan0/br100
+nova-manage floating delete 192.168.1.230/28
+
+change /etc/nova/nova.conf public_interface=br100 to wlan0 ???
+
+stack.sh has a floating ip range, default to 172.x.x.x, change it to the right 
+range before ./stack.sh
+
+~/devstack source openrc to access nova command.
+
+https://www.mirantis.com/blog/configuring-floating-ip-addresses-networking-openstack-public-private-clouds/

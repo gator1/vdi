@@ -40,7 +40,7 @@ class BaseUserForm(forms.SelfHandlingForm):
 
         # If the user is already set (update action), list only projects which
         # the user has access to.
-        user_id = kwargs['initial'].get('id', None)
+        # user_id = kwargs['initial'].get('id', None)
         domain_id = kwargs['initial'].get('domain_id', None)
         projects, has_more = api.keystone.tenant_list(request,
                                                       domain=domain_id,)
@@ -48,24 +48,23 @@ class BaseUserForm(forms.SelfHandlingForm):
         for project in projects:
             if project.enabled:
                 project_choices.append((project.id, project.name))
-        # if not project_choices:
-        #     project_choices.insert(0, ('', _("No available projects")))
-        # elif len(project_choices) > 1:
-        #     project_choices.insert(0, ('', _("Select a project")))
+        if not project_choices:
+            project_choices.insert(0, ('', _("No available projects")))
+        elif len(project_choices) > 1:
+            project_choices.insert(0, ('', _("Select a project")))
         self.fields['project'].choices = project_choices
 
-        # # Populate group choices
-        # group_choices = []
-        #
-        # vdi = vdiclient(self.request)
-        # if domain_id:
-        #     groups = vdi.groups.list_domain_groups(domain_id)
-        # else:
-        #     groups = vdi.groups.list()
-        # temp_list = [(x.id, x.name) for x in groups]
-        # for v in sorted(temp_list, key=lambda y: y[1]):
-        #     group_choices.append(v)
-        # self.fields['vdi_group'].choices = group_choices
+        # Populate group choices
+        group_choices = []
+        vdi = vdiclient(self.request)
+        if domain_id:
+            groups = vdi.groups.list_domain_groups(domain_id)
+        else:
+            groups = vdi.groups.list()
+        temp_list = [(x.id, x.name) for x in groups]
+        for v in sorted(temp_list, key=lambda y: y[1]):
+            group_choices.append(v)
+        self.fields['vdi_group'].choices = group_choices
 
         # # Populate pool choices
         # pool_choices = []
@@ -110,11 +109,11 @@ class CreateUserForm(BaseUserForm):
                                        widget=forms.PasswordInput(render_value=False))
     role_id = forms.ChoiceField(label=_("Role"),
                                 widget=forms.HiddenInput())
-    project = forms.DynamicChoiceField(label=_("Primary Project"),)
-                                       # add_item_link=ADD_PROJECT_URL,)
+    project = forms.DynamicChoiceField(label=_("Primary Project"))
+                                       # add_item_link=ADD_PROJECT_URL)
                                        # widget=forms.HiddenInput())
-    # vdi_group = forms.MultipleChoiceField(label=_("VDI Department"),
-    #                                       required=True)
+    vdi_group = forms.MultipleChoiceField(label=_("VDI Department"),
+                                          required=True)
 
     def __init__(self, *args, **kwargs):
         roles = kwargs.pop('roles')
@@ -157,15 +156,15 @@ class CreateUserForm(BaseUserForm):
                     exceptions.handle(request,
                                       _('Unable to add user '
                                         'to primary project.'))
-            # if data['vdi_group']:
-            #     try:
-            #         api.keystone.user_update(request, new_user.id,
-            #                                  password=data['password'],
-            #                                  project=data['project'],
-            #                                  vdi_group=data['vdi_group'])
-            #     except Exception:
-            #         exceptions.handle(request,
-            #                           _("Unable to update user's VDI group"))
+            if data['vdi_group']:
+                try:
+                    api.keystone.user_update(request, new_user.id,
+                                             password=data['password'],
+                                             project=data['project'],
+                                             vdi_group=data['vdi_group'])
+                except Exception:
+                    exceptions.handle(request,
+                                      _("Unable to update user's VDI group"))
             return new_user
         except Exception:
             exceptions.handle(request, _('Unable to create user.'))
@@ -196,8 +195,8 @@ class UpdateUserForm(BaseUserForm):
         required=False)
     # role_id = forms.ChoiceField(label=_("Role"))
     project = forms.ChoiceField(label=_("Primary Project"))
-    # vdi_group = forms.MultipleChoiceField(label=_("VDI Department"),
-    #                                       required=True)
+    vdi_group = forms.MultipleChoiceField(label=_("VDI Department"),
+                                          required=True)
     # vdi_pool = forms.MultipleChoiceField(label=_("VDI Pool"),
     #                                      required=True)
 
@@ -228,11 +227,11 @@ class UpdateUserForm(BaseUserForm):
         try:
             if "email" in data:
                 data['email'] = data['email'] or None
-            # if "vdi_group" in data:
-            #     data['vdi_group'] = data['vdi_group'] or None
-            # response = api.keystone.user_update(request, user, **data)
-            # messages.success(request,
-            #                  _('User has been updated successfully.'))
+            if "vdi_group" in data:
+                data['vdi_group'] = data['vdi_group'] or None
+            response = api.keystone.user_update(request, user, **data)
+            messages.success(request,
+                             _('User has been updated successfully.'))
         except Exception:
             response = exceptions.handle(request, ignore=True)
             messages.error(request, _('Unable to update the user.'))

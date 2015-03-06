@@ -22,6 +22,7 @@ from vdi.openstack.common import excutils
 from vdi.openstack.common import log as logging
 from vdi.service import trusts
 from vdi.utils import general as g
+from vdi.utils.openstack import nova
 
 
 conductor = c.API
@@ -54,6 +55,7 @@ def update_group(id, data):
 
     try:
         group = conductor.group_update(ctx, group, data)
+        #group = conductor.group_update(ctx, group, {"status": "Validating", "name": "Test1111"})
         LOG.info(g.format_group_status(group))
     except Exception:
         with excutils.save_and_reraise_exception():
@@ -70,6 +72,7 @@ def create_group(values):
     # validating group
     try:
         group = conductor.group_update(ctx, group, {"status": "Active"})
+        # group = conductor.group_update(ctx, group, {"status": "Validating"})
         LOG.info(g.format_group_status(group))
     except Exception as e:
         with excutils.save_and_reraise_exception():
@@ -159,6 +162,15 @@ def get_group_pools(group_id):
     return pools
 
 
+def get_domain_pools(domain_id):
+    all_pools = get_pools()
+    pools = []
+    for pool in all_pools:
+        if domain_id in pool.domain_id:
+            pools.append(pool)
+    return pools
+
+
 ## Group Membership ops
 
 def get_group_memberships():
@@ -192,15 +204,19 @@ def get_user_groups(user_id):
     memberships = conductor.group_membership_get_all(context.ctx(), user_id=user_id)
     all_groups = get_groups()
     group_ids = [m.group_id for m in memberships]
-
-    # groups = [g for g in all_groups if g.id in group_ids] # shadow name from outer scope
     groups = []
     for group in all_groups:
         if group.id in group_ids:
             groups.append(group)
+    return groups
 
-    # import pdb; pdb.set_trace()
 
+def get_domain_groups(domain_id):
+    all_groups = get_groups()
+    groups = []
+    for group in all_groups:
+        if group.domain_id in domain_id:
+            groups.append(group)
     return groups
 
 

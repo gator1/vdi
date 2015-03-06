@@ -21,7 +21,11 @@
 
             <dt>{% trans "Template" %}</dt>
             {% if node_group.node_group_template_id %}
+<<<<<<< HEAD
                 <dd><a href="{% url 'horizon:sahara:nodegroup_templates:details' node_group.node_group_template_id %}">{{ node_group.node_group_template.name }} </a></dd>
+=======
+                <dd><a href="{% url 'horizon:vdi:nodegroup_templates:details' node_group.node_group_template_id %}">{{ node_group.node_group_template.name }} </a></dd>
+>>>>>>> 728bbfad6c8f016b631e08006fd9f7e155918bfe
             {% else %}
                 <dd>{% trans "Template not specified" %}</dd>
             {% endif %}

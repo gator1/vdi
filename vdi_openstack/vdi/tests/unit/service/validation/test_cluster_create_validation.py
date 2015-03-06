@@ -160,7 +160,7 @@ class TestClusterCreateValidation(u.ValidationTestCase):
                 'hadoop_version': "1.2.1",
             },
             bad_req_i=(1, 'INVALID_REFERENCE',
-                       "Vdi doesn't contain plugin "
+                       "Sahara doesn't contain plugin "
                        "with name 'wrong_plugin'")
         )
 
@@ -203,7 +203,7 @@ class TestClusterCreateValidation(u.ValidationTestCase):
         self._assert_cluster_default_image_tags_validation()
 
 
-class TestClusterCreateFlavorValidation(base.VdiWithDbTestCase):
+class TestClusterCreateFlavorValidation(base.SaharaWithDbTestCase):
     """Tests for valid flavor on cluster create.
 
     The following use cases for flavors during cluster create are validated:
